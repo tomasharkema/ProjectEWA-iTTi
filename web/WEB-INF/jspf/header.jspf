@@ -15,144 +15,56 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/affablebean.css">
         <link rel="shortcut icon" href="img/favicon.ico">
-
-        <script src="js/jquery-1.4.2.js" type="text/javascript"></script>
-        <script src="js/jquery-ui-1.8.4.custom.min.js" type="text/javascript"></script>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $('a.categoryButton').hover(
-                    function () {$(this).animate({backgroundColor: '#b2d2d2'})},
-                    function () {$(this).animate({backgroundColor: '#d3ede8'})}
-                );
-
-                $('div.categoryBox').hover(over, out);
-
-                function over() {
-                    var span = this.getElementsByTagName('span');
-                    $(span[0]).animate({opacity: 0.3});
-                    $(span[1]).animate({color: 'white'});
-
-                }
-
-                function out() {
-                    var span = this.getElementsByTagName('span');
-                    $(span[0]).animate({opacity: 0.7});
-                    $(span[1]).animate({color: '#444'});
-                }
-            });
-        </script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
 
         <title>The Affable Bean Green Grocer</title>
+        
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
     </head>
     <body>
-        <div id="main">
-            <div id="header">
-                <div id="widgetBar">
+        
+        <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Bootstrap theme</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
-                    <div class="headerWidget">
-                        [ language toggle ]
-                    </div>
-
-                <%-- checkout widget --%>
-                    <div class="headerWidget">
-
-                       <%-- tests for the following:
-                            * if cart exists and is not empty
-                            * if the servlet path does not contain '/checkout'
-                            * if the requested view is not checkout
-                            * if the servlet path does not contain '/cart'
-                            * if the requested view is not cart
-                            * if the checkout view is returned with order failure message flagged
-                            * if the checkout view is returned with server-side validation errors detected
-
-                            <c:if test="${!empty sessionScope.cart}">
-                                CART EXISTS AND IS NOT NULL
-                            </c:if>
-                                <BR>
-                            <c:if test="${sessionScope.cart.numberOfItems != 0}">
-                                NUMBER OF ITEMS IN CART IS NOT 0
-                            </c:if>
-                                <BR>
-                            <c:if test="${fn:contains(pageContext.request.servletPath,'/checkout')}">
-                                SERVLET PATH CONTAINS '/checkout'
-                            </c:if>
-                                <BR>
-                            <c:if test="${requestScope['javax.servlet.forward.servlet_path'] ne '/checkout'}">
-                                REQUEST IS NOT CHECKOUT
-                            </c:if>
-                                <BR>
-                            <c:if test="${requestScope.validationErrorFlag ne true}">
-                                VALIDATION ERROR IS NOT FLAGGED
-                            </c:if>
-                                <BR>
-                            <c:if test="${requestScope.orderFailureFlag ne true}">
-                                ORDER FAILURE ERROR IS NOT FLAGGED
-                            </c:if> --%>
-
-                        <c:if test="${!empty cart && cart.numberOfItems != 0 &&
-
-                                      !fn:contains(pageContext.request.servletPath,'/checkout') &&
-                                      requestScope['javax.servlet.forward.servlet_path'] ne '/checkout' &&
-
-                                      !fn:contains(pageContext.request.servletPath,'/cart') &&
-                                      requestScope['javax.servlet.forward.servlet_path'] ne '/cart' &&
-
-                                      validationErrorFlag ne true &&
-                                      orderFailureFlag ne true}">
-
-                      <a href="<c:url value='checkout'/>" class="bubble">
-                        proceed to checkout &#x279f;
-                      </a>
-                    </c:if>
-                  </div>
-
-                <%-- shopping cart widget --%>
-                  <div class="headerWidget" id="viewCart">
-
-                    <img src="img/cart.gif" alt="shopping cart icon" id="cart">
-
-                  <%-- If 'numberOfItems' property doesn't exist, or if number of items
-                       in cart is 0, output '0', otherwise output 'numberOfItems' --%>
-                    <span class="horizontalMargin">
-                      <c:choose>
-                        <c:when test="${cart.numberOfItems == null}">
-                          0
-                        </c:when>
-                        <c:otherwise>
-                          ${cart.numberOfItems}
-                        </c:otherwise>
-                      </c:choose>
-
-                  <%-- Handle singular/plural forms of 'item' --%>
-                      <c:choose>
-                        <c:when test="${cart.numberOfItems == 1}">
-                          item
-                        </c:when>
-                        <c:otherwise>
-                          items
-                        </c:otherwise>
-                      </c:choose>
-                    </span>
-
-                    <c:if test="${!empty cart && cart.numberOfItems != 0 &&
-
-                                  !fn:contains(pageContext.request.servletPath,'/cart') &&
-                                  requestScope['javax.servlet.forward.servlet_path'] ne '/cart'}">
-
-                      <a href="<c:url value='viewCart'/>" class="bubble">
-                          view cart
-                      </a>
-                    </c:if>
-                </div>
-                </div>
-
-                <a href="<c:url value='/'/>">
-                    <img src="img/logo.png" id="logo" alt="Affable Bean logo">
-                </a>
-
-                <img src="img/logoText.png" id="logoText" alt="the affable bean">
-            </div>
+    <div class="container theme-showcase" role="main">
+        
