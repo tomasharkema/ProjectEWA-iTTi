@@ -1,12 +1,7 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 function FBLogin() {
-    
-    
+    this.shouldInvokeFBLogin = false;
+    this.FBRedirect = "";
 }
 
 FBLogin.prototype = {
@@ -17,25 +12,32 @@ FBLogin.prototype = {
             FB.init({
                 appId: '1654973028062626',
             });
-            self.fbinit();
+            self.FBInit.bind(self)();
         });
     },
-    fbinit:function(){
+    FBInit:function(){
         $('#fblogin').removeAttr('disabled');
-        FB.getLoginStatus(this.updateStatusCallback);
+        FB.getLoginStatus(this.updateStatusCallback.bind(this));
     }, 
     updateStatusCallback:function(response){
+        console.log('login change', response);
         if (response.status === 'connected') {
-            console.log('Logged in.');
-          }
-          else {
-            FB.login();
-          }
+            if (this.shouldInvokeFBLogin) {
+                dryves.redirect(this.FBRedirect);
+            }
+        }
+    },
+    FBLoginCallback:function(res){
+        console.log("OJOO", res);
     },
     FBclickCallback:function(){
-        FB.login();
+        FB.login(this.FBLoginCallback, {scope:'publish_actions'});
     },
     registerFBLoginButton:function(el){
         $(el).click(this.FBclickCallback);
+    },
+    setFBLoginRedirect:function(url){
+        this.shouldInvokeFBLogin = true;
+        this.FBRedirect = url;
     }
 };

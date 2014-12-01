@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var SCOPE = {};
+var root = "http://localhost:8080/Dryves"
 
 function Dryves(){
     var self = this;
@@ -18,6 +18,15 @@ function Dryves(){
 Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
+    },
+    
+    
+    redirect:function(url){
+        window.location.href = root+url;
+        /*$.ajax({url:url})
+                .done(function(res){
+                   console.log("YAY!", res); 
+                });*/
     }
 };
 

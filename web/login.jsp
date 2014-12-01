@@ -40,6 +40,7 @@
               <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 
             </form>
+            
             <hr>
             <button class="btn btn-lg btn-block btn-facebook" id="fblogin" disabled>Login with Facebook</button>
         </div>
