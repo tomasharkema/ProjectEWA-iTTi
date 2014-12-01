@@ -12,8 +12,21 @@ function Login(identifier) {
     
     this.$ = $(identifier);
     this.doneCallback;
+    this.failCallback;
     
-    init();
+    this.$.submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            url:"login/",
+            method:"post",
+            data:{
+                name:this.$.find("#name").val(),
+                password:this.$.find("#password").val(),
+                rememberMe:this.$.find("#rememberMe").checked
+            }
+        }).done(doneCallback).fail(failCallback);
+        return false;
+    });
 }
 
 Login.prototype = {
@@ -22,15 +35,11 @@ Login.prototype = {
             throw new Error("callback must be a function");
         }
         this.doneCallback = cb;
+    },
+    fail:function(cb){
+        if (typeof cb !== "function") {
+            throw new Error("callback must be a function");
+        }
+        this.failCallback = cb;
     }
 };
-
-function init() {
-    this.$.submit(function(e){
-        e.preventDefault();
-        
-        
-        
-        return false;
-    });
-}
