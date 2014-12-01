@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var root = "http://localhost:8080/Dryves"
+var root = "http://localhost:8080/Dryves";
 
 function Dryves(){
     var self = this;
