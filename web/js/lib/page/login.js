@@ -6,6 +6,8 @@
 
 $(function(){
     var login = new Login("#login");
+    dryves.fb.registerFBLoginButton("#fblogin");
+    
     login.done(function(data){
         
     });
