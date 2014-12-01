@@ -11,20 +11,21 @@ function Login(identifier) {
     }
     
     this.$ = $(identifier);
-    this.doneCallback;
-    this.failCallback;
+    this.doneCallback = function(){};
+    this.failCallback = function(){};
     
+    var self = this;
     this.$.submit(function(e){
         e.preventDefault();
         $.ajax({
             url:"login/",
             method:"post",
             data:{
-                name:this.$.find("#name").val(),
-                password:this.$.find("#password").val(),
-                rememberMe:this.$.find("#rememberMe").checked
+                name:self.$.find("#name").val(),
+                password:self.$.find("#password").val(),
+                rememberMe:self.$.find("#rememberMe").checked
             }
-        }).done(doneCallback).fail(failCallback);
+        }).done(self.doneCallback).fail(self.failCallback);
         return false;
     });
 }
