@@ -6,25 +6,24 @@
 
 
 <div id="indexLeftColumn">
-    <div id="welcomeText">
-        <p style="font-size: larger">Welcome to the online home of the Affable Bean Green Grocer.</p>
-
-        <p>Enjoy browsing and learning more about our unique home delivery
-            service bringing you fresh organic produce, dairy, meats, breads
-            and other delicious and healthy items to your doorstep.</p>
+    <div id="logo">
+        <img src="img/logo.png" id="logo" alt="Dryves logo">
+    </div>
+    <div id="logoText">
+        <p style="font-size: x-large">Welcome to the online home of the Dryves community.</p>
     </div>
 </div>
 
 <div id="indexRightColumn">
-    <c:forEach var="category" items="${categories}">
-        <div class="categoryBox">
-            <a href="<c:url value='category?${category.id}'/>">
-                <span class="categoryLabel"></span>
-                <span class="categoryLabelText">${category.name}</span>
-
-                <img src="${initParam.categoryImagePath}${category.name}.jpg"
-                     alt="${category.name}" class="categoryImage">
-            </a>
-        </div>
-    </c:forEach>
+    <div class="columnText">
+        <p style="font-size: x-large">Why Dryves ???</p>
+        <p style="font-size: x-large">* Environmental friendly</p>
+        <p style="font-size: x-large">* Easy to use</p>
+        <p style="font-size: x-large">And more ...</p>
+    </div>
+    
+    <br><br>
+    <div class="signin">
+        <input type="submit" value="Join us today!">
+    </div>
 </div>
