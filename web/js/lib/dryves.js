@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+var debug = true;
 var root = "http://localhost:8080/Dryves";
 
 function Dryves(){
@@ -19,8 +19,6 @@ Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
     },
-    
-    
     redirect:function(url){
         window.location.href = root+url;
         /*$.ajax({url:url})

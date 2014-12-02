@@ -18,12 +18,37 @@ FBLogin.prototype = {
     FBInit:function(){
         $('#fblogin').removeAttr('disabled');
         FB.getLoginStatus(this.updateStatusCallback.bind(this));
-    }, 
+    },
+    FBGetUserInfo:function(cb){
+        FB.api('/me', cb);
+    },
+    FBCheckUserAccount:function(fbuser, cb){
+        $.ajax({
+            url:"login/",
+            method:"post",
+            data:{
+                name:fbuser.name,
+                fbid:fbuser.id,
+                isFB:true
+            }
+        }).done(cb);
+    },
     updateStatusCallback:function(response){
         console.log('login change', response);
         if (response.status === 'connected') {
             if (this.shouldInvokeFBLogin) {
-                dryves.redirect(this.FBRedirect);
+                this.FBGetUserInfo(function(fbuser){
+                    console.log("FBUser", fbuser);
+                    this.FBCheckUserAccount(fbuser, function(res){
+                        if (res.success) {
+                            if (!debug) dryves.redirect(this.FBRedirect);
+                        }
+                        
+                        if (res.newUser) {
+                            dryves.redirect("newuser.jsp?fb=true");
+                        }
+                    });
+                }.bind(this));
             }
         }
     },
