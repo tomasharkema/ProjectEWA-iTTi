@@ -42,5 +42,6 @@ Login.prototype = {
             throw new Error("callback must be a function");
         }
         this.failCallback = cb;
-    }
+    },
+    
 };
