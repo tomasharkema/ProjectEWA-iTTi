@@ -24,7 +24,7 @@ FBLogin.prototype = {
     },
     FBCheckUserAccount:function(fbuser, cb){
         $.ajax({
-            url:"login/",
+            url:"login",
             method:"post",
             data:{
                 name:fbuser.name,
