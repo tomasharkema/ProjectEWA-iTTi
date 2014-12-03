@@ -4,5 +4,5 @@
 node_modules
 dist
 nbproject
-workspace.xml
+.idea/workspace.xml
 tasks.xml
