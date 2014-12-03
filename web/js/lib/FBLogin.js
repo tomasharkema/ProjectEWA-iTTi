@@ -26,12 +26,17 @@ FBLogin.prototype = {
         $.ajax({
             url:"login",
             method:"post",
+            dataType:"json",
             data:{
                 name:fbuser.name,
                 fbid:fbuser.id,
                 isFB:true
             }
-        }).done(cb);
+        }).done(function(res){
+            cb(res);
+        }).fail(function(jqXHR, err){
+            console.log("fail", err);
+        });
     },
     updateStatusCallback:function(response){
         console.log('login change', response);
@@ -40,12 +45,13 @@ FBLogin.prototype = {
                 this.FBGetUserInfo(function(fbuser){
                     console.log("FBUser", fbuser);
                     this.FBCheckUserAccount(fbuser, function(res){
+                        console.log(res);
                         if (res.success) {
                             if (!debug) dryves.redirect(this.FBRedirect);
                         }
                         
                         if (res.newUser) {
-                            dryves.redirect("newuser.jsp?fb=true");
+                            dryves.redirect("/newuser.jsp?fb=true");
                         }
                     });
                 }.bind(this));
