@@ -102,7 +102,6 @@ public class LoginServlet extends HttpServlet {
     }// </editor-fold>
     
     private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //response.setContentType("application/javascript;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
         JSONObject result = new JSONObject();
