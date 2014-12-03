@@ -47,7 +47,7 @@ FBLogin.prototype = {
                     this.FBCheckUserAccount(fbuser, function(res){
                         console.log(res);
                         if (res.success) {
-                            if (!debug) dryves.redirect(this.FBRedirect);
+                            dryves.redirect(this.FBRedirect);
                         }
                         
                         if (res.newUser) {
