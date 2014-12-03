@@ -11,7 +11,9 @@ var concat = require("gulp-concat");
 var uglify = require('gulp-uglify');
 var watch = require("gulp-watch");
 var livereload = require('gulp-livereload');
-        
+var jshint = require("gulp-jshint");
+var stylish = require('jshint-stylish');
+
 gulp.task("default", ["build", "watch"]);
 
 gulp.task("watch", function(){
@@ -20,6 +22,8 @@ gulp.task("watch", function(){
 
 gulp.task('build', function() {
   gulp.src('./js/lib/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('main.js'))
     .pipe(gulp.dest('./js/dist/'))
     .pipe(rename("main.min.js"))
@@ -27,3 +31,14 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./js/dist/'));
 });
 
+gulp.task('test', function(){
+   gulp.src('./js/lib/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'))
+    .pipe(concat('main.js'))
+    .pipe(gulp.dest('./js/dist/'))
+    .pipe(rename("main.min.js"))
+    .pipe(uglify())
+    .pipe(gulp.dest('./js/dist/'));
+});
