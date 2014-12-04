@@ -1,12 +1,15 @@
 <component name="ArtifactManager">
   <artifact type="ejb-jar" build-on-make="true" name="itti-donkerford:EJB exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/itti_donkerford_EJB_exploded</output-path>
+    <output-path>$PROJECT_DIR$/dist</output-path>
     <root id="archive" name="itti-donkerford_EJB exploded.jar">
       <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB" />
       <element id="module-output" name="itti-donkerford" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/src/conf/MANIFEST.MF" />
       </element>
+      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web" />
+      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web2" />
+      <element id="jpa-descriptors" facet="itti-donkerford/jpa/JPA" />
     </root>
   </artifact>
 </component>

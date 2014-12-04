@@ -6,7 +6,7 @@
   <property name="module.jdk.bin.itti-donkerford" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.itti-donkerford" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.itti-donkerford" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  <property name="compiler.args.itti-donkerford" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
   
   <property name="itti-donkerford.output.dir" value="undefined"/>
   <property name="itti-donkerford.testoutput.dir" value="undefined"/>
@@ -15,30 +15,13 @@
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
   
-  <path id="itti-donkerford.module.production.classpath">
-    <path refid="${module.jdk.classpath.itti-donkerford}"/>
-    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
-    <path refid="library.java_ee_5-java_ee_5.classpath"/>
-    <path refid="library.glassfish_4.1.0.classpath"/>
-  </path>
+  <path id="itti-donkerford.module.production.classpath"/>
   
-  <path id="itti-donkerford.runtime.production.module.classpath">
-    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
-    <path refid="library.java_ee_5-java_ee_5.classpath"/>
-  </path>
+  <path id="itti-donkerford.runtime.production.module.classpath"/>
   
-  <path id="itti-donkerford.module.classpath">
-    <path refid="${module.jdk.classpath.itti-donkerford}"/>
-    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
-    <path refid="library.java_ee_5-java_ee_5.classpath"/>
-    <path refid="library.glassfish_4.1.0.classpath"/>
-  </path>
+  <path id="itti-donkerford.module.classpath"/>
   
-  <path id="itti-donkerford.runtime.module.classpath">
-    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
-    <path refid="library.java_ee_5-java_ee_5.classpath"/>
-    <path refid="library.glassfish_4.1.0.classpath"/>
-  </path>
+  <path id="itti-donkerford.runtime.module.classpath"/>
   
   
   <patternset id="excluded.from.module.itti-donkerford">

@@ -58,15 +58,65 @@
     <exclude name="**/?*.clj"/>
   </patternset>
   
-  <property name="project.jdk.home" value=""/>
-  <property name="project.jdk.bin" value=""/>
-  <property name="project.jdk.classpath" value=""/>
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
+  <path id="jdk.classpath.1.7">
+    <fileset dir="${jdk.home.1.7}">
+      <include name="lib/ant-javafx.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javafx-doclet.jar"/>
+      <include name="lib/javafx-mx.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="lib/tools.jar"/>
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/htmlconverter.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxrt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.7}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.7}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.7"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.java_ee_5-java_ee_5.classpath">
+    <pathelement location="${basedir}/lib/javaee.jar"/>
+  </path>
+  
+  <path id="library.jpa_2.0-jpa_2.0.classpath">
+    <pathelement location="${basedir}/lib/javax.persistence.jar"/>
+  </path>
   
   
   <!-- Global Libraries -->
   
   
   <!-- Application Server Libraries -->
+  
+  <path id="library.glassfish_4.1.0.classpath">
+    <pathelement location="/Applications/NetBeans/glassfish-4.1/glassfish/modules/javax.ejb-api.jar"/>
+    <pathelement location="/Applications/NetBeans/glassfish-4.1/glassfish/modules/javax.servlet-api.jar"/>
+    <pathelement location="/Applications/NetBeans/glassfish-4.1/glassfish/modules/javax.servlet.jsp-api.jar"/>
+  </path>
   <!-- Register Custom Compiler Taskdefs -->
   <property name="javac2.home" value="${idea.home}/lib"/>
   <path id="javac2.classpath">
@@ -92,5 +142,40 @@
   
   <target name="build.modules" depends="init, clean, compile.module.itti-donkerford" description="build all modules"/>
   
-  <target name="all" depends="build.modules" description="build all"/>
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.itti-donkerford:ejb_exploded" value="${basedir}/dist"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.itti-donkerford_EJB exploded.jar" value="${artifacts.temp.dir}/itti-donkerford_EJB exploded.jar"/>
+  </target>
+  
+  <target name="artifact.itti-donkerford:ejb_exploded" depends="init.artifacts, compile.module.itti-donkerford" description="Build &#39;itti-donkerford:EJB exploded&#39; artifact">
+    <property name="artifact.temp.output.itti-donkerford:ejb_exploded" value="${artifacts.temp.dir}/itti_donkerford_EJB_exploded"/>
+    <mkdir dir="${artifact.temp.output.itti-donkerford:ejb_exploded}"/>
+    <jar destfile="${temp.jar.path.itti-donkerford_EJB exploded.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset file="${basedir}/.idea/META-INF/weblogic-ejb-jar.xml" prefix="META-INF"/>
+      <zipfileset file="${basedir}/.idea/META-INF/ejb-jar.xml" prefix="META-INF"/>
+      <zipfileset file="${basedir}/.idea/META-INF/openejb-jar.xml" prefix="META-INF"/>
+      <zipfileset dir="${itti-donkerford.output.dir}"/>
+      <zipfileset file="${basedir}/src/conf/MANIFEST.MF" prefix="META-INF"/>
+      <zipfileset dir="${basedir}/build/web"/>
+      <zipfileset file="${basedir}/build/web/WEB-INF/web.xml" prefix="WEB-INF"/>
+      <zipfileset dir="${basedir}/web"/>
+      <zipfileset file="${basedir}/web/WEB-INF/web.xml" prefix="WEB-INF"/>
+      <zipfileset file="${basedir}/src/conf/persistence.xml" prefix="META-INF"/>
+    </jar>
+    <copy file="${temp.jar.path.itti-donkerford_EJB exploded.jar}" tofile="${artifact.temp.output.itti-donkerford:ejb_exploded}/itti-donkerford_EJB exploded.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.itti-donkerford:ejb_exploded" description="Build all artifacts">
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}"/>
+    <copy todir="${artifact.output.itti-donkerford:ejb_exploded}">
+      <fileset dir="${artifact.temp.output.itti-donkerford:ejb_exploded}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>
