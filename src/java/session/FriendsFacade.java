@@ -1,30 +1,31 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package session;
 
-import entity.Category;
+import entity.Friends;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author tgiunipero
+ * @author Repr
  */
 @Stateless
-public class CategoryFacade extends AbstractFacade<Category> {
+public class FriendsFacade extends AbstractFacade<Friends> {
     @PersistenceContext(unitName = "AffableBeanPU")
     private EntityManager em;
 
+    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
-    public CategoryFacade() {
-        super(Category.class);
+    public FriendsFacade() {
+        super(Friends.class);
     }
-
+    
 }
