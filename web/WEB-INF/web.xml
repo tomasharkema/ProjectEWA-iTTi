@@ -5,6 +5,7 @@
             30
         </session-timeout>
     </session-config>
+
     <resource-ref>
         <description>connects to dryvesDB</description>
         <res-ref-name>jdbc/dryves</res-ref-name>
@@ -12,4 +13,22 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    
+    <jsp-config>
+        <jsp-property-group>
+            <description>header and footer settings</description>
+            <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/WEB-INF/view/*</url-pattern>
+            <include-prelude>/WEB-INF/jspf/header.jspf</include-prelude>
+            <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
+        </jsp-property-group>
+        <jsp-property-group>
+            <description>admin settings</description>
+            <url-pattern>/admin/view/*</url-pattern>
+            <url-pattern>/admin/index.jsp</url-pattern>
+            <include-prelude>/WEB-INF/jspf/admin/headerAndSidebar.jspf</include-prelude>
+            <include-coda>/WEB-INF/jspf/admin/footer.jspf</include-coda>
+        </jsp-property-group>
+    </jsp-config>
+
 </web-app>

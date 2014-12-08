@@ -2,124 +2,130 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `Dryves` ;
-CREATE SCHEMA IF NOT EXISTS `Dryves` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `Dryves` ;
+DROP SCHEMA IF EXISTS `dryves` ;
+CREATE SCHEMA IF NOT EXISTS `dryves` DEFAULT CHARACTER SET utf8 ;
+USE `dryves` ;
 
 -- -----------------------------------------------------
--- Table `Dryves`.`user`
+-- Table `dryves`.`user`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dryves`.`user` ;
+DROP TABLE IF EXISTS `dryves`.`user` ;
 
-CREATE TABLE IF NOT EXISTS `Dryves`.`user` (
-  `iduser` INT NOT NULL AUTO_INCREMENT,
-  `naam` VARCHAR(45) NOT NULL,
-  `voorletters` VARCHAR(45) NOT NULL,
-  `woonplaats` VARCHAR(45) NOT NULL,
-  `userAvatar` BLOB NULL,
-  `geslacht` VARCHAR(1) NOT NULL,
-  `adres` VARCHAR(45) NULL,
-  `postcode` VARCHAR(6) NULL,
-  `telefoon` VARCHAR(11) NULL,
+CREATE TABLE IF NOT EXISTS `dryves`.`user` (
+  `iduser` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `lastName` VARCHAR(45) NOT NULL,
+  `town` VARCHAR(45) NOT NULL,
+  `userAvatar` BLOB NULL DEFAULT NULL,
+  `gender` VARCHAR(1) NOT NULL,
+  `address` VARCHAR(45) NULL DEFAULT NULL,
+  `zipcode` VARCHAR(6) NULL DEFAULT NULL,
+  `phone` VARCHAR(11) NULL DEFAULT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `fbid` INT NULL,
+  `fbid` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE INDEX `iduser_UNIQUE` (`iduser` ASC))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `Dryves`.`Voertuig`
+-- Table `dryves`.`car`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dryves`.`Voertuig` ;
+DROP TABLE IF EXISTS `dryves`.`car` ;
 
-CREATE TABLE IF NOT EXISTS `Dryves`.`Voertuig` (
-  `kenteken` INT NOT NULL AUTO_INCREMENT,
-  `merk` VARCHAR(45) NOT NULL,
-  `kleur` VARCHAR(45) NOT NULL,
+CREATE TABLE IF NOT EXISTS `dryves`.`car` (
+  `registration` INT(11) NOT NULL AUTO_INCREMENT,
+  `brand` VARCHAR(45) NOT NULL,
+  `color` VARCHAR(45) NOT NULL,
   `type` VARCHAR(45) NOT NULL,
-  `aantalZitplaatsen` INT NOT NULL,
-  `user_iduser` INT NOT NULL,
-  UNIQUE INDEX `idVoertuig_UNIQUE` (`kenteken` ASC),
-  PRIMARY KEY (`kenteken`),
+  `numberSeats` INT(11) NOT NULL,
+  `user_iduser` INT(11) NOT NULL,
+  PRIMARY KEY (`registration`),
+  UNIQUE INDEX `idVoertuig_UNIQUE` (`registration` ASC),
+  INDEX `fk_Voertuig_user1` (`user_iduser` ASC),
   CONSTRAINT `fk_Voertuig_user1`
     FOREIGN KEY (`user_iduser`)
-    REFERENCES `Dryves`.`user` (`iduser`)
+    REFERENCES `dryves`.`user` (`iduser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `Dryves`.`evenement`
+-- Table `dryves`.`event`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dryves`.`evenement` ;
+DROP TABLE IF EXISTS `dryves`.`event` ;
 
-CREATE TABLE IF NOT EXISTS `Dryves`.`evenement` (
-  `idevenement` INT NOT NULL AUTO_INCREMENT,
-  `evenementNaam` VARCHAR(45) NOT NULL,
-  `evenementLocatie` VARCHAR(45) NOT NULL,
-  `evenementDatum` DATETIME NOT NULL,
-  `evenementLogo` BLOB NULL,
-  PRIMARY KEY (`idevenement`),
-  UNIQUE INDEX `idevenement_UNIQUE` (`idevenement` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Dryves`.`user_has_evenement`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dryves`.`user_has_evenement` ;
-
-CREATE TABLE IF NOT EXISTS `Dryves`.`user_has_evenement` (
-  `user_iduser` INT NOT NULL,
-  `evenement_idevenement` INT NOT NULL,
-  `Voertuig_kenteken` INT NOT NULL,
-  PRIMARY KEY (`user_iduser`, `evenement_idevenement`),
-  INDEX `fk_user_has_evenement_evenement1_idx` (`evenement_idevenement` ASC),
-  INDEX `fk_user_has_evenement_user_idx` (`user_iduser` ASC),
-  INDEX `fk_user_has_evenement_Voertuig1_idx` (`Voertuig_kenteken` ASC),
-  CONSTRAINT `fk_user_has_evenement_user`
-    FOREIGN KEY (`user_iduser`)
-    REFERENCES `Dryves`.`user` (`iduser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_evenement_evenement1`
-    FOREIGN KEY (`evenement_idevenement`)
-    REFERENCES `Dryves`.`evenement` (`idevenement`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_evenement_Voertuig1`
-    FOREIGN KEY (`Voertuig_kenteken`)
-    REFERENCES `Dryves`.`Voertuig` (`kenteken`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `dryves`.`event` (
+  `idevennt` INT(11) NOT NULL AUTO_INCREMENT,
+  `eventName` VARCHAR(45) NOT NULL,
+  `eventLocation` VARCHAR(45) NOT NULL,
+  `evenDate` DATETIME NOT NULL,
+  `eventLogo` BLOB NULL DEFAULT NULL,
+  PRIMARY KEY (`idevennt`),
+  UNIQUE INDEX `idevenement_UNIQUE` (`idevennt` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `Dryves`.`friends`
+-- Table `dryves`.`friends`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `Dryves`.`friends` ;
+DROP TABLE IF EXISTS `dryves`.`friends` ;
 
-CREATE TABLE IF NOT EXISTS `Dryves`.`friends` (
-  `user_iduser` INT NOT NULL,
-  `user_iduser1` INT NOT NULL,
-  `relatie` VARCHAR(45) NOT NULL,
+CREATE TABLE IF NOT EXISTS `dryves`.`friends` (
+  `user_iduser` INT(11) NOT NULL,
+  `user_iduser1` INT(11) NOT NULL,
+  `relation` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`user_iduser`, `user_iduser1`),
   INDEX `fk_user_has_user_user2_idx` (`user_iduser1` ASC),
   INDEX `fk_user_has_user_user1_idx` (`user_iduser` ASC),
   CONSTRAINT `fk_user_has_user_user1`
     FOREIGN KEY (`user_iduser`)
-    REFERENCES `Dryves`.`user` (`iduser`)
+    REFERENCES `dryves`.`user` (`iduser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_user_user2`
     FOREIGN KEY (`user_iduser1`)
-    REFERENCES `Dryves`.`user` (`iduser`)
+    REFERENCES `dryves`.`user` (`iduser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `dryves`.`user_has_event`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dryves`.`user_has_event` ;
+
+CREATE TABLE IF NOT EXISTS `dryves`.`user_has_event` (
+  `user_iduser` INT(11) NOT NULL,
+  `event_idevent` INT(11) NOT NULL,
+  `car_registration` INT(11) NOT NULL,
+  PRIMARY KEY (`user_iduser`, `event_idevent`),
+  INDEX `fk_user_has_evenement_evenement1_idx` (`event_idevent` ASC),
+  INDEX `fk_user_has_evenement_user_idx` (`user_iduser` ASC),
+  INDEX `fk_user_has_evenement_Voertuig1_idx` (`car_registration` ASC),
+  CONSTRAINT `fk_user_has_evenement_evenement1`
+    FOREIGN KEY (`event_idevent`)
+    REFERENCES `dryves`.`event` (`idevennt`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_has_evenement_user`
+    FOREIGN KEY (`user_iduser`)
+    REFERENCES `dryves`.`user` (`iduser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_has_evenement_Voertuig1`
+    FOREIGN KEY (`car_registration`)
+    REFERENCES `dryves`.`car` (`registration`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
