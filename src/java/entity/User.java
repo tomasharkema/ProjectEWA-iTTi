@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByIduser", query = "SELECT u FROM User u WHERE u.iduser = :iduser"),
-    @NamedQuery(name = "User.findByNaam", query = "SELECT u FROM User u WHERE u.naam = :naam"),
-    @NamedQuery(name = "User.findByVoorletters", query = "SELECT u FROM User u WHERE u.voorletters = :voorletters"),
-    @NamedQuery(name = "User.findByWoonplaats", query = "SELECT u FROM User u WHERE u.woonplaats = :woonplaats"),
-    @NamedQuery(name = "User.findByGeslacht", query = "SELECT u FROM User u WHERE u.geslacht = :geslacht"),
-    @NamedQuery(name = "User.findByAdres", query = "SELECT u FROM User u WHERE u.adres = :adres"),
-    @NamedQuery(name = "User.findByPostcode", query = "SELECT u FROM User u WHERE u.postcode = :postcode"),
-    @NamedQuery(name = "User.findByTelefoon", query = "SELECT u FROM User u WHERE u.telefoon = :telefoon"),
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
+    @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
+    @NamedQuery(name = "User.findByTown", query = "SELECT u FROM User u WHERE u.town = :town"),
+    @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
+    @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
+    @NamedQuery(name = "User.findByZipcode", query = "SELECT u FROM User u WHERE u.zipcode = :zipcode"),
+    @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid")})
 public class User implements Serializable {
@@ -53,35 +53,36 @@ public class User implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "naam")
-    private String naam;
+    @Column(name = "name")
+    private String name;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "voorletters")
-    private String voorletters;
+    @Column(name = "lastName")
+    private String lastName;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "woonplaats")
-    private String woonplaats;
+    @Column(name = "town")
+    private String town;
     @Lob
     @Column(name = "userAvatar")
     private byte[] userAvatar;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
-    @Column(name = "geslacht")
-    private String geslacht;
+    @Column(name = "gender")
+    private String gender;
     @Size(max = 45)
-    @Column(name = "adres")
-    private String adres;
+    @Column(name = "address")
+    private String address;
     @Size(max = 6)
-    @Column(name = "postcode")
-    private String postcode;
+    @Column(name = "zipcode")
+    private String zipcode;
+    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 11)
-    @Column(name = "telefoon")
-    private String telefoon;
+    @Column(name = "phone")
+    private String phone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -91,9 +92,9 @@ public class User implements Serializable {
     @Column(name = "fbid")
     private Integer fbid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
-    private Collection<Voertuig> voertuigCollection;
+    private Collection<Car> carCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<UserHasEvenement> userHasEvenementCollection;
+    private Collection<UserHasEvent> userHasEventCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Friends> friendsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
@@ -106,12 +107,12 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String naam, String voorletters, String woonplaats, String geslacht, String email) {
+    public User(Integer iduser, String name, String lastName, String town, String gender, String email) {
         this.iduser = iduser;
-        this.naam = naam;
-        this.voorletters = voorletters;
-        this.woonplaats = woonplaats;
-        this.geslacht = geslacht;
+        this.name = name;
+        this.lastName = lastName;
+        this.town = town;
+        this.gender = gender;
         this.email = email;
     }
 
@@ -123,28 +124,28 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public String getNaam() {
-        return naam;
+    public String getName() {
+        return name;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getVoorletters() {
-        return voorletters;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setVoorletters(String voorletters) {
-        this.voorletters = voorletters;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getWoonplaats() {
-        return woonplaats;
+    public String getTown() {
+        return town;
     }
 
-    public void setWoonplaats(String woonplaats) {
-        this.woonplaats = woonplaats;
+    public void setTown(String town) {
+        this.town = town;
     }
 
     public byte[] getUserAvatar() {
@@ -155,36 +156,36 @@ public class User implements Serializable {
         this.userAvatar = userAvatar;
     }
 
-    public String getGeslacht() {
-        return geslacht;
+    public String getGender() {
+        return gender;
     }
 
-    public void setGeslacht(String geslacht) {
-        this.geslacht = geslacht;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getAdres() {
-        return adres;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdres(String adres) {
-        this.adres = adres;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getPostcode() {
-        return postcode;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
-    public String getTelefoon() {
-        return telefoon;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefoon(String telefoon) {
-        this.telefoon = telefoon;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -204,21 +205,21 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Voertuig> getVoertuigCollection() {
-        return voertuigCollection;
+    public Collection<Car> getCarCollection() {
+        return carCollection;
     }
 
-    public void setVoertuigCollection(Collection<Voertuig> voertuigCollection) {
-        this.voertuigCollection = voertuigCollection;
+    public void setCarCollection(Collection<Car> carCollection) {
+        this.carCollection = carCollection;
     }
 
     @XmlTransient
-    public Collection<UserHasEvenement> getUserHasEvenementCollection() {
-        return userHasEvenementCollection;
+    public Collection<UserHasEvent> getUserHasEventCollection() {
+        return userHasEventCollection;
     }
 
-    public void setUserHasEvenementCollection(Collection<UserHasEvenement> userHasEvenementCollection) {
-        this.userHasEvenementCollection = userHasEvenementCollection;
+    public void setUserHasEventCollection(Collection<UserHasEvent> userHasEventCollection) {
+        this.userHasEventCollection = userHasEventCollection;
     }
 
     @XmlTransient

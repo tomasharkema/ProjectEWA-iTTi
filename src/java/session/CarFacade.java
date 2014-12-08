@@ -5,7 +5,7 @@
  */
 package session;
 
-import entity.UserHasEvenement;
+import entity.Car;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,8 +15,8 @@ import javax.persistence.PersistenceContext;
  * @author Repr
  */
 @Stateless
-public class UserHasEvenementFacade extends AbstractFacade<UserHasEvenement> {
-    @PersistenceContext(unitName = "AffableBeanPU")
+public class CarFacade extends AbstractFacade<Car> {
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
     @Override
@@ -24,8 +24,8 @@ public class UserHasEvenementFacade extends AbstractFacade<UserHasEvenement> {
         return em;
     }
 
-    public UserHasEvenementFacade() {
-        super(UserHasEvenement.class);
+    public CarFacade() {
+        super(Car.class);
     }
     
 }

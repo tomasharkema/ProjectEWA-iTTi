@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class FriendsFacade extends AbstractFacade<Friends> {
-    @PersistenceContext(unitName = "AffableBeanPU")
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
     @Override

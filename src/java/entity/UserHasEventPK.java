@@ -16,22 +16,22 @@ import javax.validation.constraints.NotNull;
  * @author Repr
  */
 @Embeddable
-public class UserHasEvenementPK implements Serializable {
+public class UserHasEventPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "user_iduser")
     private int userIduser;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "evenement_idevenement")
-    private int evenementIdevenement;
+    @Column(name = "event_idevent")
+    private int eventIdevent;
 
-    public UserHasEvenementPK() {
+    public UserHasEventPK() {
     }
 
-    public UserHasEvenementPK(int userIduser, int evenementIdevenement) {
+    public UserHasEventPK(int userIduser, int eventIdevent) {
         this.userIduser = userIduser;
-        this.evenementIdevenement = evenementIdevenement;
+        this.eventIdevent = eventIdevent;
     }
 
     public int getUserIduser() {
@@ -42,33 +42,33 @@ public class UserHasEvenementPK implements Serializable {
         this.userIduser = userIduser;
     }
 
-    public int getEvenementIdevenement() {
-        return evenementIdevenement;
+    public int getEventIdevent() {
+        return eventIdevent;
     }
 
-    public void setEvenementIdevenement(int evenementIdevenement) {
-        this.evenementIdevenement = evenementIdevenement;
+    public void setEventIdevent(int eventIdevent) {
+        this.eventIdevent = eventIdevent;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) userIduser;
-        hash += (int) evenementIdevenement;
+        hash += (int) eventIdevent;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserHasEvenementPK)) {
+        if (!(object instanceof UserHasEventPK)) {
             return false;
         }
-        UserHasEvenementPK other = (UserHasEvenementPK) object;
+        UserHasEventPK other = (UserHasEventPK) object;
         if (this.userIduser != other.userIduser) {
             return false;
         }
-        if (this.evenementIdevenement != other.evenementIdevenement) {
+        if (this.eventIdevent != other.eventIdevent) {
             return false;
         }
         return true;
@@ -76,7 +76,7 @@ public class UserHasEvenementPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.UserHasEvenementPK[ userIduser=" + userIduser + ", evenementIdevenement=" + evenementIdevenement + " ]";
+        return "entity.UserHasEventPK[ userIduser=" + userIduser + ", eventIdevent=" + eventIdevent + " ]";
     }
     
 }

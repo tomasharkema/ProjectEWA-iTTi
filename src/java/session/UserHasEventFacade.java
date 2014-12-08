@@ -5,7 +5,7 @@
  */
 package session;
 
-import entity.Evenement;
+import entity.UserHasEvent;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,8 +15,8 @@ import javax.persistence.PersistenceContext;
  * @author Repr
  */
 @Stateless
-public class EvenementFacade extends AbstractFacade<Evenement> {
-    @PersistenceContext(unitName = "AffableBeanPU")
+public class UserHasEventFacade extends AbstractFacade<UserHasEvent> {
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
     @Override
@@ -24,8 +24,8 @@ public class EvenementFacade extends AbstractFacade<Evenement> {
         return em;
     }
 
-    public EvenementFacade() {
-        super(Evenement.class);
+    public UserHasEventFacade() {
+        super(UserHasEvent.class);
     }
     
 }

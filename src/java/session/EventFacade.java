@@ -5,7 +5,7 @@
  */
 package session;
 
-import entity.Voertuig;
+import entity.Event;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,8 +15,8 @@ import javax.persistence.PersistenceContext;
  * @author Repr
  */
 @Stateless
-public class VoertuigFacade extends AbstractFacade<Voertuig> {
-    @PersistenceContext(unitName = "AffableBeanPU")
+public class EventFacade extends AbstractFacade<Event> {
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
     @Override
@@ -24,8 +24,8 @@ public class VoertuigFacade extends AbstractFacade<Voertuig> {
         return em;
     }
 
-    public VoertuigFacade() {
-        super(Voertuig.class);
+    public EventFacade() {
+        super(Event.class);
     }
     
 }

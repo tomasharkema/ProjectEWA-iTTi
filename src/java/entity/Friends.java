@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUserIduser", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser = :userIduser"),
     @NamedQuery(name = "Friends.findByUserIduser1", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1"),
-    @NamedQuery(name = "Friends.findByRelatie", query = "SELECT f FROM Friends f WHERE f.relatie = :relatie")})
+    @NamedQuery(name = "Friends.findByRelation", query = "SELECT f FROM Friends f WHERE f.relation = :relation")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -38,8 +38,8 @@ public class Friends implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "relatie")
-    private String relatie;
+    @Column(name = "relation")
+    private String relation;
     @JoinColumn(name = "user_iduser", referencedColumnName = "iduser", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
@@ -54,9 +54,9 @@ public class Friends implements Serializable {
         this.friendsPK = friendsPK;
     }
 
-    public Friends(FriendsPK friendsPK, String relatie) {
+    public Friends(FriendsPK friendsPK, String relation) {
         this.friendsPK = friendsPK;
-        this.relatie = relatie;
+        this.relation = relation;
     }
 
     public Friends(int userIduser, int userIduser1) {
@@ -71,12 +71,12 @@ public class Friends implements Serializable {
         this.friendsPK = friendsPK;
     }
 
-    public String getRelatie() {
-        return relatie;
+    public String getRelation() {
+        return relation;
     }
 
-    public void setRelatie(String relatie) {
-        this.relatie = relatie;
+    public void setRelation(String relation) {
+        this.relation = relation;
     }
 
     public User getUser() {
