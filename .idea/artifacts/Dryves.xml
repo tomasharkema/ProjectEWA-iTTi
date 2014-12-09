@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-ejb" build-on-make="true" name="itti-donkerford:EJB exploded">
+  <artifact type="ejb-jar" build-on-make="true" name="Dryves">
     <output-path>$PROJECT_DIR$/dist</output-path>
-    <root id="root">
+    <root id="archive" name="Dryves.jar">
       <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB" />
       <element id="module-output" name="itti-donkerford" />
       <element id="directory" name="META-INF">
