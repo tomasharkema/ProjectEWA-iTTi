@@ -5,14 +5,19 @@
  */
 package controller;
 
+import entity.User;
+import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
+import session.UserFacade;
 
 /**
  *
@@ -20,7 +25,10 @@ import org.json.simple.JSONObject;
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
-
+    
+    @EJB
+    private UserFacade userFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -77,7 +85,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        request.setCharacterEncoding("UTF-8");
         System.out.println(request.getParameterMap().toString());
         
         String userPath = request.getServletPath();
@@ -103,10 +111,29 @@ public class LoginServlet extends HttpServlet {
     
     private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+        HttpSession session = request.getSession();
+
+        User loggedinUser = (User)session.getAttribute("loggedinuser");
+
         JSONObject result = new JSONObject();
-        result.put("success", false);
-        result.put("newUser", true);
+
+        if (loggedinUser == null) {
+//            result.put("loggedin", false);
+//            result.put("newUser", false);
+//            result.put("loggedinUser", loggedinUser);
+            
+            User user = userFacade.findByFbid(Integer.parseInt("1"));
+            
+            if (user == null) {
+                System.out.println("No user found.");
+            } else {
+                
+            }
+            
+        } else {
+            result.put("loggedin", true);
+        }
+
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println(result.toJSONString());

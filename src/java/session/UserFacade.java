@@ -6,9 +6,13 @@
 package session;
 
 import entity.User;
+import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,9 +27,16 @@ public class UserFacade extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    
     public UserFacade() {
         super(User.class);
     }
     
+    public User findByFbid(Integer fbid){
+        Query query = em.createNamedQuery("User.findByFbid", User.class);
+        query.setParameter("fbid", fbid);
+        Collection result = query.getResultList();
+        Object[] resultArray = result.toArray();
+        return (User)resultArray[0];
+    }
 }

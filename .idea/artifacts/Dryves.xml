@@ -3,18 +3,16 @@
     <output-path>$PROJECT_DIR$/dist</output-path>
     <root id="archive" name="Dryves.jar">
       <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB" />
-      <element id="module-output" name="itti-donkerford" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/src/conf/MANIFEST.MF" />
         <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/json-simple-1.1.1.jar" />
       </element>
-      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web" />
-      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web2" />
       <element id="jpa-descriptors" facet="itti-donkerford/jpa/JPA" />
       <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB2" />
       <element id="javaee-facet-resources" facet="itti-donkerford/web/Web3" />
       <element id="library" level="project" name="Java EE 5-Java EE 5" />
       <element id="library" level="project" name="JPA 2.0-JPA 2.0" />
+      <element id="library" level="project" name="javax.validation:validation-api:1.1.0.CR3" />
     </root>
   </artifact>
 </component>

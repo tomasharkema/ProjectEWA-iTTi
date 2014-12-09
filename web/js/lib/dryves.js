@@ -20,7 +20,7 @@ Dryves.prototype = {
         this.fb.ready();
     },
     redirect:function(url){
-        window.location.href = root+url;
+        //window.location.href = root+url;
         /*$.ajax({url:url})
                 .done(function(res){
                    console.log("YAY!", res); 
