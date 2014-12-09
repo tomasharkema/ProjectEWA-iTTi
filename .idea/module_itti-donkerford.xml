@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_itti-donkerford" default="compile.module.itti-donkerford">
+  <dirname property="module.itti-donkerford.basedir" file="${ant.file.module_itti-donkerford}"/>
+  
+  <property name="module.jdk.home.itti-donkerford" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.itti-donkerford" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.itti-donkerford" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.itti-donkerford" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  
+  <property name="itti-donkerford.output.dir" value="undefined"/>
+  <property name="itti-donkerford.testoutput.dir" value="undefined"/>
+  
+  <path id="itti-donkerford.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="itti-donkerford.module.production.classpath">
+    <path refid="${module.jdk.classpath.itti-donkerford}"/>
+    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
+    <path refid="library.java_ee_5-java_ee_5.classpath"/>
+    <path refid="library.glassfish_4.1.0.classpath"/>
+  </path>
+  
+  <path id="itti-donkerford.runtime.production.module.classpath">
+    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
+    <path refid="library.java_ee_5-java_ee_5.classpath"/>
+  </path>
+  
+  <path id="itti-donkerford.module.classpath">
+    <path refid="${module.jdk.classpath.itti-donkerford}"/>
+    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
+    <path refid="library.java_ee_5-java_ee_5.classpath"/>
+    <path refid="library.glassfish_4.1.0.classpath"/>
+  </path>
+  
+  <path id="itti-donkerford.runtime.module.classpath">
+    <path refid="library.jpa_2.0-jpa_2.0.classpath"/>
+    <path refid="library.java_ee_5-java_ee_5.classpath"/>
+    <path refid="library.glassfish_4.1.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.itti-donkerford">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.itti-donkerford">
+    <patternset refid="excluded.from.module.itti-donkerford"/>
+  </patternset>
+  
+  
+  <target name="compile.module.itti-donkerford" depends="compile.module.itti-donkerford.production,compile.module.itti-donkerford.tests" description="Compile module itti-donkerford"/>
+  
+  <target name="compile.module.itti-donkerford.production" depends="register.custom.compilers" description="Compile module itti-donkerford; production classes"/>
+  
+  <target name="compile.module.itti-donkerford.tests" depends="register.custom.compilers,compile.module.itti-donkerford.production" description="compile module itti-donkerford; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.itti-donkerford" description="cleanup module">
+    <delete dir="${itti-donkerford.output.dir}"/>
+    <delete dir="${itti-donkerford.testoutput.dir}"/>
+  </target>
+</project>
