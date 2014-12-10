@@ -13,7 +13,9 @@ gulp.task("watch", function(){
     gulp.watch('./js/lib/*.js', ['build']);
 });
 
-gulp.task('build', function() {
+gulp.task('build', ['build_frontend', 'build_admin'])
+
+gulp.task('build_frontend', function() {
     gulp.src('./js/lib/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
@@ -22,6 +24,9 @@ gulp.task('build', function() {
         .pipe(rename('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./js/dist/'));
+});
+
+gulp.task('build_admin', function(){
     gulp.src('./js/admin/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))

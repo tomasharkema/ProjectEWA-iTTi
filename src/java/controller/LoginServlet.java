@@ -10,6 +10,8 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +25,12 @@ import session.UserFacade;
  *
  * @author tomasharkema
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "LoginServlet",
+        loadOnStartup = 1,
+        urlPatterns = {
+            "/login",
+            "/logout"
+        })
 public class LoginServlet extends HttpServlet {
     
     @EJB
@@ -71,7 +78,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        String userPath = request.getServletPath();
+        switch(userPath) {
+            case "/logout":{
+                handleLogout(request, response);
+                break;
+            }
+        }
     }
 
     /**
@@ -114,26 +127,25 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
 
         User loggedinUser = (User)session.getAttribute("loggedinuser");
-
         JSONObject result = new JSONObject();
-
+        
         if (loggedinUser == null) {
-//            result.put("loggedin", false);
-//            result.put("newUser", false);
-//            result.put("loggedinUser", loggedinUser);
+            loggedinUser = userFacade.findByFbid((String)request.getParameter("id"));
             
-            User user = userFacade.findByFbid(Integer.parseInt("1"));
-            
-            if (user == null) {
-                System.out.println("No user found.");
+            if (loggedinUser == null) {
+                loggedinUser = createNewUser(request);
+                result.put("created_new_user", true);
             } else {
-                
+                result.put("created_new_user", false);
             }
-            
         } else {
-            result.put("loggedin", true);
+            result.put("created_new_user", false);
         }
-
+        
+        result.put("loggedin", true);
+        session.setAttribute("loggedinuser", loggedinUser);
+        session.setAttribute("isloggedin", 1);
+            
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println(result.toJSONString());
@@ -142,4 +154,30 @@ public class LoginServlet extends HttpServlet {
         }
     }
     
+    private User createNewUser(HttpServletRequest request) {
+        String fbid = (String)request.getParameter("id");
+        String firstName = (String)request.getParameter("first_name");
+        String lastName = (String)request.getParameter("last_name");
+        String email = (String)request.getParameter("email");
+        String gender = (String)request.getParameter("gender");
+        String town = (String)request.getParameter("location[name]");
+        
+        User user = new User();
+        user.setFbid(fbid);
+        user.setName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setGender(gender.equals("male") ? "m" : "f");
+        user.setTown(town);
+        userFacade.addUser(user);
+        return user;
+    }
+    
+    private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {   
+        HttpSession session = request.getSession();
+        session.setAttribute("loggedinuser", null);
+        session.setAttribute("isloggedin", 0);
+        System.out.println("LOGOUT");
+        response.sendRedirect("/Dryves/");
+    }
 }

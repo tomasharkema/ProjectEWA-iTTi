@@ -27,11 +27,8 @@ FBLogin.prototype = {
             url:"login",
             method:"post",
             dataType:"json",
-            data:{
-                name:fbuser.name,
-                fbid:fbuser.id,
-                isFB:true
-            }
+            data:fbuser,
+            cache:false
         }).done(function(res){
             cb(res);
         }).fail(function(jqXHR, err){
@@ -46,14 +43,10 @@ FBLogin.prototype = {
                     console.log("FBUser", fbuser);
                     this.FBCheckUserAccount(fbuser, function(res){
                         console.log(res);
-                        if (res.success) {
+                        if (res.loggedin) {
                             dryves.redirect(this.FBRedirect);
                         }
-                        
-                        if (res.newUser) {
-                            dryves.redirect("/newuser.jsp?fb=true");
-                        }
-                    });
+                    }.bind(this));
                 }.bind(this));
             }
         }
@@ -62,7 +55,7 @@ FBLogin.prototype = {
         console.log("OJOO", res);
     },
     FBclickCallback:function(){
-        FB.login(this.FBLoginCallback, {scope:'publish_actions'});
+        FB.login(this.FBLoginCallback, {scope:'publish_actions email user_location'});
     },
     registerFBLoginButton:function(el){
         $(el).click(this.FBclickCallback);

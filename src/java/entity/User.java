@@ -61,7 +61,6 @@ public class User implements Serializable {
     @Column(name = "lastName")
     private String lastName;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "town")
     private String town;
@@ -90,7 +89,7 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "fbid")
-    private Integer fbid;
+    private String fbid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
     private Collection<Car> carCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -107,13 +106,14 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String name, String lastName, String town, String gender, String email) {
+    public User(Integer iduser, String fbid, String name, String lastName, String town, String gender, String email) {
         this.iduser = iduser;
         this.name = name;
         this.lastName = lastName;
         this.town = town;
         this.gender = gender;
         this.email = email;
+        this.fbid = fbid;
     }
 
     public Integer getIduser() {
@@ -196,11 +196,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Integer getFbid() {
+    public String getFbid() {
         return fbid;
     }
 
-    public void setFbid(Integer fbid) {
+    public void setFbid(String fbid) {
         this.fbid = fbid;
     }
 
@@ -262,7 +262,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.User[ iduser=" + iduser + " ]";
+        return "entity.User[ iduser=" + iduser + " fbid = "+fbid+" ]";
     }
     
 }

@@ -106,7 +106,7 @@
             </div>
 
             <hr class="featurette-divider">
-
+            ${loggedinuser.name}
             <div class="row featurette">
                 <div class="col-md-7">
                     <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>

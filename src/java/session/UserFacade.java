@@ -32,11 +32,19 @@ public class UserFacade extends AbstractFacade<User> {
         super(User.class);
     }
     
-    public User findByFbid(Integer fbid){
+    public User findByFbid(String fbid){
         Query query = em.createNamedQuery("User.findByFbid", User.class);
         query.setParameter("fbid", fbid);
         Collection result = query.getResultList();
         Object[] resultArray = result.toArray();
-        return (User)resultArray[0];
+        if (resultArray.length > 0) {
+            return (User)resultArray[0];
+        } else {
+            return null;
+        }
+    }
+    
+    public void addUser(User user) {
+        em.persist(user);
     }
 }
