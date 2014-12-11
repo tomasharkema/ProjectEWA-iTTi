@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -36,7 +37,12 @@ public class UserFacade extends AbstractFacade<User> {
     public User findByFbid(BigInteger fbid){
         Query query = em.createNamedQuery("User.findByFbid", User.class);
         query.setParameter("fbid", fbid);
-        User user = (User)query.getSingleResult();
+        User user;
+        try {
+            user = (User)query.getSingleResult();
+        } catch (NoResultException ex) {
+            user = null;
+        }
         return user;
     }
     

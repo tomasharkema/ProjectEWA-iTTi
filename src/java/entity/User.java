@@ -65,9 +65,9 @@ public class User implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "town")
     private String town;
-    @Lob
+    @Basic(optional = true)
     @Column(name = "userAvatar")
-    private byte[] userAvatar;
+    private String userAvatar;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
@@ -149,11 +149,11 @@ public class User implements Serializable {
         this.town = town;
     }
 
-    public byte[] getUserAvatar() {
+    public String getUserAvatar() {
         return userAvatar;
     }
 
-    public void setUserAvatar(byte[] userAvatar) {
+    public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
     }
 

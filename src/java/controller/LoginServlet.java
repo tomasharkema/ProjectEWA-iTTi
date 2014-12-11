@@ -162,6 +162,7 @@ public class LoginServlet extends HttpServlet {
         String email = (String)request.getParameter("email");
         String gender = (String)request.getParameter("gender");
         String town = (String)request.getParameter("location[name]");
+        String avatar = (String)request.getParameter("avatar");
         
         User user = new User();
         user.setFbid(fbid);
@@ -170,6 +171,7 @@ public class LoginServlet extends HttpServlet {
         user.setEmail(email);
         user.setGender(gender.equals("male") ? "m" : "f");
         user.setTown(town);
+        user.setUserAvatar(avatar);
         userFacade.addUser(user);
         return user;
     }

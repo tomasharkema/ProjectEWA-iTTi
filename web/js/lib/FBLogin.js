@@ -22,7 +22,23 @@ FBLogin.prototype = {
     FBGetUserInfo:function(cb){
         FB.api('/me', cb);
     },
-    FBCheckUserAccount:function(fbuser, cb){
+    FBGetUserAvatar:function(cb){
+        FB.api('/me/picture', {
+            "redirect": false,
+            "height": "400",
+            "type": "normal",
+            "width": "400"
+        },function(res){
+            if (res && !res.error) {
+                cb(res.data.url);
+            } else {
+                cb(null);
+            }
+        });
+    },
+    FBCheckUserAccount:function(obj, cb){
+        var fbuser = obj.fbuser;
+        fbuser.avatar = obj.avatar;
         $.ajax({
             url:"login",
             method:"post",
@@ -40,12 +56,13 @@ FBLogin.prototype = {
         if (response.status === 'connected') {
             if (this.shouldInvokeFBLogin) {
                 this.FBGetUserInfo(function(fbuser){
-                    console.log("FBUser", fbuser);
-                    this.FBCheckUserAccount(fbuser, function(res){
-                        console.log(res);
-                        if (res.loggedin) {
-                            dryves.redirect(this.FBRedirect);
-                        }
+                    this.FBGetUserAvatar(function(avatarUrl){
+                        this.FBCheckUserAccount({fbuser:fbuser, avatar:avatarUrl}, function(res){
+                            console.log(res);
+                            if (res.loggedin) {
+                                dryves.redirect(this.FBRedirect);
+                            }
+                        }.bind(this));
                     }.bind(this));
                 }.bind(this));
             }
