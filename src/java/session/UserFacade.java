@@ -6,6 +6,7 @@
 package session;
 
 import entity.User;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,7 +33,7 @@ public class UserFacade extends AbstractFacade<User> {
         super(User.class);
     }
     
-    public User findByFbid(String fbid){
+    public User findByFbid(BigInteger fbid){
         Query query = em.createNamedQuery("User.findByFbid", User.class);
         query.setParameter("fbid", fbid);
         Collection result = query.getResultList();

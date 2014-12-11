@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -89,7 +90,7 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "fbid")
-    private String fbid;
+    private BigInteger fbid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
     private Collection<Car> carCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -106,7 +107,7 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String fbid, String name, String lastName, String town, String gender, String email) {
+    public User(Integer iduser, BigInteger fbid, String name, String lastName, String town, String gender, String email) {
         this.iduser = iduser;
         this.name = name;
         this.lastName = lastName;
@@ -196,11 +197,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getFbid() {
+    public BigInteger getFbid() {
         return fbid;
     }
 
-    public void setFbid(String fbid) {
+    public void setFbid(BigInteger fbid) {
         this.fbid = fbid;
     }
 

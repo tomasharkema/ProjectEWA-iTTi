@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import javax.ejb.EJB;
@@ -130,7 +131,7 @@ public class LoginServlet extends HttpServlet {
         JSONObject result = new JSONObject();
         
         if (loggedinUser == null) {
-            loggedinUser = userFacade.findByFbid((String)request.getParameter("id"));
+            loggedinUser = userFacade.findByFbid(new BigInteger(request.getParameter("id")));
             
             if (loggedinUser == null) {
                 loggedinUser = createNewUser(request);
@@ -155,7 +156,7 @@ public class LoginServlet extends HttpServlet {
     }
     
     private User createNewUser(HttpServletRequest request) {
-        String fbid = (String)request.getParameter("id");
+        BigInteger fbid = new BigInteger(request.getParameter("id"));
         String firstName = (String)request.getParameter("first_name");
         String lastName = (String)request.getParameter("last_name");
         String email = (String)request.getParameter("email");
