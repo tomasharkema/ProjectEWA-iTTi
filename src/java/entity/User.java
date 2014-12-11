@@ -279,14 +279,17 @@ public class User implements Serializable, EntityInterface {
 
     @Override
     public EntityInterface render() {
-        EntityInterface returnUser;
-        try{
-          returnUser = this.clone();   
-        } catch (CloneNotSupportedException ex){
-            return null;
-        }
-       returnUser.setName(this.getName() + " " + this.getLastName());
-             
-       return returnUser;     
+  
+       return null;     
+    }
+
+    @Override
+    public String getPictureUrl() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getMostRecent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
