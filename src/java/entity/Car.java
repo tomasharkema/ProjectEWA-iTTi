@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Car.findByColor", query = "SELECT c FROM Car c WHERE c.color = :color"),
     @NamedQuery(name = "Car.findByType", query = "SELECT c FROM Car c WHERE c.type = :type"),
     @NamedQuery(name = "Car.findByNumberSeats", query = "SELECT c FROM Car c WHERE c.numberSeats = :numberSeats")})
-public class Car implements Serializable {
+public class Car implements Serializable, EntityInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -166,6 +166,11 @@ public class Car implements Serializable {
     @Override
     public String toString() {
         return "entity.Car[ registration=" + registration + " ]";
+    }
+
+    @Override
+    public void render() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
