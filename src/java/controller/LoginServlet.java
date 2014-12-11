@@ -157,8 +157,7 @@ public class LoginServlet extends HttpServlet {
     
     private User createNewUser(HttpServletRequest request) {
         BigInteger fbid = new BigInteger(request.getParameter("id"));
-        String firstName = (String)request.getParameter("first_name");
-        String lastName = (String)request.getParameter("last_name");
+        String name = (String)request.getParameter("name");
         String email = (String)request.getParameter("email");
         String gender = (String)request.getParameter("gender");
         String town = (String)request.getParameter("location[name]");
@@ -166,8 +165,7 @@ public class LoginServlet extends HttpServlet {
         
         User user = new User();
         user.setFbid(fbid);
-        user.setName(firstName);
-        user.setLastName(lastName);
+        user.setName(name);
         user.setEmail(email);
         user.setGender(gender.equals("male") ? "m" : "f");
         user.setTown(town);
