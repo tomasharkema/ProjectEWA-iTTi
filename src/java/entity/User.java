@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid")})
-public class User implements Serializable {
+public class User implements Serializable, EntityInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -261,8 +261,31 @@ public class User implements Serializable {
     }
 
     @Override
+    protected User clone() throws CloneNotSupportedException {
+        User clone = new User();
+        clone.setName(this.getName());
+        clone.setTown(this.getTown());
+        clone.setUserAvatar(this.getUserAvatar());
+        clone.setFbid(this.getFbid());
+        return clone;
+    }
+
+    
+    @Override
     public String toString() {
         return "entity.User[ iduser=" + iduser + " ]";
     }
-    
+
+    @Override
+    public EntityInterface render() {
+        EntityInterface returnUser;
+        try{
+          returnUser = this.clone();   
+        } catch (CloneNotSupportedException ex){
+            return null;
+        }
+       returnUser.setName(this.getName() + " " + this.getLastName());
+             
+       return returnUser;     
+    }
 }
