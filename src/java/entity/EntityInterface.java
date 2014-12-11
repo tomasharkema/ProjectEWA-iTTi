@@ -13,5 +13,13 @@ public interface EntityInterface {
    
     public EntityInterface render();
 
-    public String setName(String s);
+    public String getName();
+    
+    public String getTown();
+    
+    public String getPictureUrl();
+    
+    public String getMostRecent();
+    
+    
 }

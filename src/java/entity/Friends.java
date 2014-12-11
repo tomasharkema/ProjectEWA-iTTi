@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findByUserIduser", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser = :userIduser"),
     @NamedQuery(name = "Friends.findByUserIduser1", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1"),
     @NamedQuery(name = "Friends.findByRelation", query = "SELECT f FROM Friends f WHERE f.relation = :relation")})
-public class Friends implements Serializable, EntityInterface {
+public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FriendsPK friendsPK;
@@ -120,9 +120,6 @@ public class Friends implements Serializable, EntityInterface {
         return "entity.Friends[ friendsPK=" + friendsPK + " ]";
     }
 
-    @Override
-    public void render() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
     
 }

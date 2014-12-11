@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Event.findByEventName", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
     @NamedQuery(name = "Event.findByEventLocation", query = "SELECT e FROM Event e WHERE e.eventLocation = :eventLocation"),
     @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate")})
-public class Event implements Serializable, EntityInterface {
+public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -156,9 +156,6 @@ public class Event implements Serializable, EntityInterface {
         return "entity.Event[ idevennt=" + idevennt + " ]";
     }
 
-    @Override
-    public void render() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
     
 }
