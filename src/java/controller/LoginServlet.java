@@ -5,22 +5,38 @@
  */
 package controller;
 
+import entity.User;
+import org.json.simple.JSONObject;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
+import session.UserFacade;
 
 /**
  *
  * @author tomasharkema
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+@WebServlet(name = "LoginServlet",
+        loadOnStartup = 1,
+        urlPatterns = {
+            "/login",
+            "/logout"
+        })
 public class LoginServlet extends HttpServlet {
-
+    
+    @EJB
+    private UserFacade userFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -63,7 +79,13 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        String userPath = request.getServletPath();
+        switch(userPath) {
+            case "/logout":{
+                handleLogout(request, response);
+                break;
+            }
+        }
     }
 
     /**
@@ -77,7 +99,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        request.setCharacterEncoding("UTF-8");
         System.out.println(request.getParameterMap().toString());
         
         String userPath = request.getServletPath();
@@ -103,10 +125,28 @@ public class LoginServlet extends HttpServlet {
     
     private void handleLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
-        
+        HttpSession session = request.getSession();
+
+        User loggedinUser = (User)session.getAttribute("loggedinuser");
         JSONObject result = new JSONObject();
-        result.put("success", false);
-        result.put("newUser", true);
+        
+        if (loggedinUser == null) {
+            loggedinUser = userFacade.findByFbid(new BigInteger(request.getParameter("id")));
+            
+            if (loggedinUser == null) {
+                loggedinUser = createNewUser(request);
+                result.put("created_new_user", true);
+            } else {
+                result.put("created_new_user", false);
+            }
+        } else {
+            result.put("created_new_user", false);
+        }
+        
+        result.put("loggedin", true);
+        session.setAttribute("loggedinuser", loggedinUser);
+        session.setAttribute("isloggedin", 1);
+            
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println(result.toJSONString());
@@ -115,4 +155,30 @@ public class LoginServlet extends HttpServlet {
         }
     }
     
+    private User createNewUser(HttpServletRequest request) {
+        BigInteger fbid = new BigInteger(request.getParameter("id"));
+        String name = (String)request.getParameter("name");
+        String email = (String)request.getParameter("email");
+        String gender = (String)request.getParameter("gender");
+        String town = (String)request.getParameter("location[name]");
+        String avatar = (String)request.getParameter("avatar");
+        
+        User user = new User();
+        user.setFbid(fbid);
+        user.setName(name);
+        user.setEmail(email);
+        user.setGender(gender.equals("male") ? "m" : "f");
+        user.setTown(town);
+        user.setUserAvatar(avatar);
+        userFacade.addUser(user);
+        return user;
+    }
+    
+    private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {   
+        HttpSession session = request.getSession();
+        session.setAttribute("loggedinuser", null);
+        session.setAttribute("isloggedin", 0);
+        System.out.println("LOGOUT");
+        response.sendRedirect("/Dryves/");
+    }
 }
