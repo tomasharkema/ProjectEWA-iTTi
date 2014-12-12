@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -61,13 +62,12 @@ public class User implements Serializable {
     @Column(name = "lastName")
     private String lastName;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "town")
     private String town;
-    @Lob
+    @Basic(optional = true)
     @Column(name = "userAvatar")
-    private byte[] userAvatar;
+    private String userAvatar;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1)
@@ -90,7 +90,7 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
     @Column(name = "fbid")
-    private Integer fbid;
+    private BigInteger fbid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
     private Collection<Car> carCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -107,13 +107,14 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String name, String lastName, String town, String gender, String email) {
+    public User(Integer iduser, BigInteger fbid, String name, String lastName, String town, String gender, String email) {
         this.iduser = iduser;
         this.name = name;
         this.lastName = lastName;
         this.town = town;
         this.gender = gender;
         this.email = email;
+        this.fbid = fbid;
     }
 
     public Integer getIduser() {
@@ -148,11 +149,11 @@ public class User implements Serializable {
         this.town = town;
     }
 
-    public byte[] getUserAvatar() {
+    public String getUserAvatar() {
         return userAvatar;
     }
 
-    public void setUserAvatar(byte[] userAvatar) {
+    public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
     }
 
@@ -196,11 +197,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Integer getFbid() {
+    public BigInteger getFbid() {
         return fbid;
     }
 
-    public void setFbid(Integer fbid) {
+    public void setFbid(BigInteger fbid) {
         this.fbid = fbid;
     }
 
@@ -262,7 +263,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.User[ iduser=" + iduser + " ]";
+        return "entity.User[ iduser=" + iduser + " fbid = "+fbid+" ]";
     }
     
 }

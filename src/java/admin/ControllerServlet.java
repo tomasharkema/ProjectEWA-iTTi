@@ -7,6 +7,7 @@ package admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControllerServlet",
             loadOnStartup = 1,
-            urlPatterns = {"/admin"})
+            urlPatterns = {"/admin/events",
+                           "/admin/events/add",
+                           "/admin/events/edit"})
 public class ControllerServlet extends HttpServlet {
 
     /**
@@ -35,18 +38,19 @@ public class ControllerServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
 
-        // if category page is requested
-        if (userPath.equals("/admin")) {
-            // TODO: Implement admin request
-            userPath = "/../index";
-            System.out.println("You are not allowed here!");
+        System.out.println("admin controller, path: " + userPath);
 
+        // if admin page is requested
+        System.out.println(Arrays.toString(userPath.split("/")));
+        if (userPath.equals("/admin/events")) {
+            // TODO: Implement category request
+            userPath = "/events/index";
         // if cart page is requested
-//        } else if (userPath.equals("/chooseLanguage")) {
-//            // TODO: Implement cart page request
-//
-//            userPath = "/cart";
-
+        } else if (userPath.equals("/admin/events/add")) {
+            userPath = "/events/add";
+        } else if (userPath.equals("/admin/events/edit")) {
+            System.out.println("edittt");
+            userPath = "/events/edit";
         }
 
         // use RequestDispatcher to forward request internally
@@ -73,18 +77,14 @@ public class ControllerServlet extends HttpServlet {
         String userPath = request.getServletPath();
 
         // if addToCart action is called
-        if (userPath.equals("/admin")) {
-            // TODO: Implement admin login action
+        if (userPath.equals("/addToCart")) {
+            // TODO: Implement add product to cart action
 
-        // if purchase action is called
-//        } else if (userPath.equals("/purchase")) {
-//            // TODO: Implement purchase action
-//
-//            userPath = "/confirmation";
+        // if updateCart action is called
         }
 
         // use RequestDispatcher to forward request internally
-        String url = "/admin/view" + userPath + ".jsp";
+        String url = "/WEB-INF/view" + userPath + ".jsp";
 
         try {
             request.getRequestDispatcher(url).forward(request, response);
