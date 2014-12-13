@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByIduser", query = "SELECT u FROM User u WHERE u.iduser = :iduser"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
-    @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "User.findByTown", query = "SELECT u FROM User u WHERE u.town = :town"),
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
@@ -53,14 +52,9 @@ public class User implements Serializable, EntityInterface {
     private Integer iduser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "lastName")
-    private String lastName;
     @Basic(optional = false)
     @Size(min = 1, max = 45)
     @Column(name = "town")
@@ -107,10 +101,9 @@ public class User implements Serializable, EntityInterface {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, BigInteger fbid, String name, String lastName, String town, String gender, String email) {
+    public User(Integer iduser, BigInteger fbid, String name, String town, String gender, String email) {
         this.iduser = iduser;
         this.name = name;
-        this.lastName = lastName;
         this.town = town;
         this.gender = gender;
         this.email = email;
@@ -131,14 +124,6 @@ public class User implements Serializable, EntityInterface {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getTown() {

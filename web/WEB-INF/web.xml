@@ -37,5 +37,4 @@
             <include-coda>/WEB-INF/jspf/admin/footer.jspf</include-coda>
         </jsp-property-group>
     </jsp-config>
-
 </web-app>
