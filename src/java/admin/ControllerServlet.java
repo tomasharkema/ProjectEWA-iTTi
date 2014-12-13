@@ -11,7 +11,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -115,10 +114,18 @@ public class ControllerServlet extends HttpServlet {
         }
     }
 
+    /**
+     * begin date - date
+     * end date - date
+     * description - text
+     * active (/visible) - tinyint: 0 || 1
+     * @param request
+     * @return
+     */
     private Event createEvent (HttpServletRequest request) {
         String name = request.getParameter("eventName");
         String location = request.getParameter("eventLocation");
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
         try {
