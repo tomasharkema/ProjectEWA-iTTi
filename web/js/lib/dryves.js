@@ -10,7 +10,7 @@ function Dryves(){
     var self = this;
     this.$ = $("#dryves");
     this.fb = new FBLogin();
-    $(function(){
+    $(document).ready(function(){
         self.readyScope();
     });
 }
@@ -18,6 +18,18 @@ function Dryves(){
 Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
+        this.injectLinks();
+    },
+    injectLinks:function(){
+        this.$.find('#navbar li').each(function(e){
+            var self = $(this);
+            var url = self.find('a').attr('href');
+            if (window.location.pathname == url) {
+                self.addClass("active");
+            } else {
+                self.removeClass("active");
+            }
+        });
     },
     redirect:function(url){
         window.location.href = url;
@@ -28,4 +40,8 @@ Dryves.prototype = {
     }
 };
 
-var dryves = new Dryves();
+(function(){
+    "use strict";
+    console.log("hallo met dryves");
+    var dryves = new Dryves();
+})();
