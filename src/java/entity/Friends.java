@@ -119,5 +119,7 @@ public class Friends implements Serializable {
     public String toString() {
         return "entity.Friends[ friendsPK=" + friendsPK + " ]";
     }
+
+
     
 }
