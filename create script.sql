@@ -82,8 +82,7 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `lastName` varchar(45) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `town` varchar(45) NOT NULL,
   `userAvatar` text,
   `gender` varchar(1) NOT NULL,
