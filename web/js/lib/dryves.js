@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var debug = true;
-var root = "http://localhost:8080/";
+var root = "/";
 
 function Dryves(){
     var self = this;
