@@ -35,15 +35,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByIduser", query = "SELECT u FROM User u WHERE u.iduser = :iduser"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
-    @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "User.findByTown", query = "SELECT u FROM User u WHERE u.town = :town"),
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
     @NamedQuery(name = "User.findByZipcode", query = "SELECT u FROM User u WHERE u.zipcode = :zipcode"),
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
-    @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid")})
-public class User implements Serializable, EntityInterface {
+    @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid"),
+    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin")})
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,19 +58,13 @@ public class User implements Serializable, EntityInterface {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "lastName")
-    private String lastName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "town")
     private String town;
     @Lob
+    @Size(max = 65535)
     @Column(name = "userAvatar")
-    private byte[] userAvatar;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
+    private String userAvatar;
+    @Size(max = 1)
     @Column(name = "gender")
     private String gender;
     @Size(max = 45)
@@ -91,10 +85,12 @@ public class User implements Serializable, EntityInterface {
     private String email;
     @Column(name = "fbid")
     private Integer fbid;
+    @Column(name = "admin")
+    private Boolean admin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
     private Collection<Car> carCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<UserHasEvent> userHasEventCollection;
+    private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Friends> friendsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
@@ -107,12 +103,10 @@ public class User implements Serializable, EntityInterface {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String name, String lastName, String town, String gender, String email) {
+    public User(Integer iduser, String name, String town, String email) {
         this.iduser = iduser;
         this.name = name;
-        this.lastName = lastName;
         this.town = town;
-        this.gender = gender;
         this.email = email;
     }
 
@@ -132,14 +126,6 @@ public class User implements Serializable, EntityInterface {
         this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getTown() {
         return town;
     }
@@ -148,11 +134,11 @@ public class User implements Serializable, EntityInterface {
         this.town = town;
     }
 
-    public byte[] getUserAvatar() {
+    public String getUserAvatar() {
         return userAvatar;
     }
 
-    public void setUserAvatar(byte[] userAvatar) {
+    public void setUserAvatar(String userAvatar) {
         this.userAvatar = userAvatar;
     }
 
@@ -204,6 +190,14 @@ public class User implements Serializable, EntityInterface {
         this.fbid = fbid;
     }
 
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        this.admin = admin;
+    }
+
     @XmlTransient
     public Collection<Car> getCarCollection() {
         return carCollection;
@@ -214,12 +208,12 @@ public class User implements Serializable, EntityInterface {
     }
 
     @XmlTransient
-    public Collection<UserHasEvent> getUserHasEventCollection() {
-        return userHasEventCollection;
+    public Collection<UserHasEventAtLocation> getUserHasEventAtLocationCollection() {
+        return userHasEventAtLocationCollection;
     }
 
-    public void setUserHasEventCollection(Collection<UserHasEvent> userHasEventCollection) {
-        this.userHasEventCollection = userHasEventCollection;
+    public void setUserHasEventAtLocationCollection(Collection<UserHasEventAtLocation> userHasEventAtLocationCollection) {
+        this.userHasEventAtLocationCollection = userHasEventAtLocationCollection;
     }
 
     @XmlTransient
@@ -261,34 +255,8 @@ public class User implements Serializable, EntityInterface {
     }
 
     @Override
-    protected User clone() throws CloneNotSupportedException {
-        User clone = new User();
-        clone.setName(this.getName());
-        clone.setTown(this.getTown());
-        clone.setUserAvatar(this.getUserAvatar());
-        clone.setFbid(this.getFbid());
-        return clone;
-    }
-
-    
-    @Override
     public String toString() {
         return "entity.User[ iduser=" + iduser + " ]";
     }
-
-    @Override
-    public EntityInterface render() {
-  
-       return null;     
-    }
-
-    @Override
-    public String getPictureUrl() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getMostRecent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 }

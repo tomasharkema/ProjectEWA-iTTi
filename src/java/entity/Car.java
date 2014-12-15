@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Car.findByColor", query = "SELECT c FROM Car c WHERE c.color = :color"),
     @NamedQuery(name = "Car.findByType", query = "SELECT c FROM Car c WHERE c.type = :type"),
     @NamedQuery(name = "Car.findByNumberSeats", query = "SELECT c FROM Car c WHERE c.numberSeats = :numberSeats")})
-public class Car implements Serializable{
+public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,7 +69,7 @@ public class Car implements Serializable{
     @ManyToOne(optional = false)
     private User userIduser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRegistration")
-    private Collection<UserHasEvent> userHasEventCollection;
+    private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
 
     public Car() {
     }
@@ -135,12 +135,12 @@ public class Car implements Serializable{
     }
 
     @XmlTransient
-    public Collection<UserHasEvent> getUserHasEventCollection() {
-        return userHasEventCollection;
+    public Collection<UserHasEventAtLocation> getUserHasEventAtLocationCollection() {
+        return userHasEventAtLocationCollection;
     }
 
-    public void setUserHasEventCollection(Collection<UserHasEvent> userHasEventCollection) {
-        this.userHasEventCollection = userHasEventCollection;
+    public void setUserHasEventAtLocationCollection(Collection<UserHasEventAtLocation> userHasEventAtLocationCollection) {
+        this.userHasEventAtLocationCollection = userHasEventAtLocationCollection;
     }
 
     @Override
@@ -167,7 +167,5 @@ public class Car implements Serializable{
     public String toString() {
         return "entity.Car[ registration=" + registration + " ]";
     }
-
-
     
 }
