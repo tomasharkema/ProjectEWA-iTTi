@@ -36,6 +36,8 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Custom Dryves CSS -->
+    <link href="/Dryves/css/admin/custom.css" rel="stylesheet">
 </head>
 
 <body>
@@ -284,6 +286,12 @@
                         </li>
                         <li>
                             <a href="/Dryves/admin/events"><i class="fa fa-table fa-fw"></i> Events</a>
+                        </li>
+                        <li>
+                            <a href="/Dryves/admin/users"><i class="fa fa-table fa-fw"></i> Users</a>
+                        </li>
+                        <li>
+                            <a href="/Dryves/admin/statistics"><i class="fa fa-table fa-fw"></i> Statistics</a>
                         </li>
                         <li>
                             <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>

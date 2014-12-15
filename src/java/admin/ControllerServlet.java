@@ -53,11 +53,14 @@ public class ControllerServlet extends HttpServlet {
         // if admin page is requested
         System.out.println(Arrays.toString(userPath.split("/")));
         if (userPath.equals("/admin/events")) {
-            // TODO: Implement category request
             userPath = "/events/index";
+
+             request.setAttribute("events", eventFacade.findAll());
+
         // if cart page is requested
         } else if (userPath.equals("/admin/events/add")) {
             userPath = "/events/add";
+        //
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
             if (id == null || id.isEmpty()) {
@@ -68,6 +71,8 @@ public class ControllerServlet extends HttpServlet {
                     userPath = "/events/index";
                 } else {
                     userPath = "/events/edit";
+
+                    request.setAttribute("event", event);
                 }
             }
         }
@@ -100,8 +105,23 @@ public class ControllerServlet extends HttpServlet {
             // TODO: Implement add product to cart action
             System.out.println("req: " + request.getParameter("eventName"));
             createEvent(request);
+
             userPath = "/events/index";
         // if updateCart action is called
+        } else if (userPath.equals("/admin/events/edit")) {
+            String id = request.getParameter("id");
+            if (id == null || id.isEmpty()) {
+                userPath = "/events/index";
+            } else {
+                Event event = eventFacade.find(Integer.parseInt(id));
+                if (event == null) {
+                    userPath = "/events/edit?id=" + id;
+                } else {
+                    updateEvent(request, event);
+
+                    userPath = "/events/index";
+                }
+            }
         }
 
         // use RequestDispatcher to forward request internally
@@ -112,6 +132,35 @@ public class ControllerServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * TODO: check if attributes differ before setting them?
+     *
+     * @param request
+     * @param event
+     * @return
+     */
+    private Event updateEvent (HttpServletRequest request, Event event) {
+        String name = request.getParameter("eventName");
+        String location = request.getParameter("eventLocation");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+
+        try {
+            date = formatter.parse(request.getParameter("eventDate"));
+        } catch (ParseException ex) {
+            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        event.setEventName(name);
+        event.setEventLocation(location);
+        event.setEvenDate(date);
+//        event.setEventLogo(eventLogo);
+
+        eventFacade.edit(event);
+
+        return event;
     }
 
     /**
