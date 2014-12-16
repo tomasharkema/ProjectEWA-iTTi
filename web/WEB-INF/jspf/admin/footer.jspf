@@ -7,28 +7,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="/Dryves/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="/Dryves/js/admin/plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="/js/admin/plugins/metisMenu/metisMenu.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
     <!-- http://stackoverflow.com/questions/6658667/jsp-check-url-is-for-the-current-page#answer-6660729 -->
     <c:choose>
         <c:when test="${fn:endsWith(pageContext.request.requestURI, 'admin/') ||
                         fn:endsWith(pageContext.request.requestURI, 'admin/index.jsp')}">
-    <script src="/Dryves/js/admin/plugins/morris/raphael.min.js"></script>
-    <script src="/Dryves/js/admin/plugins/morris/morris.min.js"></script>
-    <script src="/Dryves/js/admin/plugins/morris/morris-data.js"></script>
+    <script src="/js/admin/plugins/morris/raphael.min.js"></script>
+    <script src="/js/admin/plugins/morris/morris.min.js"></script>
+    <script src="/js/admin/plugins/morris/morris-data.js"></script>
         </c:when>
     </c:choose>
 
     <!-- DataTables JavaScript -->
-    <script src="/Dryves/js/admin/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/Dryves/js/admin/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/js/admin/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/js/admin/plugins/dataTables/dataTables.bootstrap.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="/Dryves/js/admin/sb-admin-2.js"></script>
+    <script src="/js/admin/sb-admin-2.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>

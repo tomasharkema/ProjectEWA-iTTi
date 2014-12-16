@@ -156,6 +156,7 @@ public class ControllerServlet extends HttpServlet {
         event.setEventName(name);
         event.setEventLocation(location);
         event.setEvenDate(date);
+        // TODO: Implement the Logo edit functionality.
 //        event.setEventLogo(eventLogo);
 
         eventFacade.edit(event);
@@ -187,6 +188,7 @@ public class ControllerServlet extends HttpServlet {
         event.setEventName(name);
         event.setEventLocation(location);
         event.setEvenDate(date);
+        // TODO: Implement the Logo add functionality.
 //        event.setEventLogo(eventLogo);
 
         eventFacade.create(event);
