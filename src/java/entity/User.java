@@ -36,7 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByIduser", query = "SELECT u FROM User u WHERE u.iduser = :iduser"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
-    @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "User.findByTown", query = "SELECT u FROM User u WHERE u.town = :town"),
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
@@ -44,7 +43,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid")})
-public class User implements Serializable {
+public class User implements Serializable, EntityInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,14 +52,9 @@ public class User implements Serializable {
     private Integer iduser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "lastName")
-    private String lastName;
     @Basic(optional = false)
     @Size(min = 1, max = 45)
     @Column(name = "town")
@@ -97,8 +91,6 @@ public class User implements Serializable {
     private Collection<UserHasEvent> userHasEventCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Friends> friendsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
-    private Collection<Friends> friendsCollection1;
 
     public User() {
     }
@@ -107,10 +99,9 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, BigInteger fbid, String name, String lastName, String town, String gender, String email) {
+    public User(Integer iduser, BigInteger fbid, String name, String town, String gender, String email) {
         this.iduser = iduser;
         this.name = name;
-        this.lastName = lastName;
         this.town = town;
         this.gender = gender;
         this.email = email;
@@ -131,14 +122,6 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getTown() {
@@ -232,15 +215,6 @@ public class User implements Serializable {
         this.friendsCollection = friendsCollection;
     }
 
-    @XmlTransient
-    public Collection<Friends> getFriendsCollection1() {
-        return friendsCollection1;
-    }
-
-    public void setFriendsCollection1(Collection<Friends> friendsCollection1) {
-        this.friendsCollection1 = friendsCollection1;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -262,8 +236,34 @@ public class User implements Serializable {
     }
 
     @Override
+    protected User clone() throws CloneNotSupportedException {
+        User clone = new User();
+        clone.setName(this.getName());
+        clone.setTown(this.getTown());
+        clone.setUserAvatar(this.getUserAvatar());
+        clone.setFbid(this.getFbid());
+        return clone;
+    }
+
+    
+    @Override
     public String toString() {
         return "entity.User[ iduser=" + iduser + " fbid = "+fbid+" ]";
     }
-    
+
+    @Override
+    public EntityInterface render() {
+  
+       return null;     
+    }
+
+    @Override
+    public String getPictureUrl() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getMostRecent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

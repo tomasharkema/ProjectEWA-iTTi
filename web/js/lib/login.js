@@ -18,7 +18,7 @@ function Login(identifier) {
     this.$.submit(function(e){
         e.preventDefault();
         $.ajax({
-            url:"login/",
+            url:"/login",
             method:"post",
             data:{
                 name:self.$.find("#name").val(),

@@ -82,8 +82,7 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `lastName` varchar(45) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `town` varchar(45) NOT NULL,
   `userAvatar` text,
   `gender` varchar(1) NOT NULL,
@@ -99,9 +98,9 @@ CREATE TABLE `user` (
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 
-INSERT INTO `user` (`iduser`, `name`, `lastName`, `town`, `userAvatar`, `gender`, `address`, `zipcode`, `phone`, `email`, `fbid`)
+INSERT INTO `user` (`iduser`, `name`, `town`, `userAvatar`, `gender`, `address`, `zipcode`, `phone`, `email`, `fbid`)
 VALUES
-	(5,'Tomas','Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p480x480/1533921_10205602659936715_956316193636095_n.jpg?oh=3befcbbaa815eaac885f1dede3139a07&oe=54FC5F6C&__gda__=1430299513_42b0afaf8cf6093afb5976b60f67dd0c','m',NULL,NULL,NULL,'tomas@harkema.in',10205680827170847);
+	(5,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xfp1/v/t1.0-1/p480x480/1533921_10205602659936715_956316193636095_n.jpg?oh=3befcbbaa815eaac885f1dede3139a07&oe=54FC5F6C&__gda__=1430299513_42b0afaf8cf6093afb5976b60f67dd0c','m',NULL,NULL,NULL,'tomas@harkema.in',10205680827170847);
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
