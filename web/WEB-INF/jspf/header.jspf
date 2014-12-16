@@ -26,6 +26,7 @@
 
         <!-- Custom styles for this template -->
         <link href="css/carousel.css" rel="stylesheet">
+        <link href="css/dryves.css" rel="stylesheet">
     </head>
     <!-- NAVBAR
     ================================================== -->
@@ -49,10 +50,11 @@
                                 <li class="active"><a href="#">Home</a></li>
                                 <c:choose>
                                     <c:when test="${isloggedin == 0}">
-                                        <li><a href="login.jsp">Login</a></li>
+                                        <li><a href="/login.jsp">Login</a></li>
                                     </c:when>
                                     <c:otherwise>
-                                        <li><a href="logout">Logout</a></li>
+                                        <li><a href="/overview">Overview</a></li>
+                                        <li><a href="/logout">Logout</a></li>
                                     </c:otherwise>
                                 </c:choose>
                                         
@@ -76,3 +78,5 @@
 
             </div>
         </div>
+        
+        <div class="container">
