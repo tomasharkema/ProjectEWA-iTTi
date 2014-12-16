@@ -69,7 +69,7 @@ public class Car implements Serializable {
     @ManyToOne(optional = false)
     private User userIduser;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRegistration")
-    private Collection<UserHasEvent> userHasEventCollection;
+    private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
 
     public Car() {
     }
@@ -135,12 +135,12 @@ public class Car implements Serializable {
     }
 
     @XmlTransient
-    public Collection<UserHasEvent> getUserHasEventCollection() {
-        return userHasEventCollection;
+    public Collection<UserHasEventAtLocation> getUserHasEventAtLocationCollection() {
+        return userHasEventAtLocationCollection;
     }
 
-    public void setUserHasEventCollection(Collection<UserHasEvent> userHasEventCollection) {
-        this.userHasEventCollection = userHasEventCollection;
+    public void setUserHasEventAtLocationCollection(Collection<UserHasEventAtLocation> userHasEventAtLocationCollection) {
+        this.userHasEventAtLocationCollection = userHasEventAtLocationCollection;
     }
 
     @Override
@@ -167,7 +167,5 @@ public class Car implements Serializable {
     public String toString() {
         return "entity.Car[ registration=" + registration + " ]";
     }
-
-
     
 }

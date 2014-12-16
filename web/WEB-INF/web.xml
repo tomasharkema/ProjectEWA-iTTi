@@ -29,12 +29,5 @@
             <include-prelude>/WEB-INF/jspf/admin/headerAndSidebar.jspf</include-prelude>
             <include-coda>/WEB-INF/jspf/admin/footer.jspf</include-coda>
         </jsp-property-group>
-        <jsp-property-group>
-            <description>events overview</description>
-            <url-pattern>/events/view/*</url-pattern>
-            <url-pattern>/events/eventOverview.jsp</url-pattern> 
-            <include-prelude>/WEB-INF/jspf/overview/headerAndSidebar.jspf</include-prelude>
-            <include-coda>/WEB-INF/jspf/admin/footer.jspf</include-coda>
-        </jsp-property-group>
     </jsp-config>
 </web-app>
