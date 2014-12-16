@@ -4,8 +4,10 @@
     <facet type="jpa" name="JPA">
       <configuration>
         <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="" />
-        <datasource-mapping />
+        <setting name="provider-name" value="OpenJPA" />
+        <datasource-mapping>
+          <factory-entry name="DryvesPU" />
+        </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/conf/persistence.xml" />
       </configuration>
     </facet>
@@ -17,6 +19,17 @@
         <webroots>
           <root url="file://$MODULE_DIR$/build/web" relative="/" />
         </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+    <facet type="ejb" name="EJB">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/.idea/META-INF/ejb-jar.xml" />
+          <deploymentDescriptor name="openejb-jar.xml" url="file://$MODULE_DIR$/.idea/META-INF/openejb-jar.xml" />
+          <deploymentDescriptor name="weblogic-ejb-jar.xml" url="file://$MODULE_DIR$/.idea/META-INF/weblogic-ejb-jar.xml" />
+        </descriptors>
+        <ejbRoots />
       </configuration>
     </facet>
     <facet type="web" name="Web2">
@@ -27,13 +40,49 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+    <facet type="web" name="Web3">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/dist/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/dist" relative="/" />
+        </webroots>
+        <sourceRoots />
+      </configuration>
+    </facet>
+    <facet type="ejb" name="EJB2">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/dist/META-INF/ejb-jar.xml" />
+        </descriptors>
+        <ejbRoots />
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/web" type="java-resource" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="JPA 2.0-JPA 2.0" level="project" />
+    <orderEntry type="library" exported="" name="Java EE 5-Java EE 5" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="GlassFish 4.1.0" level="application_server_libraries" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/web/WEB-INF/lib/json-simple-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="javax.validation:validation-api:1.1.0.CR3" level="project" />
   </component>
 </module>
