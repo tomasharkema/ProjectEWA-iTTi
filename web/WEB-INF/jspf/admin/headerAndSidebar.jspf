@@ -1,3 +1,6 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +22,14 @@
 
     <!-- Timeline CSS -->
     <link href="/Dryves/css/admin/plugins/timeline.css" rel="stylesheet">
+
+    <c:choose>
+        <c:when test="${fn:endsWith(pageContext.request.requestURI, 'events/') ||
+                        fn:endsWith(pageContext.request.requestURI, 'events/index.jsp')}">
+    <!-- DataTables CSS -->
+    <link href="/Dryves/css/admin/plugins/dataTables.bootstrap.css" rel="stylesheet">
+        </c:when>
+    </c:choose>
 
     <!-- Custom CSS -->
     <link href="/Dryves/css/admin/sb-admin-2.css" rel="stylesheet">
