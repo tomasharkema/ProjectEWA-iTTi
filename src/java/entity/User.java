@@ -53,11 +53,10 @@ public class User implements Serializable {
     private Integer iduser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "town")
     private String town;
@@ -104,7 +103,7 @@ public class User implements Serializable {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, String name, String town, String email) {
+    public User(Integer iduser, BigInteger fbid, String name, String town, String gender, String email) {
         this.iduser = iduser;
         this.name = name;
         this.town = town;
