@@ -179,6 +179,6 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("loggedinuser", null);
         session.setAttribute("isloggedin", 0);
         System.out.println("LOGOUT");
-        response.sendRedirect("/Dryves/");
+        response.sendRedirect("/");
     }
 }

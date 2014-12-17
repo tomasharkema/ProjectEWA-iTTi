@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var debug = true;
-var root = "http://localhost:8080/Dryves";
+var root = "http://localhost:8080/";
 
 function Dryves(){
     var self = this;
@@ -20,7 +20,7 @@ Dryves.prototype = {
         this.fb.ready();
     },
     redirect:function(url){
-        window.location.href = root+url;
+        window.location.href = url;
         /*$.ajax({url:url})
                 .done(function(res){
                    console.log("YAY!", res); 
