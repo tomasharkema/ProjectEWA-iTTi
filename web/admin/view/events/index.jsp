@@ -32,7 +32,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Location</th>
+                                            <!--th>Location</th-->
                                             <th>Date</th>
                                             <th>Engine version</th>
                                             <th>Actions</th>
@@ -42,7 +42,7 @@
                                         <c:forEach items="${events}" var="event" varStatus="iter">
                                         <tr class="${((iter.index % 2) == 0) ? 'even' : 'odd'} clickable" onclick="window.location = 'events/edit?id=${event.idevent}'" title="Edit event">
                                             <td><a href="events/edit?id=${event.idevent}" title="Edit event">${event.eventName}</a></td>
-                                            <td></td>
+                                            <!--td></td-->
                                             <td><fmt:formatDate value="${event.eventDate}" pattern="d MMMMM yyyy" /></td>
                                             <td class="center">4</td>
                                             <td class="center">Edit | Delete</td>

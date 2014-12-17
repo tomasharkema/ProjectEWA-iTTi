@@ -34,12 +34,12 @@
                                                 <input type="text" class="form-control" id="eventName" name="eventName" value="${event.eventName}" required="required">
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                        <!--div class="form-group">
                                             <label for="eventLocation" class="col-sm-2 control-label">Location</label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" id="eventLocation" name="eventLocation" value="" required="required">
                                             </div>
-                                        </div>
+                                        </div-->
                                         <div class="form-group">
                                             <label for="eventDate" class="col-sm-2 control-label">Date</label>
                                             <div class="col-sm-10">

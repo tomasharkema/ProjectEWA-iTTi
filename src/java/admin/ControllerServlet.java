@@ -148,7 +148,7 @@ public class ControllerServlet extends HttpServlet {
      */
     private Event updateEvent (HttpServletRequest request, Event event) {
         String name = request.getParameter("eventName");
-        String location = request.getParameter("eventLocation");
+//        String location = request.getParameter("eventLocation");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
@@ -159,6 +159,7 @@ public class ControllerServlet extends HttpServlet {
         }
 
         event.setEventName(name);
+        // TODO: Implement the Location edit functionality.
 //        event.setEventLocation(location);
         event.setEventDate(date);
         // TODO: Implement the Logo edit functionality.
@@ -179,7 +180,7 @@ public class ControllerServlet extends HttpServlet {
      */
     private Event createEvent (HttpServletRequest request) {
         String name = request.getParameter("eventName");
-        String location = request.getParameter("eventLocation");
+//        String location = request.getParameter("eventLocation");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
@@ -191,6 +192,7 @@ public class ControllerServlet extends HttpServlet {
 
         Event event = new Event();
         event.setEventName(name);
+        // TODO: Implement the Location add functionality.
 //        event.setEventLocation(location);
         event.setEventDate(date);
         // TODO: Implement the Logo add functionality.
