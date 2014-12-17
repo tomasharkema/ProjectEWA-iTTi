@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -15,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUserIduser", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser = :userIduser"),
     @NamedQuery(name = "Friends.findByUserIduser1", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1"),
-    @NamedQuery(name = "Friends.findByRelation", query = "SELECT f FROM Friends f WHERE f.relation = :relation")})
+    @NamedQuery(name = "Friends.findByRelation", query = "SELECT f FROM Friends f WHERE f.relation = :relation"),
+    @NamedQuery(name = "Friends.findByDate", query = "SELECT f FROM Friends f WHERE f.date = :date")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -40,6 +44,11 @@ public class Friends implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "relation")
     private String relation;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
     @JoinColumn(name = "user_iduser", referencedColumnName = "iduser", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
@@ -54,9 +63,10 @@ public class Friends implements Serializable {
         this.friendsPK = friendsPK;
     }
 
-    public Friends(FriendsPK friendsPK, String relation) {
+    public Friends(FriendsPK friendsPK, String relation, Date date) {
         this.friendsPK = friendsPK;
         this.relation = relation;
+        this.date = date;
     }
 
     public Friends(int userIduser, int userIduser1) {
@@ -77,6 +87,14 @@ public class Friends implements Serializable {
 
     public void setRelation(String relation) {
         this.relation = relation;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public User getUser() {
@@ -119,7 +137,5 @@ public class Friends implements Serializable {
     public String toString() {
         return "entity.Friends[ friendsPK=" + friendsPK + " ]";
     }
-
-
     
 }

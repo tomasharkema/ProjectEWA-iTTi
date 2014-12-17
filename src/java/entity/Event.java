@@ -37,9 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevennt = :idevennt"),
-    @NamedQuery(name = "Event.findByEventName", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
-    @NamedQuery(name = "Event.findByEventLocation", query = "SELECT e FROM Event e WHERE e.eventLocation = :eventLocation"),
-    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate")})
+    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate"),
+    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventname = :eventname")})
 public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -49,24 +48,20 @@ public class Event implements Serializable {
     private Integer idevennt;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "eventName")
-    private String eventName;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "eventLocation")
-    private String eventLocation;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "evenDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date evenDate;
     @Lob
+    @Size(max = 65535)
     @Column(name = "eventLogo")
-    private byte[] eventLogo;
+    private String eventLogo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "eventname")
+    private String eventname;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
-    private Collection<UserHasEvent> userHasEventCollection;
+    private Collection<LocationHasEvent> locationHasEventCollection;
 
     public Event() {
     }
@@ -75,11 +70,10 @@ public class Event implements Serializable {
         this.idevennt = idevennt;
     }
 
-    public Event(Integer idevennt, String eventName, String eventLocation, Date evenDate) {
+    public Event(Integer idevennt, Date evenDate, String eventname) {
         this.idevennt = idevennt;
-        this.eventName = eventName;
-        this.eventLocation = eventLocation;
         this.evenDate = evenDate;
+        this.eventname = eventname;
     }
 
     public Integer getIdevennt() {
@@ -90,22 +84,6 @@ public class Event implements Serializable {
         this.idevennt = idevennt;
     }
 
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public String getEventLocation() {
-        return eventLocation;
-    }
-
-    public void setEventLocation(String eventLocation) {
-        this.eventLocation = eventLocation;
-    }
-
     public Date getEvenDate() {
         return evenDate;
     }
@@ -114,21 +92,29 @@ public class Event implements Serializable {
         this.evenDate = evenDate;
     }
 
-    public byte[] getEventLogo() {
+    public String getEventLogo() {
         return eventLogo;
     }
 
-    public void setEventLogo(byte[] eventLogo) {
+    public void setEventLogo(String eventLogo) {
         this.eventLogo = eventLogo;
     }
 
-    @XmlTransient
-    public Collection<UserHasEvent> getUserHasEventCollection() {
-        return userHasEventCollection;
+    public String getEventname() {
+        return eventname;
     }
 
-    public void setUserHasEventCollection(Collection<UserHasEvent> userHasEventCollection) {
-        this.userHasEventCollection = userHasEventCollection;
+    public void setEventname(String eventname) {
+        this.eventname = eventname;
+    }
+
+    @XmlTransient
+    public Collection<LocationHasEvent> getLocationHasEventCollection() {
+        return locationHasEventCollection;
+    }
+
+    public void setLocationHasEventCollection(Collection<LocationHasEvent> locationHasEventCollection) {
+        this.locationHasEventCollection = locationHasEventCollection;
     }
 
     @Override
@@ -155,7 +141,5 @@ public class Event implements Serializable {
     public String toString() {
         return "entity.Event[ idevennt=" + idevennt + " ]";
     }
-
-
     
 }

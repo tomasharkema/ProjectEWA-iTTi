@@ -5,7 +5,7 @@
  */
 package session;
 
-import entity.UserHasEvent;
+import entity.UserHasEventAtLocation;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author Repr
  */
 @Stateless
-public class UserHasEventFacade extends AbstractFacade<UserHasEvent> {
+public class UserHasEventAtLocationFacade extends AbstractFacade<UserHasEventAtLocation> {
     @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
@@ -24,8 +24,8 @@ public class UserHasEventFacade extends AbstractFacade<UserHasEvent> {
         return em;
     }
 
-    public UserHasEventFacade() {
-        super(UserHasEvent.class);
+    public UserHasEventAtLocationFacade() {
+        super(UserHasEventAtLocation.class);
     }
     
 }
