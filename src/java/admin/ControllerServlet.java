@@ -9,7 +9,6 @@ import entity.Event;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,14 +47,11 @@ public class ControllerServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
 
-        System.out.println("admin controller, path: " + userPath);
-
         // if admin page is requested
-        System.out.println(Arrays.toString(userPath.split("/")));
         if (userPath.equals("/admin/events")) {
             userPath = "/events/index";
 
-             request.setAttribute("events", eventFacade.findAll());
+            request.setAttribute("events", eventFacade.findAll());
 
         // if cart page is requested
         } else if (userPath.equals("/admin/events/add")) {
@@ -64,11 +60,15 @@ public class ControllerServlet extends HttpServlet {
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
             if (id == null || id.isEmpty()) {
-                userPath = "/events/index";
+//                userPath = "/events/index";
+
+                response.sendRedirect("/admin/events");
             } else {
                 Event event = eventFacade.find(Integer.parseInt(id));
                 if (event == null) {
-                    userPath = "/events/index";
+//                    userPath = "/events/index";
+
+                    response.sendRedirect("/admin/events");
                 } else {
                     userPath = "/events/edit";
 
@@ -111,7 +111,9 @@ public class ControllerServlet extends HttpServlet {
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
             if (id == null || id.isEmpty()) {
-                userPath = "/events/index";
+//                userPath = "/events/index";
+
+                response.sendRedirect("/admin/events");
             } else {
                 Event event = eventFacade.find(Integer.parseInt(id));
                 if (event == null) {
@@ -119,7 +121,8 @@ public class ControllerServlet extends HttpServlet {
                 } else {
                     updateEvent(request, event);
 
-                    userPath = "/events/index";
+//                    userPath = "/events/index";
+                    response.sendRedirect("/admin/events");
                 }
             }
         }
