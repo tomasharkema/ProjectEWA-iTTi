@@ -106,7 +106,9 @@ public class ControllerServlet extends HttpServlet {
             System.out.println("req: " + request.getParameter("eventName"));
             createEvent(request);
 
-            userPath = "/events/index";
+//            userPath = "/events/index";
+
+            response.sendRedirect("/admin/events");
         // if updateCart action is called
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
@@ -157,8 +159,8 @@ public class ControllerServlet extends HttpServlet {
         }
 
         event.setEventName(name);
-        event.setEventLocation(location);
-        event.setEvenDate(date);
+//        event.setEventLocation(location);
+        event.setEventDate(date);
         // TODO: Implement the Logo edit functionality.
 //        event.setEventLogo(eventLogo);
 
@@ -189,8 +191,8 @@ public class ControllerServlet extends HttpServlet {
 
         Event event = new Event();
         event.setEventName(name);
-        event.setEventLocation(location);
-        event.setEvenDate(date);
+//        event.setEventLocation(location);
+        event.setEventDate(date);
         // TODO: Implement the Logo add functionality.
 //        event.setEventLogo(eventLogo);
 

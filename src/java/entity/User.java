@@ -93,8 +93,6 @@ public class User implements Serializable {
     private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Friends> friendsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
-    private Collection<Friends> friendsCollection1;
 
     public User() {
     }
@@ -223,15 +221,6 @@ public class User implements Serializable {
 
     public void setFriendsCollection(Collection<Friends> friendsCollection) {
         this.friendsCollection = friendsCollection;
-    }
-
-    @XmlTransient
-    public Collection<Friends> getFriendsCollection1() {
-        return friendsCollection1;
-    }
-
-    public void setFriendsCollection1(Collection<Friends> friendsCollection1) {
-        this.friendsCollection1 = friendsCollection1;
     }
 
     @Override

@@ -27,7 +27,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="edit?id=${event.idevennt}" method="post" class="form-horizontal" role="form">
+                                    <form action="edit?id=${event.idevent}" method="post" class="form-horizontal" role="form">
                                         <div class="form-group">
                                             <label for="eventName" class="col-sm-2 control-label">Name</label>
                                             <div class="col-sm-10">
@@ -37,13 +37,13 @@
                                         <div class="form-group">
                                             <label for="eventLocation" class="col-sm-2 control-label">Location</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="eventLocation" name="eventLocation" value="${event.eventLocation}" required="required">
+                                                <input type="text" class="form-control" id="eventLocation" name="eventLocation" value="" required="required">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="eventDate" class="col-sm-2 control-label">Date</label>
                                             <div class="col-sm-10">
-                                                <input type="date" class="form-control" id="eventDate" name="eventDate" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${event.evenDate}" />" required="required">
+                                                <input type="date" class="form-control" id="eventDate" name="eventDate" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${event.eventDate}" />" required="required">
                                                 <p class="help-block">dd/mm/yyyy</p>
                                             </div>
                                         </div>
