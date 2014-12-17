@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Location.findAll", query = "SELECT l FROM Location l"),
     @NamedQuery(name = "Location.findByIdlocation", query = "SELECT l FROM Location l WHERE l.idlocation = :idlocation"),
     @NamedQuery(name = "Location.findByCity", query = "SELECT l FROM Location l WHERE l.city = :city"),
-    @NamedQuery(name = "Location.findByAddress", query = "SELECT l FROM Location l WHERE l.address = :address")})
+    @NamedQuery(name = "Location.findByAddress", query = "SELECT l FROM Location l WHERE l.address = :address"),
+    @NamedQuery(name = "Location.findByLocationname", query = "SELECT l FROM Location l WHERE l.locationname = :locationname")})
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,6 +54,11 @@ public class Location implements Serializable {
     @Size(max = 65535)
     @Column(name = "locationpicture")
     private String locationpicture;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "locationname")
+    private String locationname;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
     private Collection<LocationHasEvent> locationHasEventCollection;
 
@@ -63,9 +69,10 @@ public class Location implements Serializable {
         this.idlocation = idlocation;
     }
 
-    public Location(Integer idlocation, String city) {
+    public Location(Integer idlocation, String city, String locationname) {
         this.idlocation = idlocation;
         this.city = city;
+        this.locationname = locationname;
     }
 
     public Integer getIdlocation() {
@@ -98,6 +105,14 @@ public class Location implements Serializable {
 
     public void setLocationpicture(String locationpicture) {
         this.locationpicture = locationpicture;
+    }
+
+    public String getLocationname() {
+        return locationname;
+    }
+
+    public void setLocationname(String locationname) {
+        this.locationname = locationname;
     }
 
     @XmlTransient

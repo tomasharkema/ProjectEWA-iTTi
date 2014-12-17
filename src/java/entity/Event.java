@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevennt = :idevennt"),
-    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate")})
+    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate"),
+    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventname = :eventname")})
 public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,6 +55,11 @@ public class Event implements Serializable {
     @Size(max = 65535)
     @Column(name = "eventLogo")
     private String eventLogo;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "eventname")
+    private String eventname;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
     private Collection<LocationHasEvent> locationHasEventCollection;
 
@@ -64,9 +70,10 @@ public class Event implements Serializable {
         this.idevennt = idevennt;
     }
 
-    public Event(Integer idevennt, Date evenDate) {
+    public Event(Integer idevennt, Date evenDate, String eventname) {
         this.idevennt = idevennt;
         this.evenDate = evenDate;
+        this.eventname = eventname;
     }
 
     public Integer getIdevennt() {
@@ -91,6 +98,14 @@ public class Event implements Serializable {
 
     public void setEventLogo(String eventLogo) {
         this.eventLogo = eventLogo;
+    }
+
+    public String getEventname() {
+        return eventname;
+    }
+
+    public void setEventname(String eventname) {
+        this.eventname = eventname;
     }
 
     @XmlTransient

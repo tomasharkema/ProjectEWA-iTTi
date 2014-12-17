@@ -7,11 +7,8 @@ package session;
 
 import entity.User;
 import java.math.BigInteger;
-import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -29,7 +26,7 @@ public class UserFacade extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     public UserFacade() {
         super(User.class);
     }
@@ -49,4 +46,6 @@ public class UserFacade extends AbstractFacade<User> {
     public void addUser(User user) {
         em.persist(user);
     }
+
+    
 }
