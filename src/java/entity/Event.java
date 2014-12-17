@@ -36,21 +36,21 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevennt = :idevennt"),
-    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate"),
-    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventname = :eventname")})
+    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
+    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :evenDate"),
+    @NamedQuery(name = "Event.findByEventName", query = "SELECT e FROM Event e WHERE e.eventName = :eventName")})
 public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idevennt")
-    private Integer idevennt;
+    @Column(name = "idevent")
+    private Integer idevent;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "evenDate")
+    @Column(name = "eventDate")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date evenDate;
+    private Date eventDate;
     @Lob
     @Size(max = 65535)
     @Column(name = "eventLogo")
@@ -58,8 +58,8 @@ public class Event implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "eventname")
-    private String eventname;
+    @Column(name = "eventName")
+    private String eventName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
     private Collection<LocationHasEvent> locationHasEventCollection;
 
@@ -67,29 +67,29 @@ public class Event implements Serializable {
     }
 
     public Event(Integer idevennt) {
-        this.idevennt = idevennt;
+        this.idevent = idevennt;
     }
 
     public Event(Integer idevennt, Date evenDate, String eventname) {
-        this.idevennt = idevennt;
-        this.evenDate = evenDate;
-        this.eventname = eventname;
+        this.idevent = idevennt;
+        this.eventDate = evenDate;
+        this.eventName = eventname;
     }
 
     public Integer getIdevennt() {
-        return idevennt;
+        return idevent;
     }
 
     public void setIdevennt(Integer idevennt) {
-        this.idevennt = idevennt;
+        this.idevent = idevennt;
     }
 
     public Date getEvenDate() {
-        return evenDate;
+        return eventDate;
     }
 
     public void setEvenDate(Date evenDate) {
-        this.evenDate = evenDate;
+        this.eventDate = evenDate;
     }
 
     public String getEventLogo() {
@@ -101,11 +101,11 @@ public class Event implements Serializable {
     }
 
     public String getEventname() {
-        return eventname;
+        return eventName;
     }
 
     public void setEventname(String eventname) {
-        this.eventname = eventname;
+        this.eventName = eventname;
     }
 
     @XmlTransient
@@ -120,7 +120,7 @@ public class Event implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idevennt != null ? idevennt.hashCode() : 0);
+        hash += (idevent != null ? idevent.hashCode() : 0);
         return hash;
     }
 
@@ -131,7 +131,7 @@ public class Event implements Serializable {
             return false;
         }
         Event other = (Event) object;
-        if ((this.idevennt == null && other.idevennt != null) || (this.idevennt != null && !this.idevennt.equals(other.idevennt))) {
+        if ((this.idevent == null && other.idevent != null) || (this.idevent != null && !this.idevent.equals(other.idevent))) {
             return false;
         }
         return true;
@@ -139,7 +139,7 @@ public class Event implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Event[ idevennt=" + idevennt + " ]";
+        return "entity.Event[ idevennt=" + idevent + " ]";
     }
     
 }

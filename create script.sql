@@ -58,10 +58,10 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `dryves`.`event` ;
 
 CREATE TABLE IF NOT EXISTS `dryves`.`event` (
-  `idevennt` INT(11) NOT NULL AUTO_INCREMENT,
-  `evenDate` DATETIME NOT NULL,
+  `idevent` INT(11) NOT NULL AUTO_INCREMENT,
+  `eventDate` DATETIME NOT NULL,
   `eventLogo` TEXT NULL DEFAULT NULL,
-  `eventname` VARCHAR(45) NOT NULL,
+  `eventName` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idevennt`),
   UNIQUE INDEX `idevenement_UNIQUE` (`idevennt` ASC))
 ENGINE = InnoDB;

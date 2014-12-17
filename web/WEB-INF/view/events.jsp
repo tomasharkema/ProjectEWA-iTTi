@@ -10,8 +10,11 @@
     
     <h1>Events</h1>
     <ul class="list-group">
+    <c:if test="${empty events}">
+        <i>Er zijn nog geen events.</i>
+    </c:if>
     <c:forEach items="${events}" var="event">
-        <li class="list-group-item"><a href="?eventId=${event.idevennt}">${event.eventName}</a></li>
+        <li class="list-group-item"><a href="?eventId=${event.idevent}">${event.eventName}</a></li>
     </c:forEach>
     </ul>
 </div>
