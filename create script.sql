@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `dryves`.`event` (
   `eventDate` DATETIME NOT NULL,
   `eventLogo` TEXT NULL DEFAULT NULL,
   `eventName` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idevennt`),
-  UNIQUE INDEX `idevenement_UNIQUE` (`idevennt` ASC))
+  PRIMARY KEY (`idevent`),
+  UNIQUE INDEX `idevenement_UNIQUE` (`idevent` ASC))
 ENGINE = InnoDB;
 
 
@@ -115,10 +115,10 @@ DROP TABLE IF EXISTS `dryves`.`location_has_event` ;
 
 CREATE TABLE IF NOT EXISTS `dryves`.`location_has_event` (
   `location_idlocation` INT NOT NULL,
-  `event_idevennt` INT(11) NOT NULL,
+  `event_idevent` INT(11) NOT NULL,
   `eventDate` DATETIME NULL,
-  PRIMARY KEY (`location_idlocation`, `event_idevennt`),
-  INDEX `fk_location_has_event_event1_idx` (`event_idevennt` ASC),
+  PRIMARY KEY (`location_idlocation`, `event_idevent`),
+  INDEX `fk_location_has_event_event1_idx` (`event_idevent` ASC),
   INDEX `fk_location_has_event_location1_idx` (`location_idlocation` ASC),
   CONSTRAINT `fk_location_has_event_location1`
     FOREIGN KEY (`location_idlocation`)
@@ -126,8 +126,8 @@ CREATE TABLE IF NOT EXISTS `dryves`.`location_has_event` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_location_has_event_event1`
-    FOREIGN KEY (`event_idevennt`)
-    REFERENCES `dryves`.`event` (`idevennt`)
+    FOREIGN KEY (`event_idevent`)
+    REFERENCES `dryves`.`event` (`idevent`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -141,11 +141,11 @@ DROP TABLE IF EXISTS `dryves`.`user_has_event_at_location` ;
 CREATE TABLE IF NOT EXISTS `dryves`.`user_has_event_at_location` (
   `user_iduser` INT(11) NOT NULL,
   `location_has_event_location_idlocation` INT NOT NULL,
-  `location_has_event_event_idevennt` INT(11) NOT NULL,
+  `location_has_event_event_idevent` INT(11) NOT NULL,
   `subscriptiondate` DATETIME NOT NULL,
   `car_registration` INT(11) NOT NULL,
-  PRIMARY KEY (`user_iduser`, `location_has_event_location_idlocation`, `location_has_event_event_idevennt`),
-  INDEX `fk_user_has_location_has_event_location_has_event1_idx` (`location_has_event_location_idlocation` ASC, `location_has_event_event_idevennt` ASC),
+  PRIMARY KEY (`user_iduser`, `location_has_event_location_idlocation`, `location_has_event_event_idevent`),
+  INDEX `fk_user_has_location_has_event_location_has_event1_idx` (`location_has_event_location_idlocation` ASC, `location_has_event_event_idevent` ASC),
   INDEX `fk_user_has_location_has_event_user1_idx` (`user_iduser` ASC),
   INDEX `fk_user_has_location_hat_event_car1_idx` (`car_registration` ASC),
   CONSTRAINT `fk_user_has_location_has_event_user1`
@@ -154,8 +154,8 @@ CREATE TABLE IF NOT EXISTS `dryves`.`user_has_event_at_location` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_location_has_event_location_has_event1`
-    FOREIGN KEY (`location_has_event_location_idlocation` , `location_has_event_event_idevennt`)
-    REFERENCES `dryves`.`location_has_event` (`location_idlocation` , `event_idevennt`)
+    FOREIGN KEY (`location_has_event_location_idlocation` , `location_has_event_event_idevent`)
+    REFERENCES `dryves`.`location_has_event` (`location_idlocation` , `event_idevent`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_location_hat_event_car1`

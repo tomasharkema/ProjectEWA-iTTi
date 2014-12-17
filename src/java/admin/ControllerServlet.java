@@ -5,13 +5,20 @@
  */
 package admin;
 
+import entity.Event;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import session.EventFacade;
 
 /**
  *
@@ -19,8 +26,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControllerServlet",
             loadOnStartup = 1,
-            urlPatterns = {"/admin"})
+            urlPatterns = {"/admin/events",
+                           "/admin/events/add",
+                           "/admin/events/edit"})
 public class ControllerServlet extends HttpServlet {
+
+    @EJB
+    private EventFacade eventFacade;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -35,18 +47,34 @@ public class ControllerServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
 
-        // if category page is requested
-        if (userPath.equals("/admin")) {
-            // TODO: Implement admin request
-            userPath = "/../index";
-            System.out.println("You are not allowed here!");
+        // if admin page is requested
+        if (userPath.equals("/admin/events")) {
+            userPath = "/events/index";
+
+            request.setAttribute("events", eventFacade.findAll());
 
         // if cart page is requested
-//        } else if (userPath.equals("/chooseLanguage")) {
-//            // TODO: Implement cart page request
-//
-//            userPath = "/cart";
+        } else if (userPath.equals("/admin/events/add")) {
+            userPath = "/events/add";
+        //
+        } else if (userPath.equals("/admin/events/edit")) {
+            String id = request.getParameter("id");
+            if (id == null || id.isEmpty()) {
+//                userPath = "/events/index";
 
+                response.sendRedirect("/admin/events");
+            } else {
+                Event event = eventFacade.find(Integer.parseInt(id));
+                if (event == null) {
+//                    userPath = "/events/index";
+
+                    response.sendRedirect("/admin/events");
+                } else {
+                    userPath = "/events/edit";
+
+                    request.setAttribute("event", event);
+                }
+            }
         }
 
         // use RequestDispatcher to forward request internally
@@ -73,14 +101,32 @@ public class ControllerServlet extends HttpServlet {
         String userPath = request.getServletPath();
 
         // if addToCart action is called
-        if (userPath.equals("/admin")) {
-            // TODO: Implement admin login action
+        if (userPath.equals("/admin/events/add")) {
+            // TODO: Implement add product to cart action
+            System.out.println("req: " + request.getParameter("eventName"));
+            createEvent(request);
 
-        // if purchase action is called
-//        } else if (userPath.equals("/purchase")) {
-//            // TODO: Implement purchase action
-//
-//            userPath = "/confirmation";
+//            userPath = "/events/index";
+
+            response.sendRedirect("/admin/events");
+        // if updateCart action is called
+        } else if (userPath.equals("/admin/events/edit")) {
+            String id = request.getParameter("id");
+            if (id == null || id.isEmpty()) {
+//                userPath = "/events/index";
+
+                response.sendRedirect("/admin/events");
+            } else {
+                Event event = eventFacade.find(Integer.parseInt(id));
+                if (event == null) {
+                    userPath = "/events/edit?id=" + id;
+                } else {
+                    updateEvent(request, event);
+
+//                    userPath = "/events/index";
+                    response.sendRedirect("/admin/events");
+                }
+            }
         }
 
         // use RequestDispatcher to forward request internally
@@ -91,6 +137,70 @@ public class ControllerServlet extends HttpServlet {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    /**
+     * TODO: check if attributes differ before setting them?
+     *
+     * @param request
+     * @param event
+     * @return
+     */
+    private Event updateEvent (HttpServletRequest request, Event event) {
+        String name = request.getParameter("eventName");
+//        String location = request.getParameter("eventLocation");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+
+        try {
+            date = formatter.parse(request.getParameter("eventDate"));
+        } catch (ParseException ex) {
+            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        event.setEventName(name);
+        // TODO: Implement the Location edit functionality.
+//        event.setEventLocation(location);
+        event.setEventDate(date);
+        // TODO: Implement the Logo edit functionality.
+//        event.setEventLogo(eventLogo);
+
+        eventFacade.edit(event);
+
+        return event;
+    }
+
+    /**
+     * begin date - date
+     * end date - date
+     * description - text
+     * active (/visible) - tinyint: 0 || 1
+     * @param request
+     * @return
+     */
+    private Event createEvent (HttpServletRequest request) {
+        String name = request.getParameter("eventName");
+//        String location = request.getParameter("eventLocation");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+
+        try {
+            date = formatter.parse(request.getParameter("eventDate"));
+        } catch (ParseException ex) {
+            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Event event = new Event();
+        event.setEventName(name);
+        // TODO: Implement the Location add functionality.
+//        event.setEventLocation(location);
+        event.setEventDate(date);
+        // TODO: Implement the Logo add functionality.
+//        event.setEventLogo(eventLogo);
+
+        eventFacade.create(event);
+
+        return event;
     }
 
 }
