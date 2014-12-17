@@ -66,29 +66,29 @@ public class Event implements Serializable {
     public Event() {
     }
 
-    public Event(Integer idevennt) {
-        this.idevent = idevennt;
+    public Event(Integer idevent) {
+        this.idevent = idevent;
     }
 
-    public Event(Integer idevennt, Date evenDate, String eventname) {
-        this.idevent = idevennt;
+    public Event(Integer idevent, Date evenDate, String eventname) {
+        this.idevent = idevent;
         this.eventDate = evenDate;
         this.eventName = eventname;
     }
 
-    public Integer getIdevennt() {
+    public Integer getIdevent() {
         return idevent;
     }
 
-    public void setIdevennt(Integer idevennt) {
-        this.idevent = idevennt;
+    public void setIdevent(Integer idevent) {
+        this.idevent = idevent;
     }
 
-    public Date getEvenDate() {
+    public Date getEventDate() {
         return eventDate;
     }
 
-    public void setEvenDate(Date evenDate) {
+    public void setEventDate(Date evenDate) {
         this.eventDate = evenDate;
     }
 
@@ -100,11 +100,11 @@ public class Event implements Serializable {
         this.eventLogo = eventLogo;
     }
 
-    public String getEventname() {
+    public String getEventName() {
         return eventName;
     }
 
-    public void setEventname(String eventname) {
+    public void setEventName(String eventname) {
         this.eventName = eventname;
     }
 
@@ -141,5 +141,4 @@ public class Event implements Serializable {
     public String toString() {
         return "entity.Event[ idevennt=" + idevent + " ]";
     }
-    
 }

@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.Event;
 import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,15 +41,21 @@ public class EventsServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
-        String eventId = (String)request.getParameter("eventId");
-        String url;
+        String eventId = request.getParameter("eventId");
+        int eventIdInt; 
         if (eventId == null) {
+            eventIdInt = -1;
+        } else {
+            eventIdInt = Integer.parseInt(eventId);
+        }
+        
+        String url;
+        if (eventIdInt == -1) {
             url = "/WEB-INF/view/events.jsp";
             request.setAttribute("events", eventFacade.findAll());
         } else {
             url = "/WEB-INF/view/event.jsp";
-            User findUser = new User(Integer.parseInt(eventId));
-            request.setAttribute("event", eventFacade.find(eventId));
+            request.setAttribute("event", eventFacade.find(eventIdInt));
         }
         
         try {
