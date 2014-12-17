@@ -5,25 +5,39 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     livereload = require('gulp-livereload'),
     jshint = require('gulp-jshint'),
-    stylish = require('jshint-stylish');
-
+    stylish = require('jshint-stylish'),
+    less = require('gulp-less'),
+    cssmin = require('gulp-cssmin');
+    
 gulp.task("default", ["build", "watch"]);
 
 gulp.task("watch", function(){
-    gulp.watch('./js/lib/*.js', ['build']);
+    gulp.watch(["./css/lib/*.css", "./css/less/**/*.less", './js/lib/*.js'], ['build']);
 });
 
 gulp.task('build', ['build_frontend', 'build_admin'])
 
-gulp.task('build_frontend', function() {
+gulp.task('build_frontend', ['build_frontend_js', 'build_frontend_css']);
+gulp.task('build_frontend_js', function() {
     gulp.src('./js/lib/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'))
-        .pipe(concat('main.js'))
+        .pipe(concat('dryves.js'))
         .pipe(gulp.dest('./js/dist/'))
-        .pipe(rename('main.min.js'))
+        .pipe(rename('dryves.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./js/dist/'));
+});
+
+gulp.task('build_frontend_css', function(){
+    gulp.src(["./css/lib/*.css", "./css/less/**/*.less"])
+        .pipe(less())
+        .pipe(concat('dryves.css'))
+        .pipe(gulp.dest('./css/dist/'))
+        .pipe(rename('dryves.min.css'))
+        .pipe(cssmin())
+        .pipe(gulp.dest('./css/dist/'))
+    ;
 });
 
 gulp.task('build_admin', function(){
