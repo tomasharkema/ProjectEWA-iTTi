@@ -55,6 +55,8 @@ public class Event implements Serializable {
     @Size(max = 65535)
     @Column(name = "eventLogo")
     private String eventLogo;
+    @Basic(optional = true)
+    private String description;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -107,7 +109,15 @@ public class Event implements Serializable {
     public void setEventName(String eventname) {
         this.eventName = eventname;
     }
-
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
     @XmlTransient
     public Collection<LocationHasEvent> getLocationHasEventCollection() {
         return locationHasEventCollection;

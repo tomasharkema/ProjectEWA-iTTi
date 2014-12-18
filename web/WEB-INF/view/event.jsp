@@ -12,4 +12,6 @@
 <div class="container event">
     
     <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></small></h1>
+    
+    <p class="offset">${event.description}</p>
 </div>

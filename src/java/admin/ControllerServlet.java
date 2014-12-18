@@ -157,6 +157,7 @@ public class ControllerServlet extends HttpServlet {
      */
     private Event updateEvent (HttpServletRequest request, Event event) {
         String name = request.getParameter("eventName");
+        String description = request.getParameter("description");
 //        String location = request.getParameter("eventLocation");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
@@ -173,7 +174,7 @@ public class ControllerServlet extends HttpServlet {
         event.setEventDate(date);
         // TODO: Implement the Logo edit functionality.
 //        event.setEventLogo(eventLogo);
-
+        event.setDescription(description);
         eventFacade.edit(event);
 
         return event;

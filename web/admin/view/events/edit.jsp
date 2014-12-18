@@ -58,6 +58,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="eventLogo" class="col-sm-2 control-label">Description</label>
+                                            <div class="col-sm-10">
+                                                <textarea id="description" name="description" width="100%">${event.description}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
                                                 <button type="submit" class="btn btn-default">Submit</button>
                                                 <!--button type="submit" class="btn btn-default">Save and Continue Edit</button-->
