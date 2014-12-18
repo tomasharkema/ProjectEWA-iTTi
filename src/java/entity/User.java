@@ -43,8 +43,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid"),
-    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin")})
+    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin"),
+    @NamedQuery(name = "User.findFriendsbyNameASC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY user.name ASC"),
+    @NamedQuery(name = "User.findFriendsbyNameDSC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY user.name DSC"),
+    @NamedQuery(name = "User.findFriendsbyDateASC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY friends.date ASC"),
+    @NamedQuery(name = "User.findFriendsbyDateDSC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY friends.date DSC")})
+
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -258,5 +264,5 @@ public class User implements Serializable {
     public String toString() {
         return "entity.User[ iduser=" + iduser + " ]";
     }
-    
+
 }

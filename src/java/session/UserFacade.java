@@ -6,9 +6,14 @@
 package session;
 
 import entity.User;
+import java.math.BigInteger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -16,6 +21,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class UserFacade extends AbstractFacade<User> {
+
     @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
@@ -27,5 +33,57 @@ public class UserFacade extends AbstractFacade<User> {
     public UserFacade() {
         super(User.class);
     }
-    
+
+    public User findByFbid(BigInteger fbid) {
+        Query query = em.createNamedQuery("User.findByFbid", User.class);
+        query.setParameter("fbid", fbid);
+        User user;
+        try {
+            user = (User) query.getSingleResult();
+        } catch (NoResultException ex) {
+            user = null;
+        }
+        return user;
+    }
+
+//    public List findAll() {
+//        Query query = em.createNamedQuery("User.findAll");
+//        List<User> result = query.getResultList();
+//        return result;
+//    }
+
+    public List<User> findByNAme(String name) {
+        TypedQuery query = em.createNamedQuery("User.findByName", User.class);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyNameASC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyNameASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyNameDSC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyNameDSC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyDateASC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyDateDSC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
 }
