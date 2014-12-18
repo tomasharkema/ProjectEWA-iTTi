@@ -11,6 +11,10 @@
                                 <a href="javascript:history.back()" class="btn btn-primary" role="button">
                                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to overview
                                 </a>
+                                <!-- todo: bak er een confirm in! -->
+                                <a href="delete?id=${event.idevent}" class="btn btn-danger" role="button">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                                </a>
                             </div>
                         </div>
                     </h1>
@@ -22,7 +26,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Basic Form Elements
+                            ${event.eventName}
                         </div>
                         <div class="panel-body">
                             <div class="row">

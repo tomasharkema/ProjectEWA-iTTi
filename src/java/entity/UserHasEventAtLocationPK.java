@@ -27,7 +27,7 @@ public class UserHasEventAtLocationPK implements Serializable {
     private int locationHasEventLocationIdlocation;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "location_has_event_event_idevennt")
+    @Column(name = "location_has_event_event_idevent")
     private int locationHasEventEventIdevennt;
 
     public UserHasEventAtLocationPK() {

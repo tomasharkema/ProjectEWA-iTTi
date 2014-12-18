@@ -28,7 +28,8 @@ import session.EventFacade;
             loadOnStartup = 1,
             urlPatterns = {"/admin/events",
                            "/admin/events/add",
-                           "/admin/events/edit"})
+                           "/admin/events/edit",
+                           "/admin/events/delete"})
 public class ControllerServlet extends HttpServlet {
 
     @EJB
@@ -74,6 +75,14 @@ public class ControllerServlet extends HttpServlet {
 
                     request.setAttribute("event", event);
                 }
+            }
+        } else if (userPath.equals("/admin/events/delete")) {
+            String id = request.getParameter("id");
+            if (id == null || id.isEmpty()) {
+            } else {
+                Event event = eventFacade.find(Integer.parseInt(id));
+                eventFacade.remove(event);
+                response.sendRedirect("http://localhost:8080/admin/events");
             }
         }
 
