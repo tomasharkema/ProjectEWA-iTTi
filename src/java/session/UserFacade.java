@@ -5,6 +5,8 @@
  */
 package session;
 
+import entity.Car;
+import entity.Event;
 import entity.User;
 import java.math.BigInteger;
 import java.util.List;
@@ -51,7 +53,6 @@ public class UserFacade extends AbstractFacade<User> {
 //        List<User> result = query.getResultList();
 //        return result;
 //    }
-
     public List<User> findByNAme(String name) {
         TypedQuery query = em.createNamedQuery("User.findByName", User.class);
         List<User> result = query.getResultList();
@@ -86,4 +87,24 @@ public class UserFacade extends AbstractFacade<User> {
         return result;
     }
 
+    public List<Event> findAttendingEvents(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findAttendingEvents", Event.class);
+        query.setParameter("iduser", userId);
+        List<Event> result = query.getResultList();
+        return result;
+    }
+
+    public List<Car> findCars(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findCars", Car.class);
+        query.setParameter("iduser", userId);
+        List<Car> result = query.getResultList();
+        return result;
+    }
+
+    public List<Event> findFriendEvents(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendEvents", Event.class);
+        query.setParameter("iduser", userId);
+        List<Event> result = query.getResultList();
+        return result;
+    }
 }

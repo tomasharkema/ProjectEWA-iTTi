@@ -38,7 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevennt = :idevennt"),
     @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate"),
-    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventname = :eventname")})
+    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventname = :eventname"),
+    @NamedQuery(name = "Event.findAttending", query = "select user.* from user join user_has_event_at_location on user.iduser = user_has_event_at_location.user_iduser join event on user_has_event_at_location.location_has_event_event_idevennt = event.idevennt where event.idevennt = :idevent")})
 public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
