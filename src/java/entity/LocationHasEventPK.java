@@ -23,7 +23,7 @@ public class LocationHasEventPK implements Serializable {
     private int locationIdlocation;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "event_idevennt")
+    @Column(name = "event_idevent")
     private int eventIdevennt;
 
     public LocationHasEventPK() {

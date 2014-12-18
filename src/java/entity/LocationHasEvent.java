@@ -47,7 +47,7 @@ public class LocationHasEvent implements Serializable {
     @JoinColumn(name = "location_idlocation", referencedColumnName = "idlocation", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Location location;
-    @JoinColumn(name = "event_idevennt", referencedColumnName = "idevennt", insertable = false, updatable = false)
+    @JoinColumn(name = "event_idevent", referencedColumnName = "idevent", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Event event;
 

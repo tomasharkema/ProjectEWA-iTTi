@@ -23,7 +23,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            DataTables Advanced Tables
+                            Events
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -45,7 +45,8 @@
                                             <!--td></td-->
                                             <td><fmt:formatDate value="${event.eventDate}" pattern="d MMMMM yyyy" /></td>
                                             <td class="center">4</td>
-                                            <td class="center">Edit | Delete</td>
+                                            <!-- voor de demo even uitgecomment! -->
+                                            <td class="center"><!--Edit | Delete--></td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>
