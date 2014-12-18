@@ -24,8 +24,6 @@
         <meta name="author" content="">
         <link rel="icon" href="../../favicon.ico">
 
-        <title>Carousel Template for Bootstrap</title>
-
         <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
         <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
         <script src="/js/ie-emulation-modes-warning.js"></script>
@@ -39,7 +37,7 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <!-- Custom styles for this template -->
-        <link href="/css/dist/dryves.min.css" rel="stylesheet">
+        <link href="/css/dist/dryves.css" rel="stylesheet">
     </head>
     <body id="dryves">
         <div class="navbar-wrapper">
