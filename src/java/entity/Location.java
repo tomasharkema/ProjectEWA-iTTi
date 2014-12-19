@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Location.findByCity", query = "SELECT l FROM Location l WHERE l.city = :city"),
     @NamedQuery(name = "Location.findByAddress", query = "SELECT l FROM Location l WHERE l.address = :address"),
     @NamedQuery(name = "Location.findByLocationname", query = "SELECT l FROM Location l WHERE l.locationname = :locationname"),
-    @NamedQuery(name = "Location.findEvents", query = "SELECT Event.* FROM Event JOIN Location_has_event ON Event.idevennt = Location_has_event.event_idevennt JOIN Location ON Location_has_event.location_idlocation = Location.idlocation WHERE Location.idlocation = :idlocation")})
+    @NamedQuery(name = "Location.findEvents", query = "SELECT e FROM Event e JOIN LocationHasEvent lhe ON e.idevennt = lhe.event_idevennt JOIN Location l ON lhe.location_idlocation = l.idlocation WHERE l.idlocation = :idlocation")})
 
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;

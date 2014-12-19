@@ -44,13 +44,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid"),
     @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin"),
-    @NamedQuery(name = "User.findFriendsbyNameASC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY user.name ASC"),
-    @NamedQuery(name = "User.findFriendsbyNameDSC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY user.name DSC"),
-    @NamedQuery(name = "User.findFriendsbyDateASC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY friends.date ASC"),
-    @NamedQuery(name = "User.findFriendsbyDateDSC", query = "Select USER.* FROM User JOIN friends ON Friends.user_iduser1 = User.iduser where Friends.user_iduser = :iduser ORDER BY friends.date DSC"),
-    @NamedQuery(name = "User.findAttendingEvents", query = "SELECT event.* from event join user_has_event_at_location on event.idevennt = user_has_event_at_location.location_has_event_location_idlocation Join user on user_has_event_at_location.user_iduser = user.iduser WHERE user.iduser = :iduser"),
-    @NamedQuery(name = "User.findCars", query = "SELECT car.* FROM car join user on user.iduser = car.user_iduser where user.iduser = :iduser"),
-    @NamedQuery(name = "User.findFriendEvents", query = "Select Event.* FROM event JOIN user_has_event_at_location on event.idevennt = user_has_event_at_location.location_has_event_event_idevennt join user on user_has_event_at_location.user_iduser = user.iduser join friends on user.iduser = friends.user_iduser join user yourFriend on friends.user_iduser1 = user.iduser WHERE yourFriend.iduser = :iduser ORDER BY friends.date")})
+    @NamedQuery(name = "User.findFriendsbyNameASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY u.name ASC"),
+    @NamedQuery(name = "User.findFriendsbyDateASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY f.date ASC"),
+    
+    @NamedQuery(name = "User.findCars", query = "SELECT c FROM Car c JOIN User u on u.iduser = c.user_iduser where u.iduser = :iduser")})
 
 public class User implements Serializable {
 

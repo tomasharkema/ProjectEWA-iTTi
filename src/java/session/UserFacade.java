@@ -107,4 +107,8 @@ public class UserFacade extends AbstractFacade<User> {
         List<Event> result = query.getResultList();
         return result;
     }
+
+    public void addUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
