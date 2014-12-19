@@ -47,7 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findFriendsbyNameASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY u.name ASC"),
     @NamedQuery(name = "User.findFriendsbyDateASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY f.date ASC"),
     @NamedQuery(name = "User.findAttendingEvents", query = "SELECT e from Event e JOIN UserHasEventAtLocation u on e.idevennt = u.location_has_event_location_idlocation Join User us ON u.user_iduser = us.iduser WHERE us.iduser = :iduser"),
-    @NamedQuery(name = "User.findCars", query = "SELECT c FROM Car c JOIN User u on u.iduser = c.user_iduser where u.iduser = :iduser")})
+    @NamedQuery(name = "User.findCars", query = "SELECT c FROM Car c JOIN User u on u.iduser = c.user_iduser where u.iduser = :iduser"),
+    @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEventAtLocation uhe ON e.idevennt = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
+    @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEventAtLocation uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.subscriptiondate ASC")})
 
 public class User implements Serializable {
 

@@ -9,6 +9,7 @@ import entity.Car;
 import entity.Event;
 import entity.User;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -67,9 +68,10 @@ public class UserFacade extends AbstractFacade<User> {
     }
 
     public List<User> findFriendsbyNameDSC(int userId) {
-        TypedQuery query = em.createNamedQuery("User.findFriendsbyNameDSC", User.class);
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyNameASC", User.class);
         query.setParameter("iduser", userId);
         List<User> result = query.getResultList();
+        Collections.reverse(result);
         return result;
     }
 
@@ -84,6 +86,7 @@ public class UserFacade extends AbstractFacade<User> {
         TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", User.class);
         query.setParameter("iduser", userId);
         List<User> result = query.getResultList();
+        Collections.reverse(result);
         return result;
     }
 
