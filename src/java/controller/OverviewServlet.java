@@ -7,6 +7,9 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,6 +46,18 @@ public class OverviewServlet extends HttpServlet {
         
         //make users available in the overview.jsp
         request.setAttribute("users", userFacade.findAll());
+        
+        ArrayList timeline = new ArrayList();
+        
+        HashMap<String, String> item = new HashMap<String, String>();
+        item.put("title", "Sander is vrienden geworden met z\'n moeder!");
+        item.put("time", "10 min geleden");
+        item.put("image", "https://scontent-a-ams.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/1524879_10201996748137841_382722711_n.jpg?oh=7d47ccb4bff22180c9bfdd8d3df7b1c0&oe=54FD6CFB");
+        
+        timeline.add(item);
+        
+        request.setAttribute("timeline", timeline);
+        
         
         try {
             request.getRequestDispatcher(url).forward(request, response);
