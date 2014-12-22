@@ -9,12 +9,12 @@
             </ol>
             <div class="carousel-inner" role="listbox">
                 <div class="item active">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">
+                    <img src="http://www.awakenings.nl/static/images/pages/home/20140716/1.jpg" alt="First slide">
                     <div class="container">
                         <div class="carousel-caption">
                             <h1>Dryves Community</h1>
                             <p>The online platform for helping people travel together.</p>
-                            <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+                            <p><a class="btn btn-lg btn-primary" href="/login.jsp" role="button">Sign up today</a></p>
                         </div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                         It will also help to reduce traffice jams.</p>
                 </div>
                 <div class="col-md-5">
-                    <img class="featurette-image img-responsive" data-src="img/logo.png" alt="Generic placeholder image">
+                    <img class="featurette-image img-responsive" src="https://blog.klm.com/assets/uploads/2014/07/sensation_2014_04.jpg" alt="Generic placeholder image">
                 </div>
             </div>
 
@@ -108,7 +108,7 @@
 
             <div class="row featurette">
                 <div class="col-md-5">
-                    <img class="featurette-image img-responsive" data-src="img/logo.png" alt="Generic placeholder image">
+                    <img class="featurette-image img-responsive" src="img/logo.png" alt="Generic placeholder image">
                 </div>
                 <div class="col-md-7">
                     <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
@@ -125,7 +125,7 @@
                         a better environment for our society.</p>
                 </div>
                 <div class="col-md-5">
-                    <img class="featurette-image img-responsive" data-src="img/logo.png" alt="Generic placeholder image">
+                    <img class="featurette-image img-responsive" src="http://www.awakenings.nl/static/images/pages/home/20140716/1.jpg" alt="Generic placeholder image">
                 </div>
             </div>
 
