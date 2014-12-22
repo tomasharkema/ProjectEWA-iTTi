@@ -21,6 +21,7 @@ import javax.persistence.TypedQuery;
  * @author Repr
  */
 public class Search {
+
     private EntityManager em;
 
     /*
@@ -53,6 +54,11 @@ public class Search {
 
         return results;
     }
+    /*
+    Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
+    Lists will be sorted by date, 
+    @Return: List<TimeLineNode> 
+     */
 
     public List<TimeLineNode> timeLineSearch(int userId) {
         List<TimeLineNode> results = new ArrayList();
@@ -63,11 +69,16 @@ public class Search {
         attendingUpdates = attendingUpdates(userId);
         results.addAll(friendUpdates);
         results.addAll(attendingUpdates);
-        
-        
+
+        results.sort(new dateComparetor());
+
         return results;
     }
-
+    
+    /*
+    Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
+    @return List<TimeLineNode>. all nodes consist of 2 users.
+    */
     private List<TimeLineNode> friendUpdates(int userId) {
         List<TimeLine> localFriendUpdates;
         TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
@@ -95,7 +106,11 @@ public class Search {
         Collections.reverse(friendUpdates);
         return friendUpdates;
     }
-
+    
+    /*
+    Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
+    @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
+    */
     private List<TimeLineNode> attendingUpdates(int userId) {
         List<TimeLine> findFriends;
         TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);

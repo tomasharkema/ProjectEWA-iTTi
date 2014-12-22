@@ -5,10 +5,27 @@
  */
 package searching;
 
+import java.util.Comparator;
+
 /**
  *
  * @author Repr
  */
-public class dateComparetor {
+public class dateComparetor implements Comparator<TimeLineNode> {
+
+    public dateComparetor() {
+    }
+
+    @Override
+    public int compare(TimeLineNode n1, TimeLineNode n2) {
+       if(n1.getDate().before(n2.getDate())){
+           return -1;
+       }
+       else {
+           return 1;
+       }
+    }
+
+
     
 }

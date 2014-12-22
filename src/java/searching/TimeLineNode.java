@@ -9,19 +9,17 @@ import entity.User;
 import java.util.Date;
 
 /**
+ * Class that contains 2 TimeLine objects. The first will always be a user. The
+ * second can either be an event or a user.
  *
  * @author Repr
  */
 public class TimeLineNode {
-    
+
     private TimeLine one;
     private TimeLine two;
     private Date date;
     private String mergeLine;
-
-
-    
-    
 
     public TimeLine getOne() {
         return one;
@@ -49,7 +47,7 @@ public class TimeLineNode {
 
     @Override
     public String toString() {
-        return one + "got a relation with" + two + " on " + date;
+        return one + this.getMergeLine() + two + " on " + date;
     }
 
     public String getMergeLine() {
@@ -60,15 +58,15 @@ public class TimeLineNode {
         this.mergeLine = mergeLine;
     }
 
-    
-    
+    /*
+     Method used for setting display puposes. it checks the instance of the 2nd object in the node to determine the appropriate sentence.
+     */
     public void findMergeLine() {
-        if(two instanceof User){
+        if (two instanceof User) {
             this.setMergeLine(" became friends with ");
         } else {
             this.setMergeLine(" attends ");
         }
     }
-    
-    
+
 }
