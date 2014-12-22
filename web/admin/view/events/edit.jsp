@@ -54,7 +54,7 @@
                                         <div class="form-group">
                                             <label for="eventLogo" class="col-sm-2 control-label">Logo</label>
                                             <div class="col-sm-10">
-                                                <input type="file" id="eventLogo" name="eventLogo">
+                                                <input type="text" id="eventLogo" name="eventLogo" value="${event.eventLogo}">
                                             </div>
                                         </div>
                                         <div class="form-group">
