@@ -8,10 +8,12 @@ package entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -93,7 +95,17 @@ public class User implements Serializable {
     private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Friends> friendsCollection;
+    @OneToMany(mappedBy = "iduser", fetch = FetchType.LAZY)
+    private Set<User> friends; 
 
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Set friends) {
+        this.friends = friends;
+    }
+    
     public User() {
     }
 
@@ -218,7 +230,7 @@ public class User implements Serializable {
     public Collection<Friends> getFriendsCollection() {
         return friendsCollection;
     }
-
+    
     public void setFriendsCollection(Collection<Friends> friendsCollection) {
         this.friendsCollection = friendsCollection;
     }
