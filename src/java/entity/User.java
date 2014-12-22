@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import searching.TimeLine;
 
 /**
  *
@@ -51,7 +52,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEventAtLocation uhe ON e.idevennt = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
     @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEventAtLocation uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.subscriptiondate ASC")})
 
-public class User implements Serializable {
+public class User implements Serializable, TimeLine {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -266,5 +267,20 @@ public class User implements Serializable {
     public String toString() {
         return "entity.User[ iduser=" + iduser + " ]";
     }
+
+    @Override
+    public String getPicture() {
+        return this.getUserAvatar();
+    }
+
+    @Override
+    public int getId() {
+    return this.getIduser();
+    }
+
+    
+
+    
+    
 
 }

@@ -22,6 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import searching.TimeLine;
 
 /**
  *
@@ -139,5 +140,6 @@ public class UserHasEventAtLocation implements Serializable {
         return "entity.UserHasEventAtLocation[ userHasEventAtLocationPK=" + userHasEventAtLocationPK + " ]";
     }
 
+    
     
 }
