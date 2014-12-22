@@ -63,10 +63,18 @@ public class TimeLineNode {
      */
     public void findMergeLine() {
         if (two instanceof User) {
-            this.setMergeLine(" became friends with ");
+            this.setMergeLine(one.getName() + " became friends with " + two.getName());
         } else {
-            this.setMergeLine(" attends ");
+            this.setMergeLine(one.getName() + " attends " + two.getName());
         }
+    }
+    
+    public String getPictureOne(){
+        return one.getPicture();
+    }
+    
+    public String getPictureTwo(){
+        return two.getPicture();
     }
 
 }
