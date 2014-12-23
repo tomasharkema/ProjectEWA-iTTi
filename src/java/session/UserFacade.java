@@ -11,11 +11,14 @@ import entity.User;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
+import java.util.Collections;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.TypedQuery;
 
 /**
@@ -36,8 +39,8 @@ public class UserFacade extends AbstractFacade<User> {
     public UserFacade() {
         super(User.class);
     }
-    
-    public User findByFbid(BigInteger fbid){
+
+    public User findByFbid(BigInteger fbid) {
         Query query = em.createNamedQuery("User.findByFbid", User.class);
         query.setParameter("fbid", fbid);
         User user;

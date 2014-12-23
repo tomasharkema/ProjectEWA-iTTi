@@ -156,7 +156,7 @@ public class Event implements Serializable, TimeLine {
     public String toString() {
         return "entity.Event[ idevennt=" + idevent + " ]";
     }
-    
+
     @Override
     public String getName() {
         return this.getEventname();
@@ -171,5 +171,4 @@ public class Event implements Serializable, TimeLine {
     public int getId() {
      return this.getIdevennt();
     }
-    
 }
