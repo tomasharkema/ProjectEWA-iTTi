@@ -48,7 +48,7 @@
     <script src="js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/dist/main.js"></script>
+    <script src="js/dist/dryves.js"></script>
     <script src="js/lib/page/login.js"></script>
   </body>
 </html>
