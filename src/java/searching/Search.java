@@ -61,16 +61,18 @@ public class Search {
      */
 
     public List<TimeLineNode> timeLineSearch(int userId) {
+        // Make list for various results. results is to combine friendUpdates and attendingUpdates
         List<TimeLineNode> results = new ArrayList();
         List<TimeLineNode> friendUpdates;
         List<TimeLineNode> attendingUpdates;
-
+        //calling methods to get the updates
         friendUpdates = friendUpdates(userId);
         attendingUpdates = attendingUpdates(userId);
+        //adding all results from friends and events into a single List
         results.addAll(friendUpdates);
         results.addAll(attendingUpdates);
-
-        results.sort(new dateComparetor());
+        //Sort all results by date
+        Collections.sort(results, new dateComparetor());
 
         return results;
     }
@@ -80,17 +82,23 @@ public class Search {
     @return List<TimeLineNode>. all nodes consist of 2 users.
     */
     private List<TimeLineNode> friendUpdates(int userId) {
+        //make list to save results too
         List<TimeLine> localFriendUpdates;
+        //make a list of your own "new friends" sorted by date
         TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
         friendQuery.setParameter("iduser", userId);
         localFriendUpdates = friendQuery.getResultList();
-
+        
+        //new list for storing all new friends of your friends
         List<TimeLineNode> friendUpdates = new ArrayList();
-
+        
+        //iterate through previously made list to find all friends of friends
         for (TimeLine friendUpdate : localFriendUpdates) {
             TypedQuery findUpdates = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
             findUpdates.setParameter("iduser", friendUpdate.getId());
             List<TimeLine> temp = findUpdates.getResultList();
+            //iterate through list to get the date friendship was set and combine the friend/user with the new friend with
+           // the date into a node object 
             for (TimeLine temp1 : temp) {
                 TimeLineNode node = new TimeLineNode();
                 node.setOne(friendUpdate);

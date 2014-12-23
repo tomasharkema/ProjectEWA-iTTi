@@ -49,11 +49,11 @@ public class UserFacade extends AbstractFacade<User> {
         return user;
     }
 
-//    public List findAll() {
-//        Query query = em.createNamedQuery("User.findAll");
-//        List<User> result = query.getResultList();
-//        return result;
-//    }
+    public List findAll() {
+        Query query = em.createNamedQuery("User.findAll");
+        List<User> result = query.getResultList();
+        return result;
+    }
     public List<User> findByNAme(String name) {
         TypedQuery query = em.createNamedQuery("User.findByName", User.class);
         List<User> result = query.getResultList();
