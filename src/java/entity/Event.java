@@ -37,10 +37,10 @@ import searching.TimeLine;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevennt = :idevennt"),
-    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.evenDate = :evenDate"),
-    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventname = :eventname"),
-    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEventAtLocation us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevennt = e.idevennt WHERE e.idevennt = :idevent")})
+    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevent = :idevennt"),
+    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
+    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventname"),
+    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEventAtLocation us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevennt = e.idevent WHERE e.idevent = :idevent")})
 public class Event implements Serializable, TimeLine {
     private static final long serialVersionUID = 1L;
     @Id
