@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -23,6 +24,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import searching.Search;
+import searching.TimeLineNode;
 import session.UserFacade;
 
 /**
@@ -43,6 +46,8 @@ public class OverviewServlet extends HttpServlet {
      */
     @EJB
     private UserFacade userFacade;
+    @EJB
+    private Search search;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -73,14 +78,9 @@ public class OverviewServlet extends HttpServlet {
     }
     
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) {
-        ArrayList timeline = new ArrayList();
-        
-        HashMap<String, String> item = new HashMap<String, String>();
-        item.put("title", "Sander is vrienden geworden met z\'n moeder!");
-        item.put("time", "10 min geleden");
-        item.put("image", "https://scontent-a-ams.xx.fbcdn.net/hphotos-xpa1/v/t1.0-9/1524879_10201996748137841_382722711_n.jpg?oh=7d47ccb4bff22180c9bfdd8d3df7b1c0&oe=54FD6CFB");
-        
-        timeline.add(item);
+        HttpSession session = request.getSession();
+        User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getId());
+        List<TimeLineNode> timeline = search.timeLineSearch(currentUser.getId());
         
         request.setAttribute("timeline", timeline);
     }

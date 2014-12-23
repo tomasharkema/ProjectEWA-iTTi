@@ -60,7 +60,7 @@ FBLogin.prototype = {
                         this.FBCheckUserAccount({fbuser:fbuser, avatar:avatarUrl}, function(res){
                             console.log(res);
                             if (res.loggedin) {
-                                dryves.redirect(this.FBRedirect);
+                                dryvesInstance.redirect(this.FBRedirect);
                             }
                         }.bind(this));
                     }.bind(this));

@@ -4,10 +4,9 @@
  * and open the template in the editor.
  */
 
-
-dryves.fb.setFBLoginRedirect("/");
-
 $(function(){
+    console.log(dryvesInstance);
+    dryvesInstance.fb.setFBLoginRedirect("/");
     var login = new Login("#login");
-    dryves.fb.registerFBLoginButton("#fblogin");
+    dryvesInstance.fb.registerFBLoginButton("#fblogin");
 });

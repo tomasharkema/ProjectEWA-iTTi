@@ -17,6 +17,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import searching.TimeLine;
 
 /**
  *
@@ -79,10 +80,10 @@ public class UserFacade extends AbstractFacade<User> {
         return result;
     }
 
-    public List<User> findFriendsbyDateASC(int userId) {
-        TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", User.class);
+    public List<TimeLine> findFriendsbyDateASC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
         query.setParameter("iduser", userId);
-        List<User> result = query.getResultList();
+        List<TimeLine> result = query.getResultList();
         return result;
     }
 

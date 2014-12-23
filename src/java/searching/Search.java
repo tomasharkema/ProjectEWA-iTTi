@@ -13,17 +13,29 @@ import entity.UserHasEventAtLocation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import session.UserFacade;
 
 /**
  *
  * @author Repr
  */
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class Search {
-
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
-
+    
+    @EJB
+    private UserFacade userFacade;
+    
+    
     /*
      Method used to search in the following database tables: Users, Events, Locations
      Will search with wildcards in front and behind the given string
@@ -85,9 +97,8 @@ public class Search {
         //make list to save results too
         List<TimeLine> localFriendUpdates;
         //make a list of your own "new friends" sorted by date
-        TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
-        friendQuery.setParameter("iduser", userId);
-        localFriendUpdates = friendQuery.getResultList();
+        System.out.println(userFacade);
+        localFriendUpdates = userFacade.findFriendsbyDateASC(userId);
         
         //new list for storing all new friends of your friends
         List<TimeLineNode> friendUpdates = new ArrayList();
@@ -97,6 +108,7 @@ public class Search {
             TypedQuery findUpdates = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
             findUpdates.setParameter("iduser", friendUpdate.getId());
             List<TimeLine> temp = findUpdates.getResultList();
+            System.out.println(temp);
             //iterate through list to get the date friendship was set and combine the friend/user with the new friend with
            // the date into a node object 
             for (TimeLine temp1 : temp) {
@@ -104,6 +116,7 @@ public class Search {
                 node.setOne(friendUpdate);
                 node.setTwo(temp1);
                 TypedQuery findDate = em.createNamedQuery("Friends.findDateWithUsers", Friends.class);
+                System.out.println(node.getOne().getId() + " " + node.getTwo().getId());
                 findDate.setParameter("userIduser", node.getOne().getId()).setParameter("userIduser1", node.getTwo().getId());
                 Friends friendShip = (Friends) findDate.getSingleResult();
                 node.setDate(friendShip.getDate());

@@ -40,8 +40,4 @@ Dryves.prototype = {
     }
 };
 
-(function(){
-    "use strict";
-    console.log("hallo met dryves");
-    var dryves = new Dryves();
-})();
+var dryvesInstance = new Dryves();
