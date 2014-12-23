@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import searching.TimeLine;
 
 /**
  *
@@ -35,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserHasEventAtLocation.findByLocationHasEventLocationIdlocation", query = "SELECT u FROM UserHasEventAtLocation u WHERE u.userHasEventAtLocationPK.locationHasEventLocationIdlocation = :locationHasEventLocationIdlocation"),
     @NamedQuery(name = "UserHasEventAtLocation.findByLocationHasEventEventIdevennt", query = "SELECT u FROM UserHasEventAtLocation u WHERE u.userHasEventAtLocationPK.locationHasEventEventIdevennt = :locationHasEventEventIdevennt"),
     @NamedQuery(name = "UserHasEventAtLocation.findBySubscriptiondate", query = "SELECT u FROM UserHasEventAtLocation u WHERE u.subscriptiondate = :subscriptiondate")})
+
 public class UserHasEventAtLocation implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -136,5 +139,7 @@ public class UserHasEventAtLocation implements Serializable {
     public String toString() {
         return "entity.UserHasEventAtLocation[ userHasEventAtLocationPK=" + userHasEventAtLocationPK + " ]";
     }
+
+    
     
 }
