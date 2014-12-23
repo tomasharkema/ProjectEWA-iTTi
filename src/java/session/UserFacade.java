@@ -5,13 +5,24 @@
  */
 package session;
 
+import entity.Car;
+import entity.Event;
 import entity.User;
 import java.math.BigInteger;
+<<<<<<< HEAD
+=======
+import java.util.Collections;
+import java.util.List;
+>>>>>>> 8f04540a76a6dac0114749f9966b2e2c4e563819
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+<<<<<<< HEAD
+=======
+import javax.persistence.TypedQuery;
+>>>>>>> 8f04540a76a6dac0114749f9966b2e2c4e563819
 
 /**
  *
@@ -19,6 +30,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class UserFacade extends AbstractFacade<User> {
+
     @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
@@ -30,22 +42,100 @@ public class UserFacade extends AbstractFacade<User> {
     public UserFacade() {
         super(User.class);
     }
+<<<<<<< HEAD
     
     public User findByFbid(BigInteger fbid){
+=======
+
+    public User findByFbid(BigInteger fbid) {
+>>>>>>> 8f04540a76a6dac0114749f9966b2e2c4e563819
         Query query = em.createNamedQuery("User.findByFbid", User.class);
         query.setParameter("fbid", fbid);
         User user;
         try {
+<<<<<<< HEAD
             user = (User)query.getSingleResult();
+=======
+            user = (User) query.getSingleResult();
+>>>>>>> 8f04540a76a6dac0114749f9966b2e2c4e563819
         } catch (NoResultException ex) {
             user = null;
         }
         return user;
     }
+<<<<<<< HEAD
     
     public void addUser(User user) {
         em.persist(user);
     }
 
     
+=======
+
+    public List findAll() {
+        Query query = em.createNamedQuery("User.findAll");
+        List<User> result = query.getResultList();
+        return result;
+    }
+    public List<User> findByNAme(String name) {
+        TypedQuery query = em.createNamedQuery("User.findByName", User.class);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyNameASC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyNameASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyNameDSC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyNameASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        Collections.reverse(result);
+        return result;
+    }
+
+    public List<User> findFriendsbyDateASC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
+    public List<User> findFriendsbyDateDSC(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", User.class);
+        query.setParameter("iduser", userId);
+        List<User> result = query.getResultList();
+        Collections.reverse(result);
+        return result;
+    }
+
+    public List<Event> findAttendingEvents(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findAttendingEvents", Event.class);
+        query.setParameter("iduser", userId);
+        List<Event> result = query.getResultList();
+        return result;
+    }
+
+    public List<Car> findCars(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findCars", Car.class);
+        query.setParameter("iduser", userId);
+        List<Car> result = query.getResultList();
+        return result;
+    }
+
+    public List<Event> findFriendEvents(int userId) {
+        TypedQuery query = em.createNamedQuery("User.findFriendEvents", Event.class);
+        query.setParameter("iduser", userId);
+        List<Event> result = query.getResultList();
+        return result;
+    }
+
+    public void addUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+>>>>>>> 8f04540a76a6dac0114749f9966b2e2c4e563819
 }

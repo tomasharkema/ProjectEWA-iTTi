@@ -3,23 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entity;
+package searching;
+
+
 
 /**
  *
  * @author Repr
  */
-public interface EntityInterface {
-   
-    public EntityInterface render();
+public interface TimeLine {
 
     public String getName();
-    
-    public String getTown();
-    
-    public String getPictureUrl();
-    
-    public String getMostRecent();
-    
-    
+
+    public String getPicture();
+
+    public int getId();
+
+
 }

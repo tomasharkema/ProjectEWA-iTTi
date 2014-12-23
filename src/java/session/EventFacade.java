@@ -6,9 +6,12 @@
 package session;
 
 import entity.Event;
+import entity.User;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -16,6 +19,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class EventFacade extends AbstractFacade<Event> {
+
     @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
 
@@ -27,5 +31,12 @@ public class EventFacade extends AbstractFacade<Event> {
     public EventFacade() {
         super(Event.class);
     }
-    
+
+    public List<User> findAttending(int eventId) {
+        TypedQuery query = em.createNamedQuery("Event.findAttending", User.class);
+        query.setParameter("idevent", eventId);
+        List<User> result = query.getResultList();
+        return result;
+    }
+
 }
