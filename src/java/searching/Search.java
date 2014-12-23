@@ -70,7 +70,8 @@ public class Search {
         results.addAll(friendUpdates);
         results.addAll(attendingUpdates);
 
-        Collections.sort(results, new dateComparetor());
+        results.sort(new dateComparetor());
+
         return results;
     }
     
