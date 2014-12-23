@@ -11,10 +11,9 @@
                                 <a href="javascript:history.back()" class="btn btn-primary" role="button">
                                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to overview
                                 </a>
-                                <!-- todo: bak er een confirm in! -->
-                                <a href="delete?id=${event.idevent}" class="btn btn-danger" role="button">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </h1>
@@ -108,3 +107,25 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+        
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Event</h4>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="delete?id=${event.idevent}" class="btn btn-danger" role="button">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+        
