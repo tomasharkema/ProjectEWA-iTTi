@@ -13,7 +13,7 @@
             <p>JA! Help mij mijn vrienden te vinden!</p>
         </div>
     </c:if>
-    <c:forEach items="${vrienden}" var="vriend">
+    <c:forEach items="${friends}" var="vriend">
         <div class="well well-sm avatar">
             <img src="${item.image}" class="img-circle avatar-timeline pull-left">
             <h4>${item.title}</h4>

@@ -80,19 +80,19 @@ public class OverviewServlet extends HttpServlet {
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getId());
-        List<TimeLineNode> timeline = search.timeLineSearch(currentUser.getId());
+        //List<TimeLineNode> timeline = search.timeLineSearch(currentUser.getId());
         
-        request.setAttribute("timeline", timeline);
+        //request.setAttribute("timeline", timeline);
     }
     
     private void handleVrienden(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getIduser());
-        //System.out.println(currentUser.getFriendsCollection());
-        //Set friends = currentUser.getFriends();
+        System.out.println(userFacade.findFriendsbyNameDSC(currentUser.getId()));
+        List<User> friends = userFacade.findFriendsbyNameDSC(currentUser.getId());
         
-        //request.setAttribute("hasNoFriends", friends.isEmpty());
-        //request.setAttribute("friends", friends);
+        request.setAttribute("hasNoFriends", friends.isEmpty());
+        request.setAttribute("friends", friends);
     }
     
     /**
