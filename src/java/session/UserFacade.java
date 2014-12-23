@@ -11,14 +11,11 @@ import entity.User;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
-import java.util.Collections;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.TypedQuery;
 
 /**
@@ -116,9 +113,5 @@ public class UserFacade extends AbstractFacade<User> {
         query.setParameter("iduser", userId);
         List<Event> result = query.getResultList();
         return result;
-    }
-
-    public void addUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

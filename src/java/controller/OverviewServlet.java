@@ -88,11 +88,11 @@ public class OverviewServlet extends HttpServlet {
     private void handleVrienden(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getIduser());
-        System.out.println(currentUser.getFriendsCollection());
-        Set friends = currentUser.getFriends();
+        //System.out.println(currentUser.getFriendsCollection());
+        //Set friends = currentUser.getFriends();
         
-        request.setAttribute("hasNoFriends", friends.isEmpty());
-        request.setAttribute("friends", friends);
+        //request.setAttribute("hasNoFriends", friends.isEmpty());
+        //request.setAttribute("friends", friends);
     }
     
     /**
