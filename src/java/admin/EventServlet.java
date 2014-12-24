@@ -30,7 +30,7 @@ import session.EventFacade;
                            "/admin/events/add",
                            "/admin/events/edit",
                            "/admin/events/delete"})
-public class ControllerServlet extends HttpServlet {
+public class EventServlet extends HttpServlet {
 
     @EJB
     private EventFacade eventFacade;
@@ -166,7 +166,7 @@ public class ControllerServlet extends HttpServlet {
         try {
             date = formatter.parse(request.getParameter("eventDate"));
         } catch (ParseException ex) {
-            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EventServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         event.setEventName(name);
@@ -201,7 +201,7 @@ public class ControllerServlet extends HttpServlet {
         try {
             date = formatter.parse(request.getParameter("eventDate"));
         } catch (ParseException ex) {
-            Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EventServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Event event = new Event();
