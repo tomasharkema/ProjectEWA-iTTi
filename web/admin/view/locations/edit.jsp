@@ -1,8 +1,10 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Add an event
+                        Edit a location
                         <div class="pull-right">
                             <div class="btn-group">
                                 <a href="javascript:history.back()" class="btn btn-primary" role="button">
@@ -24,43 +26,29 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="add" method="post" class="form-horizontal" role="form">
+                                    <form action="edit?id=${location.idlocation}" method="post" class="form-horizontal" role="form">
                                         <div class="form-group">
-                                            <label for="eventName" class="col-sm-2 control-label">Name</label>
+                                            <label for="locationname" class="col-sm-2 control-label">Name</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Name" required="required">
+                                                <input type="text" class="form-control" id="locationname" name="locationname" value="${location.locationname}" required="required">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="location" class="col-sm-2 control-label">Location</label>
+                                            <label for="address" class="col-sm-2 control-label">Address</label>
                                             <div class="col-sm-10">
-                                                <select class="form-control" id="location" name="location">
-                                                    <c:forEach items="${locations}" var="location">
-                                                    <option value="${location.idlocation}">${location.locationname}</option>
-                                                    </c:forEach>
-                                                </select>
-                                                <p class="help-block">
-                                                    <a href="/admin/locations/add" title="Add a new location">Add a new location</a>
-                                                </p>
+                                                <input type="text" class="form-control" id="address" name="address" value="${location.address}" required="required">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventDate" class="col-sm-2 control-label">Date</label>
+                                            <label for="city" class="col-sm-2 control-label">City</label>
                                             <div class="col-sm-10">
-                                                <input type="date" class="form-control" id="eventDate" name="eventDate" placeholder="Date" required="required">
-                                                <p class="help-block">dd/mm/yyyy</p>
+                                                <input type="text" class="form-control" id="city" name="city" value="${location.city}" required="required">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventLogo" class="col-sm-2 control-label">Logo</label>
+                                            <label for="locationpicture" class="col-sm-2 control-label">Picture</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" id="eventLogo" name="eventLogo">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="description" class="col-sm-2 control-label">Description</label>
-                                            <div class="col-sm-10">
-                                                <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+                                                <input type="text" id="locationpicture" name="locationpicture" value="${location.locationpicture}">
                                             </div>
                                         </div>
                                         <div class="form-group">

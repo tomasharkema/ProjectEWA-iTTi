@@ -37,12 +37,19 @@
                                                 <input type="text" class="form-control" id="eventName" name="eventName" value="${event.eventName}" required="required">
                                             </div>
                                         </div>
-                                        <!--div class="form-group">
-                                            <label for="eventLocation" class="col-sm-2 control-label">Location</label>
+                                        <div class="form-group">
+                                            <label for="location" class="col-sm-2 control-label">Location</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="eventLocation" name="eventLocation" value="" required="required">
+                                                <select class="form-control" id="location" name="location">
+                                                    <c:forEach items="${locations}" var="location">
+                                                    <option value="${location.idlocation}">${location.locationname}</option>
+                                                    </c:forEach>
+                                                </select>
+                                                <p class="help-block">
+                                                    <a href="/admin/locations/add" title="Add a new location">Add a new location</a>
+                                                </p>
                                             </div>
-                                        </div-->
+                                        </div>
                                         <div class="form-group">
                                             <label for="eventDate" class="col-sm-2 control-label">Date</label>
                                             <div class="col-sm-10">
@@ -53,13 +60,13 @@
                                         <div class="form-group">
                                             <label for="eventLogo" class="col-sm-2 control-label">Logo</label>
                                             <div class="col-sm-10">
-                                                <input type="text" id="eventLogo" name="eventLogo" value="${event.eventLogo}">
+                                                <input class="form-control" type="text" id="eventLogo" name="eventLogo" value="${event.eventLogo}">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventLogo" class="col-sm-2 control-label">Description</label>
+                                            <label for="description" class="col-sm-2 control-label">Description</label>
                                             <div class="col-sm-10">
-                                                <textarea id="description" name="description" width="100%">${event.description}</textarea>
+                                                <textarea class="form-control" rows="3" id="description" name="description">${event.description}</textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">

@@ -7,7 +7,6 @@ package admin;
 
 import entity.Location;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,12 +55,21 @@ public class LocationServlet extends HttpServlet {
             userPath = "/locations/add";
 
         // if checkout page is requested
-        } else if (userPath.equals("/checkout")) {
-            // TODO: Implement checkout page request
+        } else if (userPath.equals("/admin/locations/edit")) {
+            String id = request.getParameter("id");
+            
+            if (id == null || id.isEmpty()) {
+                response.sendRedirect("/admin/locations");
+            } else {
+                Location location = locationFacade.find(Integer.parseInt(id));
+                if (location == null) {
+                    response.sendRedirect("/admin/loctions");
+                } else {
+                    userPath = "/locations/edit";
 
-        // if user switches language
-        } else if (userPath.equals("/chooseLanguage")) {
-            // TODO: Implement language request
+                    request.setAttribute("location", location);
+                }
+            }
 
         }
 
@@ -87,23 +95,29 @@ public class LocationServlet extends HttpServlet {
     throws ServletException, IOException {
 
         String userPath = request.getServletPath();
-
-        // if addToCart action is called
+        
         if (userPath.equals("/admin/locations/add")) {
             
             createLocation(request);
 
             response.sendRedirect("/admin/locations");
-
-        // if updateCart action is called
-        } else if (userPath.equals("/updateCart")) {
-            // TODO: Implement update cart action
-
-        // if purchase action is called
-        } else if (userPath.equals("/purchase")) {
-            // TODO: Implement purchase action
-
-            userPath = "/confirmation";
+            
+        } else if (userPath.equals("/admin/locations/edit")) {
+            
+            String id = request.getParameter("id");
+            if (id == null || id.isEmpty()) {
+                response.sendRedirect("/admin/locations");
+            } else {
+                Location location = locationFacade.find(Integer.parseInt(id));
+                if (location == null) {
+                    userPath = "/events/edit?id=" + id;
+                } else {
+                    updateLocation(request, location);
+                    
+                    response.sendRedirect("/admin/locations");
+                }
+            }
+            
         }
 
         // use RequestDispatcher to forward request internally
@@ -129,6 +143,22 @@ public class LocationServlet extends HttpServlet {
         location.setLocationpicture(picture);
         
         locationFacade.create(location);
+        
+        return location;
+    }
+    
+    private Location updateLocation (HttpServletRequest request, Location location) {
+        String name = request.getParameter("locationname"),
+                address = request.getParameter("address"),
+                city = request.getParameter("city"),
+                picture = request.getParameter("locationpicture");
+        
+        location.setLocationname(name);
+        location.setAddress(address);
+        location.setCity(city);
+        location.setLocationpicture(picture);
+        
+        locationFacade.edit(location);
         
         return location;
     }

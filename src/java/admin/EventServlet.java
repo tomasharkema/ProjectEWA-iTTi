@@ -6,6 +6,8 @@
 package admin;
 
 import entity.Event;
+import entity.Location;
+import entity.LocationHasEvent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import session.EventFacade;
+import session.LocationFacade;
+import session.LocationHasEventFacade;
 
 /**
  *
@@ -34,6 +38,12 @@ public class EventServlet extends HttpServlet {
 
     @EJB
     private EventFacade eventFacade;
+    
+    @EJB
+    private LocationFacade locationFacade;
+    
+    @EJB
+    private LocationHasEventFacade locationHasEventFacade;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -57,6 +67,8 @@ public class EventServlet extends HttpServlet {
         // if cart page is requested
         } else if (userPath.equals("/admin/events/add")) {
             userPath = "/events/add";
+            
+            request.setAttribute("locations", locationFacade.findAll());
         //
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
@@ -74,6 +86,8 @@ public class EventServlet extends HttpServlet {
                     userPath = "/events/edit";
 
                     request.setAttribute("event", event);
+                    
+                    request.setAttribute("locations", locationFacade.findAll());
                 }
             }
         } else if (userPath.equals("/admin/events/delete")) {
@@ -170,12 +184,9 @@ public class EventServlet extends HttpServlet {
         }
 
         event.setEventName(name);
-        // TODO: Implement the Location edit functionality.
-//        event.setEventLocation(location);
         event.setEventDate(date);
-        // TODO: Implement the Logo edit functionality.
-//        event.setEventLogo(eventLogo);
         event.setDescription(description);
+        // TODO: Improve the Logo edit functionality.
         event.setEventLogo(eventLogo);
         eventFacade.edit(event);
 
@@ -191,10 +202,10 @@ public class EventServlet extends HttpServlet {
      * @return
      */
     private Event createEvent (HttpServletRequest request) {
-        String name = request.getParameter("eventName");
-        String description = request.getParameter("description");
-        String eventLogo = request.getParameter("eventLogo");
-//        String location = request.getParameter("eventLocation");
+        String name = request.getParameter("eventName"),
+                description = request.getParameter("description"),
+                eventLogo = request.getParameter("eventLogo"),
+                locationId = request.getParameter("location");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
@@ -206,15 +217,21 @@ public class EventServlet extends HttpServlet {
 
         Event event = new Event();
         event.setEventName(name);
-        // TODO: Implement the Location add functionality.
-//        event.setEventLocation(location);
         event.setEventDate(date);
-        // TODO: Implement the Logo add functionality.
-//        event.setEventLogo(eventLogo);
+        // TODO: Improve the Logo edit functionality.
         event.setDescription(description);
         event.setEventLogo(eventLogo);
 
         eventFacade.create(event);
+        
+        Location location = locationFacade.find(Integer.parseInt(locationId));
+        
+        LocationHasEvent locationHasEvent = new LocationHasEvent();
+        locationHasEvent.setLocation(location);
+        locationHasEvent.setEvent(event);
+        locationHasEvent.setEventDate(date);
+        
+        locationHasEventFacade.create(locationHasEvent);
 
         return event;
     }
