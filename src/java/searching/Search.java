@@ -9,7 +9,6 @@ import entity.Event;
 import entity.Friends;
 import entity.Location;
 import entity.User;
-import entity.UserHasEventAtLocation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -128,9 +127,9 @@ public class Search {
         List<TimeLineNode> eventUpdates = new ArrayList<>();
 
         for (TimeLine temp1 : findFriends) {
-            TypedQuery eventUpdate = em.createNamedQuery("UserHasEventAtLocation.findByUserIduser", UserHasEventAtLocation.class);
-            eventUpdate.setParameter("iduser", temp1.getId());
-            List<UserHasEventAtLocation> temp = eventUpdate.getResultList();
+            //TypedQuery eventUpdate = em.createNamedQuery("UserHasEventAtLocation.findByUserIduser", UserHasEventAtLocation.class);
+            //eventUpdate.setParameter("iduser", temp1.getId());
+            /*List<UserHasEventAtLocation> temp = eventUpdate.getResultList();
             for (UserHasEventAtLocation linkObject : temp) {
                 TimeLineNode node = new TimeLineNode();
                 node.setOne(temp1);
@@ -138,7 +137,7 @@ public class Search {
                 node.setDate(linkObject.getSubscriptiondate());
                 node.findMergeLine();
                 eventUpdates.add(node);
-            }
+            }*/
         }
         Collections.reverse(eventUpdates);
         return eventUpdates;

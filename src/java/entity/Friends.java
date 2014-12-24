@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Repr
+ * @author tomas
  */
 @Entity
 @Table(name = "friends")
@@ -33,9 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUserIduser", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser = :userIduser"),
     @NamedQuery(name = "Friends.findByUserIduser1", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1"),
-    @NamedQuery(name = "Friends.findDateWithUsers", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1 AND f.friendsPK.userIduser = :userIdUser"),
     @NamedQuery(name = "Friends.findByRelation", query = "SELECT f FROM Friends f WHERE f.relation = :relation"),
-    @NamedQuery(name = "Friends.findByDate", query = "SELECT f FROM Friends f WHERE f.date = :date")})
+    @NamedQuery(name = "Friends.findByDate", query = "SELECT f FROM Friends f WHERE f.date = :date"),
+    @NamedQuery(name = "Friends.findByApproved", query = "SELECT f FROM Friends f WHERE f.approved = :approved")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -50,10 +50,12 @@ public class Friends implements Serializable {
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
-    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser", insertable = false, updatable = false)
+    @Column(name = "approved")
+    private Boolean approved;
+    @JoinColumn(name = "user_iduser1", referencedColumnName = "iduser", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @JoinColumn(name = "user_iduser1", referencedColumnName = "iduser", insertable = false, updatable = false)
+    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user1;
 
@@ -96,6 +98,14 @@ public class Friends implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Boolean getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
     }
 
     public User getUser() {
