@@ -297,16 +297,16 @@
                             <a class="active" href="/admin/index.jsp"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="/admin/events"><i class="fa fa-table fa-fw"></i> Events</a>
+                            <a href="/admin/events"><i class="fa fa-calendar fa-fw"></i> Events</a>
                         </li>
                         <li>
-                            <a href="/admin/users"><i class="fa fa-table fa-fw"></i> Users</a>
+                            <a href="/admin/users"><i class="fa fa-users fa-fw"></i> Users</a>
                         </li>
                         <li>
-                            <a href="/admin/statistics"><i class="fa fa-table fa-fw"></i> Statistics</a>
+                            <a href="/admin/statistics"><i class="fa fa-bar-chart-o fa-fw"></i> Statistics</a>
                         </li>
                         <li>
-                            <a href="/admin/locations"><i class="fa fa-table fa-fw"></i> Locations</a>
+                            <a href="/admin/locations"><i class="fa fa-location-arrow fa-fw"></i> Locations</a>
                         </li>
                         <li>
                             <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>

@@ -46,7 +46,7 @@
                                         <div class="form-group">
                                             <label for="locationpicture" class="col-sm-2 control-label">Picture</label>
                                             <div class="col-sm-10">
-                                                <input type="text" id="locationpicture" name="locationpicture">
+                                                <input type="text" class="form-control" id="locationpicture" name="locationpicture">
                                             </div>
                                         </div>
                                         <div class="form-group">
