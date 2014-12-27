@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `dryves`.`event` (
   `idevent` INT(11) NOT NULL AUTO_INCREMENT,
   `eventDate` DATETIME NOT NULL,
   `eventLogo` TEXT NULL DEFAULT NULL,
+  `eventWall` TEXT NULL DEFAULT NULL,
   `eventName` VARCHAR(45) NOT NULL,
   `locationid` INT NULL,
   `description` TEXT NULL,

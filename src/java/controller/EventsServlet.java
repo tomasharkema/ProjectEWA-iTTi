@@ -50,7 +50,6 @@ public class EventsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userPath = request.getServletPath();
-        System.out.println(userPath);
         switch (userPath) {
             case "/events":{
                 serveEvents(request, response);
@@ -60,12 +59,13 @@ public class EventsServlet extends HttpServlet {
                 attendEvent(request, response);
             }
         }
-
-
     }
 
     private void serveEvents(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        User loggedinUser = (User)session.getAttribute("loggedinuser");
+        int uid = loggedinUser.getIduser();
+        User user = userFacade.find(uid);
         String eventId = request.getParameter("eventId");
         int eventIdInt;
         if (eventId == null) {
@@ -76,11 +76,17 @@ public class EventsServlet extends HttpServlet {
 
         String url;
         if (eventIdInt == -1) {
+            // Has no event
             url = "/WEB-INF/view/events.jsp";
             request.setAttribute("events", eventFacade.findAll());
         } else {
+            // Has event
             url = "/WEB-INF/view/event.jsp";
             request.setAttribute("event", eventFacade.find(eventIdInt));
+            
+            System.out.println("isAttending");
+            request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt) != null);
+            
         }
 
         try {
@@ -96,25 +102,36 @@ public class EventsServlet extends HttpServlet {
         String type = request.getParameter("type");
         User loggedinUser = (User)session.getAttribute("loggedinuser");
         int uid = loggedinUser.getIduser();
-        
         Event event = eventFacade.find(Integer.parseInt(eventId));
         User user = userFacade.find(uid);
         
         Car car = null;
-        if (type.equals("ikrijzelf")) {
-            List<Car> carList = user.getCarList();
-            System.out.println(carList);
-            car = carList.get(0);
+        switch (type) {
+            case "ikrijzelf":{
+                List<Car> carList = user.getCarList();
+                System.out.println(carList);
+                car = carList.get(0);
+                break;
+            }
         }
         
-        List<UserHasEvent> evList = user.getUserHasEventList();
-        UserHasEvent chain = new UserHasEvent(uid, event.getIdevent());
-        chain.setCarId(car);
-        evList.add(chain);
-        user.setUserHasEventList(evList);
-        
-        userFacade.updateUser(user);
-        
-        response.sendRedirect("/events");
+        if (type.equals("cancel")) {
+            UserHasEvent ev = user.isAttendingEvent(Integer.parseInt(eventId));
+            List<UserHasEvent> evList = user.getUserHasEventList();
+            evList.remove(ev);
+            user.setUserHasEventList(evList);
+            
+            userFacade.edit(user);
+        } else {
+            List<UserHasEvent> evList = user.getUserHasEventList();
+            UserHasEvent chain = new UserHasEvent(uid, event.getIdevent());
+            chain.setCarId(car);
+            chain.setDate(new Date());
+            evList.add(chain);
+            user.setUserHasEventList(evList);
+
+            userFacade.edit(user);
+        }
+        response.sendRedirect("/events?eventId=" + eventId);
     }
 }

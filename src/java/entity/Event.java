@@ -57,6 +57,10 @@ public class Event implements Serializable {
     @Size(max = 65535)
     @Column(name = "eventLogo")
     private String eventLogo;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "eventWall")
+    private String eventWall;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -109,6 +113,14 @@ public class Event implements Serializable {
         this.eventLogo = eventLogo;
     }
 
+    public String getEventWall() {
+        return eventWall;
+    }
+
+    public void setEventWall(String eventWall) {
+        this.eventWall = eventWall;
+    }
+    
     public String getEventName() {
         return eventName;
     }
