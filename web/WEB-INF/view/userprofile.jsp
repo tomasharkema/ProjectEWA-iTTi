@@ -5,56 +5,94 @@
 --%>
 
 <img src="#" alt="profile photo" style="width:100px; height:100px">
-<h3><ins>My profile</ins></h3>
-<table>
-    <tr>
-        <td><p>User ID: 12345678</p></td>
-    </tr>
-    <tr>
-        <td><p>First name:</p></td>
-        <td><input type="text" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-    <tr>
-        <td><p>Surname:</p></td>
-        <td><input type="text" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-    <tr>
-        <td><p>Password:</p></td>
-        <td><input type="password" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-    <tr>
-        <td><p>E-mail:</p></td>
-        <td><input type="email" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-    <tr>
-        <td><p>Phone number:</p></td>
-        <td><input type="tel" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-</table>
-<input type="submit" value="Update My profile"><br><br>
+<h3>My profile</h3>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputName" placeholder="Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Update My profile</button>
+        </div>
+    </div>
+</form>
 <hr><br>
 <img src="#" alt="vehicle photo" style="width:100px; height:100px">
-<h3><ins>Vehicle information</ins></h3>
-<table>
-    <tr>
-        <td><p>Brand:</p></td>
-        <td><input type="text" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-    <tr>
-        <td><p>Model:</p></td>
-        <td><input type="text" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-    <tr>
-        <td><p>Seats (up to 8):</p></td>
-        <td><input type="number" min="1" max="8" disabled></td>
-        <td><a href="#">Edit</a></td>
-    </tr>
-</table>
-<input type="submit" value="Update vehicle information"><br><br>
+<form class="form-horizontal">
+    <h3>My vehicle #1</h3>
+    <div class="form-group">
+        <label for="inputBrand" class="col-sm-2 control-label">Brand</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputBrand" placeholder="Brand">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputModel" class="col-sm-2 control-label">Model</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputModel" placeholder="Model">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputSeats" class="col-sm-2 control-label">Seats</label>
+        <div class="col-sm-2">
+            <select class="form-control" id="inputSeats">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </select>
+        </div>    
+    </div>
+    <h3>My vehicle #2</h3>
+    <div class="form-group">
+        <label for="inputBrand" class="col-sm-2 control-label">Brand</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputBrand" placeholder="Brand">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputModel" class="col-sm-2 control-label">Model</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="inputModel" placeholder="Model">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputSeats" class="col-sm-2 control-label">Seats</label>
+        <div class="col-sm-2">
+            <select class="form-control" id="inputSeats">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </select>
+        </div>    
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Update My vehicle(s)</button>
+        </div>
+    </div>
+</form>
