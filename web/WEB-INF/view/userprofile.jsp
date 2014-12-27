@@ -31,7 +31,7 @@
         </div>
     </div>
 </form>
-<hr><br>
+<hr>
 <form class="form-horizontal">
     <img class="img-circle" src="#" alt="Vehicle photo #1" style="width: 140px; height: 140px;">
     <h3>My vehicle #1</h3>
