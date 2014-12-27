@@ -33,18 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUserIduser", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser = :userIduser"),
     @NamedQuery(name = "Friends.findByUserIduser1", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1"),
-    @NamedQuery(name = "Friends.findByRelation", query = "SELECT f FROM Friends f WHERE f.relation = :relation"),
     @NamedQuery(name = "Friends.findByDate", query = "SELECT f FROM Friends f WHERE f.date = :date"),
     @NamedQuery(name = "Friends.findByApproved", query = "SELECT f FROM Friends f WHERE f.approved = :approved")})
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FriendsPK friendsPK;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "relation")
-    private String relation;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date")
@@ -68,7 +62,6 @@ public class Friends implements Serializable {
 
     public Friends(FriendsPK friendsPK, String relation, Date date) {
         this.friendsPK = friendsPK;
-        this.relation = relation;
         this.date = date;
     }
 
@@ -82,14 +75,6 @@ public class Friends implements Serializable {
 
     public void setFriendsPK(FriendsPK friendsPK) {
         this.friendsPK = friendsPK;
-    }
-
-    public String getRelation() {
-        return relation;
-    }
-
-    public void setRelation(String relation) {
-        this.relation = relation;
     }
 
     public Date getDate() {

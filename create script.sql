@@ -106,7 +106,6 @@ DROP TABLE IF EXISTS `dryves`.`friends` ;
 CREATE TABLE IF NOT EXISTS `dryves`.`friends` (
   `user_iduser` INT(11) NOT NULL,
   `user_iduser1` INT(11) NOT NULL,
-  `relation` VARCHAR(45) NOT NULL,
   `date` DATETIME NOT NULL,
   `approved` TINYINT(1) NULL,
   PRIMARY KEY (`user_iduser`, `user_iduser1`),
