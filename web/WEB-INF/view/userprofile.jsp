@@ -4,7 +4,7 @@
     Author     : Xiang
 --%>
 
-<img src="#" alt="profile photo" style="width:100px; height:100px">
+<img class="img-circle" src="#" alt="Profile photo" style="width: 140px; height: 140px;">
 <h3>My profile</h3>
 <form class="form-horizontal">
     <div class="form-group">
@@ -32,8 +32,8 @@
     </div>
 </form>
 <hr><br>
-<img src="#" alt="vehicle photo" style="width:100px; height:100px">
 <form class="form-horizontal">
+    <img class="img-circle" src="#" alt="Vehicle photo #1" style="width: 140px; height: 140px;">
     <h3>My vehicle #1</h3>
     <div class="form-group">
         <label for="inputBrand" class="col-sm-2 control-label">Brand</label>
@@ -62,6 +62,7 @@
             </select>
         </div>    
     </div>
+    <img class="img-circle" src="#" alt="Vehicle photo #2" style="width: 140px; height: 140px;">
     <h3>My vehicle #2</h3>
     <div class="form-group">
         <label for="inputBrand" class="col-sm-2 control-label">Brand</label>
