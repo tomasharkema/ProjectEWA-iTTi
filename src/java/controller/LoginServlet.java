@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import session.UserFacade;
+import validate.LoginValidator;
 
 /**
  *
@@ -129,10 +130,10 @@ public class LoginServlet extends HttpServlet {
 
         User loggedinUser = (User)session.getAttribute("loggedinuser");
         JSONObject result = new JSONObject();
-        
+
         if (loggedinUser == null) {
             loggedinUser = userFacade.findByFbid(new BigInteger(request.getParameter("id")));
-            
+
             if (loggedinUser == null) {
                 loggedinUser = createNewUser(request);
                 result.put("created_new_user", true);
@@ -142,11 +143,11 @@ public class LoginServlet extends HttpServlet {
         } else {
             result.put("created_new_user", false);
         }
-        
+
         result.put("loggedin", true);
-        session.setAttribute("loggedinuser", loggedinUser);
-        session.setAttribute("isloggedin", 1);
-            
+
+        LoginValidator.getInstance().loginUser(request, response, loggedinUser);
+
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println(result.toJSONString());
@@ -174,11 +175,8 @@ public class LoginServlet extends HttpServlet {
         return user;
     }
     
-    private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {   
-        HttpSession session = request.getSession();
-        session.setAttribute("loggedinuser", null);
-        session.setAttribute("isloggedin", 0);
-        System.out.println("LOGOUT");
+    private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LoginValidator.getInstance().logoutUser(request, response);
         response.sendRedirect("/");
     }
 }

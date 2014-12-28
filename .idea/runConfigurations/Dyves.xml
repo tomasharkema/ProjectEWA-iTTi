@@ -99,7 +99,7 @@
       </SHUTDOWN>
     </ConfigurationWrapper>
     <method>
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Build Frontend" run_configuration_type="js.build_tools.gulp" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Gulp" run_configuration_type="js.build_tools.gulp" />
       <option name="Make" enabled="true" />
       <option name="BuildArtifacts" enabled="true">
         <artifact name="Dryves" />

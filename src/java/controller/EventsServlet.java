@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import session.CarFacade;
 import session.EventFacade;
 import session.UserFacade;
+import validate.LoginValidator;
 
 /**
  *
@@ -37,15 +38,9 @@ public class EventsServlet extends HttpServlet {
     private EventFacade eventFacade;
     @EJB
     private UserFacade userFacade;
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    @EJB
+    private CarFacade carFacade;
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,10 +57,7 @@ public class EventsServlet extends HttpServlet {
     }
 
     private void serveEvents(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        User loggedinUser = (User)session.getAttribute("loggedinuser");
-        int uid = loggedinUser.getIduser();
-        User user = userFacade.find(uid);
+        User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
         String eventId = request.getParameter("eventId");
         int eventIdInt;
         if (eventId == null) {
@@ -97,13 +89,10 @@ public class EventsServlet extends HttpServlet {
     }
 
     private void attendEvent(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        HttpSession session = request.getSession();
         String eventId = request.getParameter("eventId");
         String type = request.getParameter("type");
-        User loggedinUser = (User)session.getAttribute("loggedinuser");
-        int uid = loggedinUser.getIduser();
         Event event = eventFacade.find(Integer.parseInt(eventId));
-        User user = userFacade.find(uid);
+        User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
         
         Car car = null;
         switch (type) {
@@ -112,6 +101,14 @@ public class EventsServlet extends HttpServlet {
                 System.out.println(carList);
                 car = carList.get(0);
                 break;
+            }
+            case "meerijden":{
+                int carid = Integer.parseInt(request.getParameter("carid"));
+                Car carFind = carFacade.find(carid);
+                int places = car.getPlaces();
+                if (places > 0) {
+                    car = carFind;
+                }
             }
         }
         
@@ -124,7 +121,7 @@ public class EventsServlet extends HttpServlet {
             userFacade.edit(user);
         } else {
             List<UserHasEvent> evList = user.getUserHasEventList();
-            UserHasEvent chain = new UserHasEvent(uid, event.getIdevent());
+            UserHasEvent chain = new UserHasEvent(user.getIduser(), event.getIdevent());
             chain.setCarId(car);
             chain.setDate(new Date());
             evList.add(chain);
