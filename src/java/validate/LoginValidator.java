@@ -36,9 +36,11 @@ public class LoginValidator {
     public User validateUser(HttpServletRequest req, HttpServletResponse res, UserFacade userFacade) {
         HttpSession session = req.getSession();
         Integer uid = (Integer)session.getAttribute("userId");
-        
-        User user = userFacade.find(uid);
-        System.out.println(user);
+        User user = null;
+        if (uid != null) {
+            user = userFacade.find(uid);
+        }
+
         req.setAttribute("currentUser", user);
         req.setAttribute("isLoggedin", user != null);
         return user;

@@ -148,6 +148,9 @@ public class LoginServlet extends HttpServlet {
 
         LoginValidator.getInstance().loginUser(request, response, loggedinUser);
 
+        System.out.println(request.getRemoteHost());
+        System.out.println(request.getHeaderNames());
+
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println(result.toJSONString());
