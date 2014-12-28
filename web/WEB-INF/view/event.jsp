@@ -14,11 +14,11 @@
             <c:when test="${isAttending}">
                 <div class="btn-group pull-right rsvp" role="group">
                     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                      <span class="glyphicon glyphicon-ok"></span> Ik ga
+                      <span class="glyphicon glyphicon-ok"></span> I go
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/events/attend?eventId=${event.idevent}&type=cancel"><span class="glyphicon glyphicon-remove"></span> Toch niet</a></li>
+                        <li><a href="/events/attend?eventId=${event.idevent}&type=cancel"><span class="glyphicon glyphicon-remove"></span> Cancel</a></li>
                     </ul>
                 </div>
             </c:when>
@@ -30,8 +30,8 @@
                       <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                      <li><a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf">Ik rij zelf</a></li>
-                      <li><a href="/events/attend?eventId=${event.idevent}&type=meerijden">Ik wil meerijden</a></li>
+                        <li><a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf"><span class="glyphicon glyphicon-hand-up"></span> I'll drive</a></li>
+                      <li><a href="/events/attend?eventId=${event.idevent}&type=meerijden"><span class="glyphicon glyphicon-question-sign"></span> Request place</a></li>
                     </ul>
                 </div>
             </c:otherwise>
@@ -43,3 +43,21 @@
     
     <p class="offset">${event.description}</p>
 </div>
+
+<div class="modal fade" id="meerijden_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
