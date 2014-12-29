@@ -19,7 +19,7 @@ Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
         this.injectLinks();
-        jQuery.timeago.settings.allowFuture = true;
+        $.timeago.settings.allowFuture = true;
         $("time.timeago").timeago();
     },
     injectLinks:function(){
