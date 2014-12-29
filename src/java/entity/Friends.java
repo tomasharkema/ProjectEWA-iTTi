@@ -46,10 +46,10 @@ public class Friends implements Serializable {
     private Date date;
     @Column(name = "approved")
     private Boolean approved;
-    @JoinColumn(name = "user_iduser1", referencedColumnName = "iduser", insertable = false, updatable = false)
+    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user;
-    @JoinColumn(name = "user_iduser", referencedColumnName = "iduser", insertable = false, updatable = false)
+    @JoinColumn(name = "user_iduser1", referencedColumnName = "iduser", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private User user1;
 

@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.swing.plaf.synth.SynthStyle;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -71,6 +72,8 @@ public class Event implements Serializable {
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    @Column(name = "fbevent")
+    private String fbEvent;
     @JoinColumn(name = "locationid", referencedColumnName = "idlocation")
     @ManyToOne
     private Location locationid;
@@ -155,6 +158,14 @@ public class Event implements Serializable {
         this.userHasEventList = userHasEventList;
     }
 
+    public String getFbEvent() {
+        return fbEvent;
+    }
+
+    public void setFbEvent(String fbEvent) {
+        this.fbEvent = fbEvent;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -191,6 +202,46 @@ public class Event implements Serializable {
         }
 
         return carList;
+    }
+
+    public ArrayList<User> getAttendees() {
+        ArrayList<User> users = new ArrayList<>();
+        for (UserHasEvent userHasEvent : getUserHasEventList()) {
+            User user = userHasEvent.getUser();
+            users.add(user);
+        }
+        System.out.println(getUserHasEventList());
+        System.out.println(users);
+        return users;
+    }
+
+    public ArrayList<User> getAttendingFriends(User user) {
+        ArrayList<User> friendsAttending = new ArrayList<>();
+        List<Friends> friends = user.getFriendsList();
+        List<Friends> friends1 = user.getFriendsList1();
+        System.out.println("-------");
+        System.out.println(friends);
+        System.out.println(friends1);
+        System.out.println(friends.size() + " friends");
+        System.out.println(friends1.size() + " friends");
+        System.out.println("-------");
+        for (User userAttends : getAttendees()) {
+            for (Friends friend : friends) {
+                if (userAttends.equals(friend.getUser()) && !user.equals(friend.getUser())) {
+                    friendsAttending.add(friend.getUser());
+                } else if (userAttends.equals(friend.getUser1()) && !user.equals(friend.getUser1())) {
+                    friendsAttending.add(friend.getUser1());
+                }
+            }
+            for (Friends friend : friends1) {
+                if (userAttends.equals(friend.getUser()) && !user.equals(friend.getUser())) {
+                    friendsAttending.add(friend.getUser());
+                } else if (userAttends.equals(friend.getUser1()) && !user.equals(friend.getUser1())) {
+                    friendsAttending.add(friend.getUser1());
+                }
+            }
+        }
+        return friendsAttending;
     }
 
 }

@@ -19,6 +19,8 @@ Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
         this.injectLinks();
+        jQuery.timeago.settings.allowFuture = true;
+        $("time.timeago").timeago();
     },
     injectLinks:function(){
         this.$.find('#navbar li').each(function(e){

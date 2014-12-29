@@ -44,10 +44,84 @@
             </c:otherwise>
         </c:choose>
         <img class="img-thumbnail event-ava pull-left" src="${event.eventLogo}">
-        <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></small></h1>
+        <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /> (<time class="timeago" datetime="<fmt:formatDate value="${event.eventDate}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" />"><fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></time>)</small></h1>
     </header>
-    
-    <p class="offset">${event.description}</p>
+
+    <div class="row info">
+        <div class="col-md-8">
+
+            <ul class="list-group">
+                <li class="list-group-item">
+
+                    <span class="glyphicon glyphicon-time"></span>
+
+                    <strong><fmt:formatDate value="${event.eventDate}" type="both" dateStyle="long" timeStyle="short" /></strong>
+
+                </li>
+                <li class="list-group-item">
+
+                    <span class="glyphicon glyphicon-pushpin"></span>
+
+                    ${location}
+
+                </li>
+                <li class="list-group-item">
+
+                    <span class="glyphicon glyphicon-bullhorn"></span>
+
+                    <a href="${event.fbEvent}" target="_blank">${event.eventName} on Facebook</a>
+
+                </li>
+            </ul>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    ${event.description}
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-4">
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <c:choose>
+                        <c:when test="${attendingFriends.size() != 0}">
+                            <div class="friend-avatars">
+                            <c:forEach items="${attendingFriends}" var="friend">
+                                <img src="${friend.userAvatar}">
+                            </c:forEach>
+                            </div>
+                            <c:choose>
+                                <c:when test="${attendingFriends.size() > 1}">
+                                    ${attendingFriends.get(0).name} and ${attendingFriends.size()-1} other friends are attending.
+                                </c:when>
+                                <c:otherwise>
+                                    ${attendingFriends.get(0).name} is attending.
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            No friends are attending.
+                        </c:otherwise>
+                    </c:choose>
+                </li>
+                <li class="list-group-item">
+                    <small>GUESTS</small>
+                    <div class="attending">
+                        <c:choose>
+                            <c:when test="${attendees.size() != 0}">
+                                <div class="number">${attendees.size()}</div> going
+                            </c:when>
+                            <c:otherwise>
+                                No one is attending.
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="meerijden_modal">

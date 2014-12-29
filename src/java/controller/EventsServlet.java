@@ -84,7 +84,11 @@ public class EventsServlet extends HttpServlet {
         } else {
             // Has event
             url = "/WEB-INF/view/event.jsp";
-            request.setAttribute("event", eventFacade.find(eventIdInt));
+            Event event = eventFacade.find(eventIdInt);
+            request.setAttribute("event", event);
+            request.setAttribute("location", event.getLocationid());
+            request.setAttribute("attendees", event.getAttendees());
+            request.setAttribute("attendingFriends", event.getAttendingFriends(user));
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.

@@ -12,7 +12,7 @@ and open the template in the editor.
     
     padding-top: 90px;
     
-    h1, small{
+    h1, h1 small {
         color:white;
         text-shadow:0 0 5px #000;
         margin-top:60px;
@@ -20,6 +20,7 @@ and open the template in the editor.
     
     header {
         padding-top: 100px;
+        margin-bottom: 100px;
     }
     
     .event-ava {
@@ -29,5 +30,27 @@ and open the template in the editor.
     
     .rsvp, .logintojoin {
         margin-top:60px;
+    }
+
+    .info {
+        small{
+            color:#5a5a5a;
+            font-weight: bold;
+        }
+
+        .attending {
+            text-align: center;
+
+            .number {
+                font-size: 50px;
+            }
+        }
+
+        .friend-avatars {
+            img {
+                max-width:50px;
+                max-height:50px;
+            }
+        }
     }
 }

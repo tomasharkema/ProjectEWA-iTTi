@@ -93,6 +93,8 @@ public class User implements Serializable {
     private List<Car> carList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Friends> friendsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private List<Friends> friendsList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<UserHasEvent> userHasEventList;
 
@@ -214,6 +216,14 @@ public class User implements Serializable {
 
     public void setFriendsList(List<Friends> friendsList) {
         this.friendsList = friendsList;
+    }
+
+    public List<Friends> getFriendsList1() {
+        return friendsList1;
+    }
+
+    public void setFriendsList1(List<Friends> friendsList1) {
+        this.friendsList1 = friendsList1;
     }
 
     @XmlTransient
