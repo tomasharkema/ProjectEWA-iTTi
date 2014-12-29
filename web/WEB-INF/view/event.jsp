@@ -44,7 +44,7 @@
             </c:otherwise>
         </c:choose>
         <img class="img-thumbnail event-ava pull-left" src="${event.eventLogo}">
-        <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /> (<time class="timeago" datetime="<fmt:formatDate value="${event.eventDate}" pattern="yyyy-MM-dd'T'HH:mm:ss'Z'" />"><fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></time>)</small></h1>
+        <h1>${event.eventName} <small>- <time class="timeago" datetime="<fmt:formatDate value="${event.eventDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />"><fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></time></small></h1>
     </header>
 
     <div class="row info">
@@ -76,9 +76,21 @@
 
             <ul class="list-group">
                 <li class="list-group-item">
-                    ${event.description}
+                    ${markdownDescription}
                 </li>
             </ul>
+
+            <div class="messages">
+                <h4><small>MESSAGES</small></h4>
+                <c:forEach items="${userHasEventList}" var="user">
+                    <div class="well well-sm avatar">
+                        <img src="${user.getUser().userAvatar}" class="img-circle avatar-timeline pull-left">
+                        <h4>${user.getUser().name} goes</h4>
+                        <time class="timeago" datetime="<fmt:formatDate value="${user.date}" pattern="yyyy-MM-dd'T'HH:mm:ss" />"><fmt:formatDate value="${user.date}" pattern="dd-MM-yyyy" /></time>
+                    </div>
+                </c:forEach>
+            </div>
+
         </div>
         <div class="col-sm-4">
 
@@ -89,7 +101,7 @@
                         <small>FRIENDS</small>
                         <div class="friend-avatars">
                         <c:forEach items="${attendingFriends}" var="friend">
-                            <img src="${friend.userAvatar}">
+                            <img class="img-circle" src="${friend.userAvatar}">
                         </c:forEach>
                         </div>
                         <c:choose>

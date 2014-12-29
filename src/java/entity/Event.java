@@ -219,12 +219,6 @@ public class Event implements Serializable {
         ArrayList<User> friendsAttending = new ArrayList<>();
         List<Friends> friends = user.getFriendsList();
         List<Friends> friends1 = user.getFriendsList1();
-        System.out.println("-------");
-        System.out.println(friends);
-        System.out.println(friends1);
-        System.out.println(friends.size() + " friends");
-        System.out.println(friends1.size() + " friends");
-        System.out.println("-------");
         for (User userAttends : getAttendees()) {
             for (Friends friend : friends) {
                 if (userAttends.equals(friend.getUser()) && !user.equals(friend.getUser())) {

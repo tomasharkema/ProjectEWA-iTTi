@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.markdown4j.Markdown4jProcessor;
 import session.CarFacade;
 import session.EventFacade;
 import session.UserFacade;
@@ -66,7 +67,7 @@ public class EventsServlet extends HttpServlet {
         }
     }
 
-    private void serveEvents(HttpServletRequest request, HttpServletResponse response) {
+    private void serveEvents(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
         String eventId = request.getParameter("eventId");
         int eventIdInt;
@@ -88,7 +89,10 @@ public class EventsServlet extends HttpServlet {
             request.setAttribute("event", event);
             request.setAttribute("location", event.getLocationid());
             request.setAttribute("attendees", event.getAttendees());
+            request.setAttribute("userHasEventList", event.getUserHasEventList());
             request.setAttribute("drivers", event.getAttendedCars());
+            String html = new Markdown4jProcessor().process(event.getDescription());
+            request.setAttribute("markdownDescription", html);
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
