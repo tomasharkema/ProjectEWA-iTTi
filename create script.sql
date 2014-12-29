@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # http://code.google.com/p/sequel-pro/
 #
-# Host: 192.168.0.100 (MySQL 5.5.40-0ubuntu0.14.04.1)
+# Host: 127.0.0.1 (MySQL 5.6.22)
 # Database: dryves
-# Generation Time: 2014-12-29 17:42:49 +0000
+# Generation Time: 2014-12-29 17:48:47 +0000
 # ************************************************************
 
 
@@ -43,8 +43,8 @@ LOCK TABLES `car` WRITE;
 
 INSERT INTO `car` (`registration`, `brand`, `color`, `type`, `numberSeats`, `user_iduser`)
 VALUES
-	(1,'Peugeot','BLUE','107',4,1),
-	(2,'Peugeot','BLUE','2008',6,2);
+	(3,'Peugeot','BLUE','107',4,1),
+	(4,'Peugeot','GRAY','2008',6,2);
 
 /*!40000 ALTER TABLE `car` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -68,14 +68,15 @@ CREATE TABLE `event` (
   UNIQUE KEY `idevenement_UNIQUE` (`idevent`),
   KEY `fk_event_location1_idx` (`locationid`),
   CONSTRAINT `fk_event_location1` FOREIGN KEY (`locationid`) REFERENCES `location` (`idlocation`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
 
 INSERT INTO `event` (`idevent`, `eventDate`, `eventLogo`, `eventWall`, `eventName`, `locationid`, `description`, `fbevent`)
 VALUES
-	(1,'2015-02-07 00:00:00','http://jsconf.com/images/jsconf_ar.png','http://2013.jsconf.us/img/2013-JSConfUS-Family.jpg','JSConf',NULL,'',NULL);
+	(1,'2015-06-05 00:00:00','http://jsconf.com/images/jsconf_ar.png','http://2013.jsconf.us/img/2013-JSConfUS-Family.jpg','JSConf',NULL,'hjhbjhbjh',NULL),
+	(2,'2015-06-27 00:00:00','http://www.guestzone.nl/gfx/user_photos/12146/company_logo_12146.png','https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-xpa1/v/t1.0-9/10451690_10152516915834153_8756390416509656584_n.jpg?oh=50e04067ed7cc3fc94c82d3515803a90&oe=54FF281E&__gda__=1425939464_50125263e8f9b7c6a00c793ac5db4009','AWAKENINGS Festival 2015',0,'AWAAAAKUUNIIINGGS','https://www.facebook.com/events/336121726512902/');
 
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -89,6 +90,7 @@ DROP TABLE IF EXISTS `friends`;
 CREATE TABLE `friends` (
   `user_iduser` int(11) NOT NULL,
   `user_iduser1` int(11) NOT NULL,
+  `relation` varchar(45) NOT NULL,
   `date` datetime NOT NULL,
   `approved` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`user_iduser`,`user_iduser1`),
@@ -96,15 +98,14 @@ CREATE TABLE `friends` (
   KEY `fk_user_has_user_user1_idx` (`user_iduser`),
   CONSTRAINT `fk_user_has_user_user1` FOREIGN KEY (`user_iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_user_user2` FOREIGN KEY (`user_iduser1`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `friends` WRITE;
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
 
-INSERT INTO `friends` (`user_iduser`, `user_iduser1`, `date`, `approved`)
+INSERT INTO `friends` (`user_iduser`, `user_iduser1`, `relation`, `date`, `approved`)
 VALUES
-	(1,2,'2014-12-29 18:41:56',1),
-	(1,3,'2014-12-29 18:42:03',1);
+	(1,2,'','2014-12-29 16:57:06',1);
 
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -122,8 +123,17 @@ CREATE TABLE `location` (
   `locationpicture` text,
   `locationname` varchar(45) NOT NULL,
   PRIMARY KEY (`idlocation`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `location` WRITE;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+
+INSERT INTO `location` (`idlocation`, `city`, `address`, `locationpicture`, `locationname`)
+VALUES
+	(0,'Spaawnwoude','Deelplan Houtrak',NULL,'Recreatiegebied Spaarnwoude');
+
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table user
@@ -145,7 +155,7 @@ CREATE TABLE `user` (
   `admin` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `iduser_UNIQUE` (`iduser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
@@ -153,12 +163,7 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` (`iduser`, `name`, `town`, `userAvatar`, `gender`, `address`, `zipcode`, `phone`, `email`, `fbid`, `admin`)
 VALUES
 	(1,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',10205680827170847,NULL),
-	(2,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL),
-	(3,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL),
-	(4,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL),
-	(5,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL),
-	(6,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL),
-	(7,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL);
+	(2,'Tomas Harkema','Zaandam','https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/t31.0-1/p960x960/10633483_10205602659936715_956316193636095_o.jpg','m',NULL,NULL,NULL,'tomas@harkema.in',102056808271708478,NULL);
 
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -173,23 +178,23 @@ CREATE TABLE `user_has_event` (
   `user_iduser` int(11) NOT NULL,
   `event_idevent` int(11) NOT NULL,
   `car_id` int(11) DEFAULT NULL,
-  `date` datetime NOT NULL,
+  `date` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_iduser`,`event_idevent`),
   KEY `fk_user_has_event_event1_idx` (`event_idevent`),
   KEY `fk_user_has_event_user1_idx` (`user_iduser`),
   KEY `fk_user_has_event_car1_idx` (`car_id`),
-  CONSTRAINT `fk_user_has_event_user1` FOREIGN KEY (`user_iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_has_event_car1` FOREIGN KEY (`car_id`) REFERENCES `car` (`registration`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_event_event1` FOREIGN KEY (`event_idevent`) REFERENCES `event` (`idevent`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_event_car1` FOREIGN KEY (`car_id`) REFERENCES `car` (`registration`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `fk_user_has_event_user1` FOREIGN KEY (`user_iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 LOCK TABLES `user_has_event` WRITE;
 /*!40000 ALTER TABLE `user_has_event` DISABLE KEYS */;
 
 INSERT INTO `user_has_event` (`user_iduser`, `event_idevent`, `car_id`, `date`)
 VALUES
-	(1,1,2,'2014-12-29 13:47:41'),
-	(2,1,2,'2014-12-29 01:04:38');
+	(1,2,3,'2014-12-29 18:26:54'),
+	(2,2,3,'2014-12-29 18:27:20');
 
 /*!40000 ALTER TABLE `user_has_event` ENABLE KEYS */;
 UNLOCK TABLES;
