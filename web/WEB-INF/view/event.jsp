@@ -6,37 +6,43 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <div class="backdrop header" style="background-image:url('${event.eventWall}');"></div>
 <div class="container event">
     <header>
-        
         <c:choose>
-            <c:when test="${isAttending}">
-                <div class="btn-group pull-right rsvp" role="group">
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                      <span class="glyphicon glyphicon-ok"></span> I go
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/events/attend?eventId=${event.idevent}&type=cancel"><span class="glyphicon glyphicon-remove"></span> Cancel</a></li>
-                    </ul>
-                </div>
-            </c:when>
+            <c:when test="${userId != null}">
+                <c:choose>
+                    <c:when test="${isAttending}">
+                        <div class="btn-group pull-right rsvp" role="group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                              <span class="glyphicon glyphicon-ok"></span> I go
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/events/attend?eventId=${event.idevent}&type=cancel"><span class="glyphicon glyphicon-remove"></span> Cancel</a></li>
+                            </ul>
+                        </div>
+                    </c:when>
 
+                    <c:otherwise>
+                        <div class="btn-group pull-right rsvp" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                              RSVP
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf"><span class="glyphicon glyphicon-hand-up"></span> I'll drive</a></li>
+                                <li class="meerijden"><a href="/events/attend?eventId=${event.idevent}&type=meerijden"><span class="glyphicon glyphicon-question-sign"></span> Request place</a></li>
+                            </ul>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
             <c:otherwise>
-                <div class="btn-group pull-right rsvp" role="group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                      RSVP
-                      <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf"><span class="glyphicon glyphicon-hand-up"></span> I'll drive</a></li>
-                        <li class="meerijden"><a href="/events/attend?eventId=${event.idevent}&type=meerijden"><span class="glyphicon glyphicon-question-sign"></span> Request place</a></li>
-                    </ul>
-                </div>
+                <a href="/login.jsp" class="btn btn-default pull-right logintojoin ret">Login to join</a>
             </c:otherwise>
         </c:choose>
-
         <img class="img-thumbnail event-ava pull-left" src="${event.eventLogo}">
         <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></small></h1>
     </header>

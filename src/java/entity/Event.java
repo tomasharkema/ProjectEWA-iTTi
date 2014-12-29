@@ -181,8 +181,9 @@ public class Event implements Serializable {
     }
 
     public ArrayList<Car> getAttendedCars() {
+
         ArrayList<Car> carList = new ArrayList<>();
-        for (UserHasEvent userHasEvent : userHasEventList) {
+        for (UserHasEvent userHasEvent : getUserHasEventList()) {
             if (userHasEvent.getCarId().getUserIduser().getIduser().equals(userHasEvent.getUser().getIduser())) {
                 Car car = userHasEvent.getCarId();
                 carList.add(car);

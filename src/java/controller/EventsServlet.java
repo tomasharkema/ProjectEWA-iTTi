@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +37,8 @@ import validate.LoginValidator;
  */
 @WebServlet(name = "EventsServlet", loadOnStartup = 1, urlPatterns = {"/events", "/events/attend", "/events/availableCars"})
 public class EventsServlet extends HttpServlet {
+    @PersistenceContext(unitName = "DryvesPU")
+    private EntityManager em;
     @EJB
     private EventFacade eventFacade;
     @EJB
@@ -80,10 +85,11 @@ public class EventsServlet extends HttpServlet {
             // Has event
             url = "/WEB-INF/view/event.jsp";
             request.setAttribute("event", eventFacade.find(eventIdInt));
-            
-            System.out.println("isAttending");
-            request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt) != null);
-            
+
+            if (user != null) {
+                // User is not loggedin. Don't let him join.
+                request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt) != null);
+            }
         }
 
         try {
@@ -146,7 +152,6 @@ public class EventsServlet extends HttpServlet {
 
         String eventId = request.getParameter("eventId");
         Event event = eventFacade.find(Integer.parseInt(eventId));
-
         ArrayList<Car> carList = event.getAttendedCars();
         JSONArray carArray = new JSONArray();
 

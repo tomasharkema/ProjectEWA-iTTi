@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" build-on-make="true" name="Dryves">
+  <artifact type="war" build-on-make="true" name="Dryves">
     <output-path>$PROJECT_DIR$/build/artifacts/Dryves</output-path>
-    <root id="root">
+    <root id="archive" name="Dryves.war">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="itti-donkerford" />
