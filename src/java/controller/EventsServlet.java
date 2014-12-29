@@ -156,11 +156,12 @@ public class EventsServlet extends HttpServlet {
         JSONArray carArray = new JSONArray();
 
         for (Car car : carList) {
+            Car refreshedCar = carFacade.find(car.getRegistration());
             JSONObject obj = new JSONObject();
-            obj.put("id", car.getRegistration());
-            obj.put("uid", car.getUserIduser().getIduser());
-            obj.put("desc", car.getBrand() + " " + car.getType() + " " + car.getColor());
-            obj.put("places", car.getPlaces());
+            obj.put("id", refreshedCar.getRegistration());
+            obj.put("uid", refreshedCar.getUserIduser().getIduser());
+            obj.put("desc", refreshedCar.getBrand() + " " + refreshedCar.getType() + " " + refreshedCar.getColor());
+            obj.put("places", refreshedCar.getPlaces());
             carArray.add(obj);
         }
 
