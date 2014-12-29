@@ -12,10 +12,7 @@ import entity.UserHasEvent;
 import entity.UserHasEventPK;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +20,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import session.CarFacade;
 import session.EventFacade;
 import session.UserFacade;
@@ -32,7 +32,7 @@ import validate.LoginValidator;
  *
  * @author tomasharkema
  */
-@WebServlet(name = "EventsServlet", loadOnStartup = 1, urlPatterns = {"/events", "/events/attend"})
+@WebServlet(name = "EventsServlet", loadOnStartup = 1, urlPatterns = {"/events", "/events/attend", "/events/availableCars"})
 public class EventsServlet extends HttpServlet {
     @EJB
     private EventFacade eventFacade;
@@ -52,6 +52,11 @@ public class EventsServlet extends HttpServlet {
             }
             case "/events/attend":{
                 attendEvent(request, response);
+                break;
+            }
+            case "/events/availableCars":{
+                availableCars(request, response);
+                break;
             }
         }
     }
@@ -103,12 +108,13 @@ public class EventsServlet extends HttpServlet {
                 break;
             }
             case "meerijden":{
-                int carid = Integer.parseInt(request.getParameter("carid"));
+                Integer carid = Integer.parseInt(request.getParameter("carId"));
                 Car carFind = carFacade.find(carid);
-                int places = car.getPlaces();
+                int places = carFind.getPlaces();
                 if (places > 0) {
                     car = carFind;
                 }
+                break;
             }
         }
         
@@ -130,5 +136,36 @@ public class EventsServlet extends HttpServlet {
             userFacade.edit(user);
         }
         response.sendRedirect("/events?eventId=" + eventId);
+    }
+
+    // TODO: this call doesn't need to be cached.
+    private void availableCars(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        JSONObject result = new JSONObject();
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+
+        String eventId = request.getParameter("eventId");
+        Event event = eventFacade.find(Integer.parseInt(eventId));
+
+        ArrayList<Car> carList = event.getAttendedCars();
+        JSONArray carArray = new JSONArray();
+
+        for (Car car : carList) {
+            JSONObject obj = new JSONObject();
+            obj.put("id", car.getRegistration());
+            obj.put("uid", car.getUserIduser().getIduser());
+            obj.put("desc", car.getBrand() + " " + car.getType() + " " + car.getColor());
+            obj.put("places", car.getPlaces());
+            carArray.add(obj);
+        }
+
+        result.put("cars", carArray);
+
+        try {
+            /* TODO output your page here. You may use following sample code. */
+            out.println(result.toJSONString());
+        } finally {
+            out.close();
+        }
     }
 }

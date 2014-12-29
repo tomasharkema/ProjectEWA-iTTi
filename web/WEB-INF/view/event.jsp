@@ -31,7 +31,7 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf"><span class="glyphicon glyphicon-hand-up"></span> I'll drive</a></li>
-                        <li><a href="/events/attend?eventId=${event.idevent}&type=meerijden"><span class="glyphicon glyphicon-question-sign"></span> Request place</a></li>
+                        <li class="meerijden"><a href="/events/attend?eventId=${event.idevent}&type=meerijden"><span class="glyphicon glyphicon-question-sign"></span> Request place</a></li>
                     </ul>
                 </div>
             </c:otherwise>
@@ -49,10 +49,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">Request Place</h4>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <h5>Places:</h5>
+                <div class="places"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

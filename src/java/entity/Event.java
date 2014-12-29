@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -178,5 +179,17 @@ public class Event implements Serializable {
     public String toString() {
         return "entity.Event[ idevent=" + idevent + " ]";
     }
-    
+
+    public ArrayList<Car> getAttendedCars() {
+        ArrayList<Car> carList = new ArrayList<>();
+        for (UserHasEvent userHasEvent : userHasEventList) {
+            if (userHasEvent.getCarId().getUserIduser().getIduser().equals(userHasEvent.getUser().getIduser())) {
+                Car car = userHasEvent.getCarId();
+                carList.add(car);
+            }
+        }
+
+        return carList;
+    }
+
 }
