@@ -88,11 +88,12 @@ public class EventsServlet extends HttpServlet {
             request.setAttribute("event", event);
             request.setAttribute("location", event.getLocationid());
             request.setAttribute("attendees", event.getAttendees());
-            request.setAttribute("attendingFriends", event.getAttendingFriends(user));
+            request.setAttribute("drivers", event.getAttendedCars());
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
                 request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt) != null);
+                request.setAttribute("attendingFriends", event.getAttendingFriends(user));
             }
         }
 

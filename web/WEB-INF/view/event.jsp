@@ -48,7 +48,7 @@
     </header>
 
     <div class="row info">
-        <div class="col-md-8">
+        <div class="col-sm-8">
 
             <ul class="list-group">
                 <li class="list-group-item">
@@ -80,42 +80,47 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-4">
 
             <ul class="list-group">
-                <li class="list-group-item">
-                    <c:choose>
-                        <c:when test="${attendingFriends.size() != 0}">
-                            <div class="friend-avatars">
-                            <c:forEach items="${attendingFriends}" var="friend">
-                                <img src="${friend.userAvatar}">
-                            </c:forEach>
-                            </div>
-                            <c:choose>
-                                <c:when test="${attendingFriends.size() > 1}">
-                                    ${attendingFriends.get(0).name} and ${attendingFriends.size()-1} other friends are attending.
-                                </c:when>
-                                <c:otherwise>
-                                    ${attendingFriends.get(0).name} is attending.
-                                </c:otherwise>
-                            </c:choose>
-                        </c:when>
-                        <c:otherwise>
-                            No friends are attending.
-                        </c:otherwise>
-                    </c:choose>
-                </li>
+                <c:if test="${attendingFriends != null}">
+                    <c:if test="${attendingFriends.size() > 0}">
+                    <li class="list-group-item">
+                        <small>FRIENDS</small>
+                        <div class="friend-avatars">
+                        <c:forEach items="${attendingFriends}" var="friend">
+                            <img src="${friend.userAvatar}">
+                        </c:forEach>
+                        </div>
+                        <c:choose>
+                            <c:when test="${attendingFriends.size() > 1}">
+                                ${attendingFriends.get(0).name} and ${attendingFriends.size()-1} other friends are attending.
+                            </c:when>
+                            <c:otherwise>
+                                ${attendingFriends.get(0).name} is attending.
+                            </c:otherwise>
+                        </c:choose>
+                    </li>
+                    </c:if>
+                </c:if>
                 <li class="list-group-item">
                     <small>GUESTS</small>
                     <div class="attending">
-                        <c:choose>
-                            <c:when test="${attendees.size() != 0}">
+                    <c:choose>
+                        <c:when test="${attendees.size() > 0}">
+                        <div class="row">
+                            <div class="col-sm-6">
                                 <div class="number">${attendees.size()}</div> going
-                            </c:when>
-                            <c:otherwise>
-                                No one is attending.
-                            </c:otherwise>
-                        </c:choose>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="number">${drivers.size()}</div> driving
+                            </div>
+                        </div>
+                        </c:when>
+                        <c:otherwise>
+                            No one is attending.
+                        </c:otherwise>
+                    </c:choose>
                     </div>
                 </li>
             </ul>
