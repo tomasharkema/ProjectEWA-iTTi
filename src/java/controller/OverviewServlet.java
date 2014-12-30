@@ -24,9 +24,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import entity.User;
 import searching.Search;
 import searching.TimeLineNode;
 import session.UserFacade;
+import validate.LoginValidator;
 
 /**
  *
@@ -35,15 +38,6 @@ import session.UserFacade;
 @WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/vrienden"})
 public class OverviewServlet extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @EJB
     private UserFacade userFacade;
     @EJB
@@ -78,11 +72,11 @@ public class OverviewServlet extends HttpServlet {
     }
     
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) {
+        User currentUser = LoginValidator.getInstance().validateUser(request, response, userFacade);
         HttpSession session = request.getSession();
-        User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getId());
-        //List<TimeLineNode> timeline = search.timeLineSearch(currentUser.getId());
+        List<TimeLineNode> timeline = search.timeLineSearch(currentUser.getId());
         
-        //request.setAttribute("timeline", timeline);
+        request.setAttribute("timeline", timeline);
     }
     
     private void handleVrienden(HttpServletRequest request, HttpServletResponse response) {
@@ -107,6 +101,16 @@ public class OverviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
     }
 
 }

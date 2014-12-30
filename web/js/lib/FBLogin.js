@@ -48,11 +48,10 @@ FBLogin.prototype = {
         }).done(function(res){
             cb(res);
         }).fail(function(jqXHR, err){
-            console.log("fail", err);
+            console.error("fail", err);
         });
     },
     updateStatusCallback:function(response){
-        console.log('login change', response);
         if (response.status === 'connected') {
             if (this.shouldInvokeFBLogin) {
                 this.FBGetUserInfo(function(fbuser){
@@ -60,7 +59,8 @@ FBLogin.prototype = {
                         this.FBCheckUserAccount({fbuser:fbuser, avatar:avatarUrl}, function(res){
                             console.log(res);
                             if (res.loggedin) {
-                                dryvesInstance.redirect(this.FBRedirect);
+                                var ret = $.urlParam("ret", window.location.href);
+                                dryves.redirect(ret === undefined ? this.FBRedirect : decodeURIComponent(ret));
                             }
                         }.bind(this));
                     }.bind(this));

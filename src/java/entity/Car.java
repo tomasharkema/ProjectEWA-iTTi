@@ -6,9 +6,8 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Repr
+ * @author tomas
  */
 @Entity
 @Table(name = "car")
@@ -68,8 +67,8 @@ public class Car implements Serializable {
     @JoinColumn(name = "user_iduser", referencedColumnName = "iduser")
     @ManyToOne(optional = false)
     private User userIduser;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRegistration")
-    private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
+    @OneToMany(mappedBy = "carId")
+    private List<UserHasEvent> userHasEventList;
 
     public Car() {
     }
@@ -135,12 +134,12 @@ public class Car implements Serializable {
     }
 
     @XmlTransient
-    public Collection<UserHasEventAtLocation> getUserHasEventAtLocationCollection() {
-        return userHasEventAtLocationCollection;
+    public List<UserHasEvent> getUserHasEventList() {
+        return userHasEventList;
     }
 
-    public void setUserHasEventAtLocationCollection(Collection<UserHasEventAtLocation> userHasEventAtLocationCollection) {
-        this.userHasEventAtLocationCollection = userHasEventAtLocationCollection;
+    public void setUserHasEventList(List<UserHasEvent> userHasEventList) {
+        this.userHasEventList = userHasEventList;
     }
 
     @Override
@@ -167,5 +166,10 @@ public class Car implements Serializable {
     public String toString() {
         return "entity.Car[ registration=" + registration + " ]";
     }
-    
+
+    public int getPlaces() {
+        int seats = getNumberSeats();
+        List<UserHasEvent> userList = getUserHasEventList();
+        return seats - userList.size();
+    }
 }

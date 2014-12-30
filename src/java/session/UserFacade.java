@@ -53,7 +53,11 @@ public class UserFacade extends AbstractFacade<User> {
     public void addUser(User user) {
         em.persist(user);
     }
-
+    
+    public void updateUser(User user) {
+        super.edit(user);
+    }
+    
     public List findAll() {
         Query query = em.createNamedQuery("User.findAll");
         List<User> result = query.getResultList();
