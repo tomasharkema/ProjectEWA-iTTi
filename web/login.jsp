@@ -45,10 +45,10 @@
         </div>
     </div> <!-- /container -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.min.js"></script>
-    <script src="/js/jquery.timeago.js"></script>
+    <script src="js/lib/dependencies/_jquery.min.js"></script>
+    <script src="/js/lib/dependencies/jquery.timeago.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/lib/dependencies/bootstrap.min.js"></script>
     <script src="js/dist/dryves.js"></script>
     <script src="js/lib/page/login.js"></script>
   </body>

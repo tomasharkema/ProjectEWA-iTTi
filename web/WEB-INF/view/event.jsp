@@ -62,7 +62,7 @@
 
                     <span class="glyphicon glyphicon-pushpin"></span>
 
-                    ${location}
+                    ${event.getLocationid()}
 
                 </li>
                 <li class="list-group-item">
