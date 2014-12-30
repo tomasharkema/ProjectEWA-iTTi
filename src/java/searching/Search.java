@@ -13,17 +13,29 @@ import entity.UserHasEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import session.UserFacade;
 
 /**
  *
  * @author Repr
  */
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class Search {
-
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
-
+    
+    @EJB
+    private UserFacade userFacade;
+    
+    
     /*
      Method used to search in the following database tables: Users, Events, Locations
      Will search with wildcards in front and behind the given string
@@ -55,12 +67,12 @@ public class Search {
         return results;
     }
     /*
-     Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
-     Lists will be sorted by date, 
-     @Return: List<TimeLineNode> 
+    Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
+    Lists will be sorted by date, 
+    @Return: List<TimeLineNode> 
      */
 
-    public List<TimeLineNode> timeLineSearch(int userId) {
+    public List<TimeLineNode> timeLineSearch(User userId) {
         // Make list for various results. results is to combine friendUpdates and attendingUpdates
         List<TimeLineNode> results = new ArrayList();
         List<TimeLineNode> friendUpdates;
@@ -76,7 +88,7 @@ public class Search {
 
         return results;
     }
-
+    
     /*
      Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
      @return List<TimeLineNode>. all nodes consist of 2 users.
@@ -123,23 +135,26 @@ public class Search {
         }
         return yourFriends;
     }
-
+    
     /*
-     Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
-     @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
-     */
-    private List<TimeLineNode> attendingUpdates(int userId) {
+    Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
+    @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
+    */
+    private List<TimeLineNode> attendingUpdates(User user) {
+        List<TimeLine> findFriends;
+        TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
+        friendQuery.setParameter("iduser", user);
+        findFriends = friendQuery.getResultList();
 
         //find yourself
         TypedQuery findYourself = em.createNamedQuery("User.findByIduser", TimeLine.class);
-        findYourself.setParameter("iduser", userId);
+        findYourself.setParameter("iduser", user);
         TimeLine currentUser = (TimeLine) findYourself.getSingleResult();
 
         List<TimeLineNode> returnList = new ArrayList<>();
 
-        List<TimeLineNode> yourFriends = findYourFriends(userId);
 
-        for (TimeLineNode yourFriend : yourFriends) {
+        for (TimeLineNode yourFriend : user.getFriends()) {
             int friendId = yourFriend.getTwo().getId();
             //make list of all UserHasEvents
             List<UserHasEvent> userHasEvent;

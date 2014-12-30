@@ -44,10 +44,101 @@
             </c:otherwise>
         </c:choose>
         <img class="img-thumbnail event-ava pull-left" src="${event.eventLogo}">
-        <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></small></h1>
+        <h1>${event.eventName} <small>- <time class="timeago" datetime="<fmt:formatDate value="${event.eventDate}" pattern="yyyy-MM-dd'T'HH:mm:ss" />"><fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></time></small></h1>
     </header>
-    
-    <p class="offset">${event.description}</p>
+
+    <div class="row info">
+        <div class="col-sm-8">
+
+            <ul class="list-group">
+                <li class="list-group-item">
+
+                    <span class="glyphicon glyphicon-time"></span>
+
+                    <strong><fmt:formatDate value="${event.eventDate}" type="both" dateStyle="long" timeStyle="short" /></strong>
+
+                </li>
+                <li class="list-group-item">
+
+                    <span class="glyphicon glyphicon-pushpin"></span>
+
+                    ${location}
+
+                </li>
+                <li class="list-group-item">
+
+                    <span class="glyphicon glyphicon-bullhorn"></span>
+
+                    <a href="${event.fbEvent}" target="_blank">${event.eventName} on Facebook</a>
+
+                </li>
+            </ul>
+
+            <ul class="list-group">
+                <li class="list-group-item">
+                    ${markdownDescription}
+                </li>
+            </ul>
+
+            <div class="messages">
+                <h4><small>MESSAGES</small></h4>
+                <c:forEach items="${userHasEventList}" var="user">
+                    <div class="well well-sm avatar">
+                        <img src="${user.getUser().userAvatar}" class="img-circle avatar-timeline pull-left">
+                        <h4>${user.getUser().name} goes</h4>
+                        <time class="timeago" datetime="<fmt:formatDate value="${user.date}" pattern="yyyy-MM-dd'T'HH:mm:ss" />"><fmt:formatDate value="${user.date}" pattern="dd-MM-yyyy" /></time>
+                    </div>
+                </c:forEach>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+
+            <ul class="list-group">
+                <c:if test="${attendingFriends != null}">
+                    <c:if test="${attendingFriends.size() > 0}">
+                    <li class="list-group-item">
+                        <small>FRIENDS</small>
+                        <div class="friend-avatars">
+                        <c:forEach items="${attendingFriends}" var="friend">
+                            <img class="img-circle" src="${friend.userAvatar}">
+                        </c:forEach>
+                        </div>
+                        <c:choose>
+                            <c:when test="${attendingFriends.size() > 1}">
+                                ${attendingFriends.get(0).name} and ${attendingFriends.size()-1} other friends are attending.
+                            </c:when>
+                            <c:otherwise>
+                                ${attendingFriends.get(0).name} is attending.
+                            </c:otherwise>
+                        </c:choose>
+                    </li>
+                    </c:if>
+                </c:if>
+                <li class="list-group-item">
+                    <small>GUESTS</small>
+                    <div class="attending">
+                    <c:choose>
+                        <c:when test="${attendees.size() > 0}">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="number">${attendees.size()}</div> going
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="number">${drivers.size()}</div> driving
+                            </div>
+                        </div>
+                        </c:when>
+                        <c:otherwise>
+                            No one is attending.
+                        </c:otherwise>
+                    </c:choose>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="meerijden_modal">

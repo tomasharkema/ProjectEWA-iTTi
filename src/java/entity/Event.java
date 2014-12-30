@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.swing.plaf.synth.SynthStyle;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -40,9 +41,10 @@ import searching.TimeLine;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-    @NamedQuery(name = "Event.findByIdevent", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
-    @NamedQuery(name = "Event.findByEventDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
-    @NamedQuery(name = "Event.findByEventName", query = "SELECT e FROM Event e WHERE e.eventName = :eventName")})
+    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
+    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
+    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
+    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEvent us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevent = e.idevent WHERE e.idevent = :idevent")})
 public class Event implements Serializable, TimeLine {
     private static final long serialVersionUID = 1L;
     @Id
@@ -72,6 +74,8 @@ public class Event implements Serializable, TimeLine {
     @Size(max = 65535)
     @Column(name = "description")
     private String description;
+    @Column(name = "fbevent")
+    private String fbEvent;
     @JoinColumn(name = "locationid", referencedColumnName = "idlocation")
     @ManyToOne
     private Location locationid;
@@ -156,6 +160,14 @@ public class Event implements Serializable, TimeLine {
         this.userHasEventList = userHasEventList;
     }
 
+    public String getFbEvent() {
+        return fbEvent;
+    }
+
+    public void setFbEvent(String fbEvent) {
+        this.fbEvent = fbEvent;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -194,19 +206,52 @@ public class Event implements Serializable, TimeLine {
         return carList;
     }
 
+    public ArrayList<User> getAttendees() {
+        ArrayList<User> users = new ArrayList<>();
+        for (UserHasEvent userHasEvent : getUserHasEventList()) {
+            User user = userHasEvent.getUser();
+            users.add(user);
+        }
+        System.out.println(getUserHasEventList());
+        System.out.println(users);
+        return users;
+    }
+
+    public ArrayList<User> getAttendingFriends(User user) {
+        ArrayList<User> friendsAttending = new ArrayList<>();
+        List<Friends> friends = user.getFriendsList();
+        List<Friends> friends1 = user.getFriendsList1();
+        for (User userAttends : getAttendees()) {
+            for (Friends friend : friends) {
+                if (userAttends.equals(friend.getUser()) && !user.equals(friend.getUser())) {
+                    friendsAttending.add(friend.getUser());
+                } else if (userAttends.equals(friend.getUser1()) && !user.equals(friend.getUser1())) {
+                    friendsAttending.add(friend.getUser1());
+                }
+            }
+            for (Friends friend : friends1) {
+                if (userAttends.equals(friend.getUser()) && !user.equals(friend.getUser())) {
+                    friendsAttending.add(friend.getUser());
+                } else if (userAttends.equals(friend.getUser1()) && !user.equals(friend.getUser1())) {
+                    friendsAttending.add(friend.getUser1());
+                }
+            }
+        }
+        return friendsAttending;
+    }
+    
     @Override
     public String getName() {
-    return getEventName();
+        return this.getEventName();
     }
 
     @Override
     public String getPicture() {
-    return getEventLogo();
+        return this.getEventLogo();
     }
 
     @Override
     public int getId() {
-        return getIdevent();
+     return this.getIdevent();
     }
-
 }

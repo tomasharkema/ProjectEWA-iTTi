@@ -6,8 +6,8 @@
 package entity;
 
 import java.io.Serializable;
-import static java.lang.System.in;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -46,9 +46,15 @@ import searching.TimeLine;
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid"),
     @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin"),
-    @NamedQuery(name = "User.findFriendsbyDateASC", query = "SELECT u from User u JOIN Friends f ON f.friendsPK.userIduser = u.iduser JOIN User us ON f.friendsPK.userIduser1 = us.iduser WHERE u.iduser = :iduser")})
+    @NamedQuery(name = "User.findFriendsbyNameASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY u.name ASC"),
+    @NamedQuery(name = "User.findFriendsbyDateASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY f.date ASC"),
+    @NamedQuery(name = "User.findAttendingEvents", query = "SELECT e from Event e JOIN UserHasEvent u on e.idevennt = u.location_has_event_location_idlocation Join User us ON u.user_iduser = us.iduser WHERE us.iduser = :iduser"),
+    @NamedQuery(name = "User.findCars", query = "SELECT c FROM Car c JOIN User u on u.iduser = c.user_iduser where u.iduser = :iduser"),
+    @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEvent uhe ON e.idevennt = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
+    @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEvent uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.date ASC")})
 
 public class User implements Serializable, TimeLine {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -96,6 +102,8 @@ public class User implements Serializable, TimeLine {
     private List<Car> carList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Friends> friendsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private List<Friends> friendsList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<UserHasEvent> userHasEventList;
 
@@ -219,6 +227,14 @@ public class User implements Serializable, TimeLine {
         this.friendsList = friendsList;
     }
 
+    public List<Friends> getFriendsList1() {
+        return friendsList1;
+    }
+
+    public void setFriendsList1(List<Friends> friendsList1) {
+        this.friendsList1 = friendsList1;
+    }
+
     @XmlTransient
     public List<UserHasEvent> getUserHasEventList() {
         return userHasEventList;
@@ -252,7 +268,17 @@ public class User implements Serializable, TimeLine {
     public String toString() {
         return "entity.User[ iduser=" + iduser + " ]";
     }
-    
+
+    @Override
+    public String getPicture() {
+        return this.getUserAvatar();
+    }
+
+    @Override
+    public int getId() {
+    return this.getIduser();
+    }
+
     public UserHasEvent isAttendingEvent(int eventId) {
         List<UserHasEvent> userHasEventList = getUserHasEventList();
         UserHasEvent isAttending = null;
@@ -272,13 +298,23 @@ public class User implements Serializable, TimeLine {
         return isAttending;
     }
 
-    @Override
-    public String getPicture() {
-       return getUserAvatar();
-    }
+    public ArrayList<User> getFriends() {
+        ArrayList<User> list = new ArrayList<>();
+        for (Friends friends : friendsList) {
+            if (!friends.getUser().equals(this)) {
+                list.add(friends.getUser());
+            } else if (!friends.getUser1().equals(this)) {
+                list.add(friends.getUser1());
+            }
+        }
+        for (Friends friends : friendsList1) {
+            if (!friends.getUser().equals(this)) {
+                list.add(friends.getUser());
+            } else if (!friends.getUser1().equals(this)) {
+                list.add(friends.getUser1());
+            }
+        }
 
-    @Override
-    public int getId() {
-    return getIduser();
+        return list;
     }
 }

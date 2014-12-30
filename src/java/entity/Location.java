@@ -145,7 +145,7 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Location[ idlocation=" + idlocation + " ]";
+        return getLocationname() + " ("+getAddress()+" "+getCity()+")";
     }
     
 }

@@ -5,8 +5,18 @@
  */
 package controller;
 
+import entity.Friends;
+import entity.User;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.in;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,26 +24,45 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import entity.User;
+import searching.Search;
+import searching.TimeLineNode;
 import session.UserFacade;
+import validate.LoginValidator;
 
 /**
  *
  * @author tomasharkema
  */
-@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview"})
+@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/vrienden"})
 public class OverviewServlet extends HttpServlet {
 
     @EJB
     private UserFacade userFacade;
+    @EJB
+    private Search search;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userPath = request.getServletPath();
+        System.out.println(userPath);
         String url = "/WEB-INF/view" + userPath + ".jsp";
         
         //make users available in the overview.jsp
         request.setAttribute("users", userFacade.findAll());
+        
+        switch(userPath) {
+            case "/overview":{
+                handleIndex(request, response);
+                break;
+            }
+            case "/overview/vrienden":{
+                handleVrienden(request, response);
+                break;
+            }
+        }
         
         try {
             request.getRequestDispatcher(url).forward(request, response);
@@ -41,7 +70,25 @@ public class OverviewServlet extends HttpServlet {
             ex.printStackTrace();
         }
     }
-
+    
+    private void handleIndex(HttpServletRequest request, HttpServletResponse response) {
+        User currentUser = LoginValidator.getInstance().validateUser(request, response, userFacade);
+        HttpSession session = request.getSession();
+        List<TimeLineNode> timeline = search.timeLineSearch(currentUser);
+        
+        request.setAttribute("timeline", timeline);
+    }
+    
+    private void handleVrienden(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getIduser());
+        System.out.println(userFacade.findFriendsbyNameDSC(currentUser.getId()));
+        List<User> friends = userFacade.findFriendsbyNameDSC(currentUser.getId());
+        
+        request.setAttribute("hasNoFriends", friends.isEmpty());
+        request.setAttribute("friends", friends);
+    }
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -65,4 +112,5 @@ public class OverviewServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
+
 }
