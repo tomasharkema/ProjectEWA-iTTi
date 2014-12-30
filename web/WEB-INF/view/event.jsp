@@ -11,7 +11,7 @@
 <div class="bg" style="background-image:url('${event.eventLogo}');"></div>
 <div class="container event">
     
-    <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></small></h1>
+    <h1>${event.eventName} <small>- <fmt:formatDate value="${event.eventDate}" pattern="dd-MM-yyyy" /></small> <a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf">Ik rij zelf</a></h1>
     
     <p class="offset">${event.description}</p>
 </div>

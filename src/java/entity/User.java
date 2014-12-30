@@ -7,7 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,11 +24,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import searching.TimeLine;
 
 /**
  *
- * @author Repr
+ * @author tomas
  */
 @Entity
 @Table(name = "user")
@@ -44,16 +43,8 @@ import searching.TimeLine;
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid"),
-    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin"),
-    @NamedQuery(name = "User.findFriendsbyNameASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY u.name ASC"),
-    @NamedQuery(name = "User.findFriendsbyDateASC", query = "Select u FROM User u JOIN Friends f ON f.user_iduser1 = u.iduser WHERE f.user = :iduser ORDER BY f.date ASC"),
-    @NamedQuery(name = "User.findAttendingEvents", query = "SELECT e from Event e JOIN UserHasEventAtLocation u on e.idevent = u.location_has_event_location_idlocation Join User us ON u.user_iduser = us.iduser WHERE us.iduser = :iduser"),
-    @NamedQuery(name = "User.findCars", query = "SELECT c FROM Car c JOIN User u on u.iduser = c.user_iduser where u.iduser = :iduser"),
-    @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEventAtLocation uhe ON e.idevent = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
-    @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEventAtLocation uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.subscriptiondate ASC")})
-
-public class User implements Serializable, TimeLine {
-
+    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin")})
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,10 +53,11 @@ public class User implements Serializable, TimeLine {
     private Integer iduser;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "town")
     private String town;
@@ -97,11 +89,13 @@ public class User implements Serializable, TimeLine {
     @Column(name = "admin")
     private Boolean admin;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
-    private Collection<Car> carCollection;
+    private List<Car> carList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<UserHasEventAtLocation> userHasEventAtLocationCollection;
+    private List<Friends> friendsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private List<Friends> friendsList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Collection<Friends> friendsCollection;
+    private List<UserHasEvent> userHasEventList;
 
     public User() {
     }
@@ -110,7 +104,7 @@ public class User implements Serializable, TimeLine {
         this.iduser = iduser;
     }
 
-    public User(Integer iduser, BigInteger fbid, String name, String town, String gender, String email) {
+    public User(Integer iduser, String name, String town, String email) {
         this.iduser = iduser;
         this.name = name;
         this.town = town;
@@ -206,30 +200,39 @@ public class User implements Serializable, TimeLine {
     }
 
     @XmlTransient
-    public Collection<Car> getCarCollection() {
-        return carCollection;
+    public List<Car> getCarList() {
+        return carList;
     }
 
-    public void setCarCollection(Collection<Car> carCollection) {
-        this.carCollection = carCollection;
-    }
-
-    @XmlTransient
-    public Collection<UserHasEventAtLocation> getUserHasEventAtLocationCollection() {
-        return userHasEventAtLocationCollection;
-    }
-
-    public void setUserHasEventAtLocationCollection(Collection<UserHasEventAtLocation> userHasEventAtLocationCollection) {
-        this.userHasEventAtLocationCollection = userHasEventAtLocationCollection;
+    public void setCarList(List<Car> carList) {
+        this.carList = carList;
     }
 
     @XmlTransient
-    public Collection<Friends> getFriendsCollection() {
-        return friendsCollection;
+    public List<Friends> getFriendsList() {
+        return friendsList;
     }
 
-    public void setFriendsCollection(Collection<Friends> friendsCollection) {
-        this.friendsCollection = friendsCollection;
+    public void setFriendsList(List<Friends> friendsList) {
+        this.friendsList = friendsList;
+    }
+
+    @XmlTransient
+    public List<Friends> getFriendsList1() {
+        return friendsList1;
+    }
+
+    public void setFriendsList1(List<Friends> friendsList1) {
+        this.friendsList1 = friendsList1;
+    }
+
+    @XmlTransient
+    public List<UserHasEvent> getUserHasEventList() {
+        return userHasEventList;
+    }
+
+    public void setUserHasEventList(List<UserHasEvent> userHasEventList) {
+        this.userHasEventList = userHasEventList;
     }
 
     @Override
@@ -256,15 +259,5 @@ public class User implements Serializable, TimeLine {
     public String toString() {
         return "entity.User[ iduser=" + iduser + " ]";
     }
-
-    @Override
-    public String getPicture() {
-        return this.getUserAvatar();
-    }
-
-    @Override
-    public int getId() {
-    return this.getIduser();
-    }
-
+    
 }

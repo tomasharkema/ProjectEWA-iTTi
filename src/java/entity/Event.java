@@ -6,8 +6,8 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +15,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,22 +28,20 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import searching.TimeLine;
 
 /**
  *
- * @author Repr
+ * @author tomas
  */
 @Entity
 @Table(name = "event")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevent = :idevennt"),
-    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
-    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventname"),
-    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEventAtLocation us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevennt = e.idevent WHERE e.idevent = :idevent")})
-public class Event implements Serializable, TimeLine {
+    @NamedQuery(name = "Event.findByIdevent", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
+    @NamedQuery(name = "Event.findByEventDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
+    @NamedQuery(name = "Event.findByEventName", query = "SELECT e FROM Event e WHERE e.eventName = :eventName")})
+public class Event implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,15 +57,20 @@ public class Event implements Serializable, TimeLine {
     @Size(max = 65535)
     @Column(name = "eventLogo")
     private String eventLogo;
-    @Basic(optional = true)
-    private String description;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "eventName")
     private String eventName;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "description")
+    private String description;
+    @JoinColumn(name = "locationid", referencedColumnName = "idlocation")
+    @ManyToOne
+    private Location locationid;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
-    private Collection<LocationHasEvent> locationHasEventCollection;
+    private List<UserHasEvent> userHasEventList;
 
     public Event() {
     }
@@ -74,10 +79,10 @@ public class Event implements Serializable, TimeLine {
         this.idevent = idevent;
     }
 
-    public Event(Integer idevent, Date evenDate, String eventname) {
+    public Event(Integer idevent, Date eventDate, String eventName) {
         this.idevent = idevent;
-        this.eventDate = evenDate;
-        this.eventName = eventname;
+        this.eventDate = eventDate;
+        this.eventName = eventName;
     }
 
     public Integer getIdevent() {
@@ -92,8 +97,8 @@ public class Event implements Serializable, TimeLine {
         return eventDate;
     }
 
-    public void setEventDate(Date evenDate) {
-        this.eventDate = evenDate;
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
     }
 
     public String getEventLogo() {
@@ -108,25 +113,33 @@ public class Event implements Serializable, TimeLine {
         return eventName;
     }
 
-    public void setEventName(String eventname) {
-        this.eventName = eventname;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
+
     public String getDescription() {
         return description;
     }
-    
-    @XmlTransient
-    public Collection<LocationHasEvent> getLocationHasEventCollection() {
-        return locationHasEventCollection;
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setLocationHasEventCollection(Collection<LocationHasEvent> locationHasEventCollection) {
-        this.locationHasEventCollection = locationHasEventCollection;
+    public Location getLocationid() {
+        return locationid;
+    }
+
+    public void setLocationid(Location locationid) {
+        this.locationid = locationid;
+    }
+
+    @XmlTransient
+    public List<UserHasEvent> getUserHasEventList() {
+        return userHasEventList;
+    }
+
+    public void setUserHasEventList(List<UserHasEvent> userHasEventList) {
+        this.userHasEventList = userHasEventList;
     }
 
     @Override
@@ -151,21 +164,7 @@ public class Event implements Serializable, TimeLine {
 
     @Override
     public String toString() {
-        return "entity.Event[ idevennt=" + idevent + " ]";
+        return "entity.Event[ idevent=" + idevent + " ]";
     }
-
-    @Override
-    public String getName() {
-        return this.getEventName();
-    }
-
-    @Override
-    public String getPicture() {
-        return this.getEventLogo();
-    }
-
-    @Override
-    public int getId() {
-     return this.getIdevent();
-    }
+    
 }
