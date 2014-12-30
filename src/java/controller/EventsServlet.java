@@ -81,7 +81,7 @@ public class EventsServlet extends HttpServlet {
         if (eventIdInt == -1) {
             // Has no event
             url = "/WEB-INF/view/events.jsp";
-            request.setAttribute("events", eventFacade.findAllDateASC());
+            request.setAttribute("events", eventFacade.findAllDescAfterDate());
         } else {
             // Has event
             url = "/WEB-INF/view/event.jsp";

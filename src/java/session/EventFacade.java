@@ -7,6 +7,10 @@ package session;
 
 import entity.Event;
 import entity.User;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
+
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -43,6 +47,18 @@ public class EventFacade extends AbstractFacade<Event> {
         TypedQuery query = em.createNamedQuery("Event.findByDateASC", Event.class);
         List<Event> result = query.getResultList();
         return result;
+    }
+
+    public List<Event> findAllDescAfterDate() {
+        List<Event> collection = findAllDateASC();
+        Predicate<Event> predicate = new Predicate<Event>() {
+            @Override
+            public boolean evaluate(Event event) {
+                return event.getEventDate().after(new Date());
+            }
+        };
+        CollectionUtils.filter(collection, predicate);
+        return collection;
     }
 
     public List<Event> findByQuery(String q) {
