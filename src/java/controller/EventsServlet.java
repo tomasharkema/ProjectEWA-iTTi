@@ -12,45 +12,44 @@ import entity.UserHasEvent;
 import entity.UserHasEventPK;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import session.CarFacade;
 import session.EventFacade;
 import session.UserFacade;
+import validate.LoginValidator;
 
 /**
  *
  * @author tomasharkema
  */
-@WebServlet(name = "EventsServlet", loadOnStartup = 1, urlPatterns = {"/events", "/events/attend"})
+@WebServlet(name = "EventsServlet", loadOnStartup = 1, urlPatterns = {"/events", "/events/attend", "/events/availableCars"})
 public class EventsServlet extends HttpServlet {
+    @PersistenceContext(unitName = "DryvesPU")
+    private EntityManager em;
     @EJB
     private EventFacade eventFacade;
     @EJB
     private UserFacade userFacade;
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    @EJB
+    private CarFacade carFacade;
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userPath = request.getServletPath();
-        System.out.println(userPath);
         switch (userPath) {
             case "/events":{
                 serveEvents(request, response);
@@ -58,14 +57,17 @@ public class EventsServlet extends HttpServlet {
             }
             case "/events/attend":{
                 attendEvent(request, response);
+                break;
+            }
+            case "/events/availableCars":{
+                availableCars(request, response);
+                break;
             }
         }
-
-
     }
 
     private void serveEvents(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
+        User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
         String eventId = request.getParameter("eventId");
         int eventIdInt;
         if (eventId == null) {
@@ -76,11 +78,18 @@ public class EventsServlet extends HttpServlet {
 
         String url;
         if (eventIdInt == -1) {
+            // Has no event
             url = "/WEB-INF/view/events.jsp";
             request.setAttribute("events", eventFacade.findAll());
         } else {
+            // Has event
             url = "/WEB-INF/view/event.jsp";
             request.setAttribute("event", eventFacade.find(eventIdInt));
+
+            if (user != null) {
+                // User is not loggedin. Don't let him join.
+                request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt) != null);
+            }
         }
 
         try {
@@ -91,30 +100,78 @@ public class EventsServlet extends HttpServlet {
     }
 
     private void attendEvent(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        HttpSession session = request.getSession();
         String eventId = request.getParameter("eventId");
         String type = request.getParameter("type");
-        User loggedinUser = (User)session.getAttribute("loggedinuser");
-        int uid = loggedinUser.getIduser();
-        
         Event event = eventFacade.find(Integer.parseInt(eventId));
-        User user = userFacade.find(uid);
+        User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
         
         Car car = null;
-        if (type.equals("ikrijzelf")) {
-            List<Car> carList = user.getCarList();
-            System.out.println(carList);
-            car = carList.get(0);
+        switch (type) {
+            case "ikrijzelf":{
+                List<Car> carList = user.getCarList();
+                System.out.println(carList);
+                car = carList.get(0);
+                break;
+            }
+            case "meerijden":{
+                Integer carid = Integer.parseInt(request.getParameter("carId"));
+                Car carFind = carFacade.find(carid);
+                int places = carFind.getPlaces();
+                if (places > 0) {
+                    car = carFind;
+                }
+                break;
+            }
         }
         
-        List<UserHasEvent> evList = user.getUserHasEventList();
-        UserHasEvent chain = new UserHasEvent(uid, event.getIdevent());
-        chain.setCarId(car);
-        evList.add(chain);
-        user.setUserHasEventList(evList);
-        
-        userFacade.updateUser(user);
-        
-        response.sendRedirect("/events");
+        if (type.equals("cancel")) {
+            UserHasEvent ev = user.isAttendingEvent(Integer.parseInt(eventId));
+            List<UserHasEvent> evList = user.getUserHasEventList();
+            evList.remove(ev);
+            user.setUserHasEventList(evList);
+            
+            userFacade.edit(user);
+        } else {
+            List<UserHasEvent> evList = user.getUserHasEventList();
+            UserHasEvent chain = new UserHasEvent(user.getIduser(), event.getIdevent());
+            chain.setCarId(car);
+            chain.setDate(new Date());
+            evList.add(chain);
+            user.setUserHasEventList(evList);
+
+            userFacade.edit(user);
+        }
+        response.sendRedirect("/events?eventId=" + eventId);
+    }
+
+    // TODO: this call doesn't need to be cached.
+    private void availableCars(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        JSONObject result = new JSONObject();
+        PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
+
+        String eventId = request.getParameter("eventId");
+        Event event = eventFacade.find(Integer.parseInt(eventId));
+        ArrayList<Car> carList = event.getAttendedCars();
+        JSONArray carArray = new JSONArray();
+
+        for (Car car : carList) {
+            Car refreshedCar = carFacade.find(car.getRegistration());
+            JSONObject obj = new JSONObject();
+            obj.put("id", refreshedCar.getRegistration());
+            obj.put("uid", refreshedCar.getUserIduser().getIduser());
+            obj.put("desc", refreshedCar.getBrand() + " " + refreshedCar.getType() + " " + refreshedCar.getColor());
+            obj.put("places", refreshedCar.getPlaces());
+            carArray.add(obj);
+        }
+
+        result.put("cars", carArray);
+
+        try {
+            /* TODO output your page here. You may use following sample code. */
+            out.println(result.toJSONString());
+        } finally {
+            out.close();
+        }
     }
 }

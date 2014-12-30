@@ -23,15 +23,6 @@ import session.UserFacade;
 @WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview"})
 public class OverviewServlet extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @EJB
     private UserFacade userFacade;
     
@@ -73,6 +64,5 @@ public class OverviewServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

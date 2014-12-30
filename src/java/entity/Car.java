@@ -166,5 +166,10 @@ public class Car implements Serializable {
     public String toString() {
         return "entity.Car[ registration=" + registration + " ]";
     }
-    
+
+    public int getPlaces() {
+        int seats = getNumberSeats();
+        List<UserHasEvent> userList = getUserHasEventList();
+        return seats - userList.size();
+    }
 }

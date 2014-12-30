@@ -30,6 +30,11 @@ Dryves.prototype = {
                 self.removeClass("active");
             }
         });
+
+        this.$.find(".ret").each(function(){
+            var self = $(this);
+            self.removeClass("ret").attr({href:self.attr("href") + "?ret=" + encodeURIComponent(window.location.href)});
+        });
     },
     redirect:function(url){
         window.location.href = url;

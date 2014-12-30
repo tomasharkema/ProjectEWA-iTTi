@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import static java.lang.System.in;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
@@ -92,9 +93,7 @@ public class User implements Serializable {
     private List<Car> carList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Friends> friendsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
-    private List<Friends> friendsList1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<UserHasEvent> userHasEventList;
 
     public User() {
@@ -218,15 +217,6 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public List<Friends> getFriendsList1() {
-        return friendsList1;
-    }
-
-    public void setFriendsList1(List<Friends> friendsList1) {
-        this.friendsList1 = friendsList1;
-    }
-
-    @XmlTransient
     public List<UserHasEvent> getUserHasEventList() {
         return userHasEventList;
     }
@@ -260,4 +250,22 @@ public class User implements Serializable {
         return "entity.User[ iduser=" + iduser + " ]";
     }
     
+    public UserHasEvent isAttendingEvent(int eventId) {
+        List<UserHasEvent> userHasEventList = getUserHasEventList();
+        UserHasEvent isAttending = null;
+        
+        if (userHasEventList.size() == 0) return null;
+        
+        for(UserHasEvent ev : userHasEventList) {
+            // For some reason, getEvent() returns null, but it actually exists. Fallback on manual check.
+            if (ev.getEvent() == null) {
+                if (ev.getUserHasEventPK().getEventIdevent() == eventId) {
+                    isAttending = ev;
+                }
+            } else if (ev.getEvent().getIdevent() == eventId) {
+                isAttending = ev;
+            }
+        }
+        return isAttending;
+    }
 }

@@ -1,15 +1,21 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-ejb" build-on-make="true" name="Dryves">
-    <output-path>$PROJECT_DIR$/dist</output-path>
-    <root id="root">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/src/conf/MANIFEST.MF" />
-        <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/json-simple-1.1.1.jar" />
+  <artifact type="war" build-on-make="true" name="Dryves">
+    <output-path>$PROJECT_DIR$/build/artifacts/Dryves</output-path>
+    <root id="archive" name="Dryves.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="itti-donkerford" />
+          <element id="jpa-descriptors" facet="itti-donkerford/jpa/JPA" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="JPA 2.0-JPA 2.0" />
+          <element id="library" level="project" name="Java EE 5-Java EE 5" />
+          <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/json-simple-1.1.1.jar" />
+          <element id="library" level="project" name="javax.validation:validation-api:1.1.0.CR3" />
+        </element>
       </element>
-      <element id="library" level="project" name="Java EE 5-Java EE 5" />
-      <element id="library" level="project" name="JPA 2.0-JPA 2.0" />
-      <element id="library" level="project" name="javax.validation:validation-api:1.1.0.CR3" />
-      <element id="module-output" name="itti-donkerford" />
+      <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB" />
+      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web2" />
     </root>
   </artifact>
 </component>

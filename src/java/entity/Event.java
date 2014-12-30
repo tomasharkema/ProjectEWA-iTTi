@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -57,6 +58,10 @@ public class Event implements Serializable {
     @Size(max = 65535)
     @Column(name = "eventLogo")
     private String eventLogo;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "eventWall")
+    private String eventWall;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -109,6 +114,14 @@ public class Event implements Serializable {
         this.eventLogo = eventLogo;
     }
 
+    public String getEventWall() {
+        return eventWall;
+    }
+
+    public void setEventWall(String eventWall) {
+        this.eventWall = eventWall;
+    }
+    
     public String getEventName() {
         return eventName;
     }
@@ -166,5 +179,18 @@ public class Event implements Serializable {
     public String toString() {
         return "entity.Event[ idevent=" + idevent + " ]";
     }
-    
+
+    public ArrayList<Car> getAttendedCars() {
+
+        ArrayList<Car> carList = new ArrayList<>();
+        for (UserHasEvent userHasEvent : getUserHasEventList()) {
+            if (userHasEvent.getCarId().getUserIduser().getIduser().equals(userHasEvent.getUser().getIduser())) {
+                Car car = userHasEvent.getCarId();
+                carList.add(car);
+            }
+        }
+
+        return carList;
+    }
+
 }
