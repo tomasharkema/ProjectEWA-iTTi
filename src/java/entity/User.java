@@ -25,6 +25,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import searching.TimeLine;
 
 /**
  *
@@ -44,8 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByPhone", query = "SELECT u FROM User u WHERE u.phone = :phone"),
     @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "User.findByFbid", query = "SELECT u FROM User u WHERE u.fbid = :fbid"),
-    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin")})
-public class User implements Serializable {
+    @NamedQuery(name = "User.findByAdmin", query = "SELECT u FROM User u WHERE u.admin = :admin"),
+    @NamedQuery(name = "User.findFriendsbyDateASC", query = "SELECT u from User u JOIN Friends f ON f.friendsPK.userIduser = u.iduser JOIN User us ON f.friendsPK.userIduser1 = us.iduser WHERE u.iduser = :iduser")})
+
+public class User implements Serializable, TimeLine {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -267,5 +270,15 @@ public class User implements Serializable {
             }
         }
         return isAttending;
+    }
+
+    @Override
+    public String getPicture() {
+       return getUserAvatar();
+    }
+
+    @Override
+    public int getId() {
+    return getIduser();
     }
 }
