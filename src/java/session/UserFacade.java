@@ -84,7 +84,7 @@ public class UserFacade extends AbstractFacade<User> {
         return result;
     }
 
-    public List<TimeLine> findFriendsbyDateASC(int userId) {
+    public List<TimeLine> findFriendsbyDateASC(User userId) {
         TypedQuery query = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
         query.setParameter("iduser", userId);
         List<TimeLine> result = query.getResultList();

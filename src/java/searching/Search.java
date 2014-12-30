@@ -71,7 +71,7 @@ public class Search {
     @Return: List<TimeLineNode> 
      */
 
-    public List<TimeLineNode> timeLineSearch(int userId) {
+    public List<TimeLineNode> timeLineSearch(User userId) {
         // Make list for various results. results is to combine friendUpdates and attendingUpdates
         List<TimeLineNode> results = new ArrayList();
         List<TimeLineNode> friendUpdates;
@@ -92,12 +92,14 @@ public class Search {
     Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
     @return List<TimeLineNode>. all nodes consist of 2 users.
     */
-    private List<TimeLineNode> friendUpdates(int userId) {
+    private List<TimeLineNode> friendUpdates(User user) {
         //make list to save results too
-        List<TimeLine> localFriendUpdates;
+        ArrayList<User> localFriendUpdates;
         //make a list of your own "new friends" sorted by date
         System.out.println(userFacade);
-        localFriendUpdates = userFacade.findFriendsbyDateASC(userId);
+        //localFriendUpdates = userFacade.findFriendsbyDateASC(userId);
+        localFriendUpdates = user.getFriends();
+
         
         //new list for storing all new friends of your friends
         List<TimeLineNode> friendUpdates = new ArrayList();
@@ -131,7 +133,7 @@ public class Search {
     Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
     @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
     */
-    private List<TimeLineNode> attendingUpdates(int userId) {
+    private List<TimeLineNode> attendingUpdates(User userId) {
         List<TimeLine> findFriends;
         TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
         friendQuery.setParameter("iduser", userId);

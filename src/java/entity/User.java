@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -294,5 +295,25 @@ public class User implements Serializable, TimeLine {
             }
         }
         return isAttending;
+    }
+
+    public ArrayList<User> getFriends() {
+        ArrayList<User> list = new ArrayList<>();
+        for (Friends friends : friendsList) {
+            if (!friends.getUser().equals(this)) {
+                list.add(friends.getUser());
+            } else if (!friends.getUser1().equals(this)) {
+                list.add(friends.getUser1());
+            }
+        }
+        for (Friends friends : friendsList1) {
+            if (!friends.getUser().equals(this)) {
+                list.add(friends.getUser());
+            } else if (!friends.getUser1().equals(this)) {
+                list.add(friends.getUser1());
+            }
+        }
+
+        return list;
     }
 }
