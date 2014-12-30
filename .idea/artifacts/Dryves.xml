@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="Dryves">
+  <artifact type="exploded-war" build-on-make="true" name="Dryves">
     <output-path>$PROJECT_DIR$/build/artifacts/Dryves</output-path>
-    <root id="archive" name="Dryves.war">
+    <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="itti-donkerford" />
@@ -12,6 +12,7 @@
           <element id="library" level="project" name="Java EE 5-Java EE 5" />
           <element id="file-copy" path="$PROJECT_DIR$/web/WEB-INF/lib/json-simple-1.1.1.jar" />
           <element id="library" level="project" name="javax.validation:validation-api:1.1.0.CR3" />
+          <element id="library" level="project" name="markdown4j-2.2" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB" />
