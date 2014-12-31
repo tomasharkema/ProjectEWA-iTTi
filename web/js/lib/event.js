@@ -53,6 +53,24 @@ Event.prototype = {
             return false;
         });
 
+        var s = new Search(".search-events", ".search-results");
+        s.onResultHandler = function(data) {
+            if (data === undefined || data.events === undefined || data.events.length === 0) {
+                $(".search-results").html($("<h5>").html("No results found by <em>" + this.query + "</em>"));
+                return false;
+            }
+            // dat functional programming
+            $(".search-results").html(data.events.reduce(function(prev, event, index, array){
+                return prev.append($('<li>').addClass("list-group-item").html($("<h4>").html($("<a>").attr({href:"?eventId="+event.id}).html(event.name))));
+            }, $("<ul>").addClass("list-group")));
+        };
+        s.onQueryHandler = function(q){
+            if (q === "") {
+                $(".events-list").show();
+            } else {
+                $(".events-list").hide();
+            }
+        };
     }
 };
 

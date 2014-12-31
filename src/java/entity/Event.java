@@ -5,6 +5,10 @@
  */
 package entity;
 
+import org.json.simple.JSONObject;
+import org.markdown4j.Markdown4jProcessor;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,10 +45,12 @@ import searching.TimeLine;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-    @NamedQuery(name = "Event.findByIdevennt", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
+    @NamedQuery(name = "Event.findByIdevent", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
     @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
+    @NamedQuery(name = "Event.findByDateASC", query = "SELECT e FROM Event e ORDER BY e.eventDate ASC"),
     @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
-    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEvent us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevent = e.idevent WHERE e.idevent = :idevent")})
+    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEvent us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevent = e.idevent WHERE e.idevent = :idevent"),
+    @NamedQuery(name = "Event.findNameLike", query = "SELECT e FROM Event e WHERE e.eventName LIKE :name ORDER BY e.eventName DESC")})
 public class Event implements Serializable, TimeLine {
     private static final long serialVersionUID = 1L;
     @Id
@@ -238,6 +244,18 @@ public class Event implements Serializable, TimeLine {
             }
         }
         return friendsAttending;
+    }
+
+    public JSONObject toJSONObject() throws IOException {
+        JSONObject obj = new JSONObject();
+        obj.put("id", idevent);
+        obj.put("name", eventName);
+        obj.put("eventDate", eventDate.getTime());
+        obj.put("eventLogo", eventLogo);
+        obj.put("eventWall", eventWall);
+        obj.put("description", description);
+        obj.put("descriptionHTML", new Markdown4jProcessor().process(description));
+        return obj;
     }
     
     @Override

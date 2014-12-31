@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     stylish = require('jshint-stylish'),
     less = require('gulp-less'),
-    cssmin = require('gulp-cssmin');
+    cssmin = require('gulp-cssmin'),
+    gulpIf = require("gulp-if");
     
 gulp.task("default", ["build", "watch"]);
 
@@ -17,10 +18,14 @@ gulp.task("watch", function(){
 
 gulp.task('build', ['build_frontend', 'build_admin'])
 
+var condition = function (file) {
+    return !(file.path.indexOf("min") != -1 || file.path.indexOf("jquery") != -1);
+};
+
 gulp.task('build_frontend', ['build_frontend_js', 'build_frontend_css']);
 gulp.task('build_frontend_js', function() {
-    gulp.src('./js/lib/*.js')
-        .pipe(jshint())
+    gulp.src(['./js/lib/dependencies/*.js', './js/lib/*.js'])
+        .pipe(gulpIf(condition, jshint()))
         .pipe(jshint.reporter('jshint-stylish'))
         .pipe(concat('dryves.js'))
         .pipe(gulp.dest('./js/dist/'))
