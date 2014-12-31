@@ -5,6 +5,7 @@
  */
 package controller;
 
+import entity.Friend;
 import entity.Friends;
 import entity.User;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import validate.LoginValidator;
  *
  * @author tomasharkema
  */
-@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/vrienden"})
+@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/friends"})
 public class OverviewServlet extends HttpServlet {
 
     @EJB
@@ -58,8 +59,8 @@ public class OverviewServlet extends HttpServlet {
                 handleIndex(request, response);
                 break;
             }
-            case "/overview/vrienden":{
-                handleVrienden(request, response);
+            case "/overview/friends":{
+                handleFriends(request, response);
                 break;
             }
         }
@@ -72,17 +73,15 @@ public class OverviewServlet extends HttpServlet {
     }
     
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User currentUser = LoginValidator.getInstance().validateUser(request, response, userFacade, true);
+        User currentUser = (User)request.getAttribute("currentUser");
         List<TimeLineNode> timeline = search.timeLineSearch(currentUser);
         
         request.setAttribute("timeline", timeline);
     }
     
-    private void handleVrienden(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        User currentUser = userFacade.find(((User)session.getAttribute("loggedinuser")).getIduser());
-        System.out.println(userFacade.findFriendsbyNameDSC(currentUser.getId()));
-        List<User> friends = userFacade.findFriendsbyNameDSC(currentUser.getId());
+    private void handleFriends(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User currentUser = (User)request.getAttribute("currentUser");
+        List<Friend> friends = currentUser.getFriends();
         
         request.setAttribute("hasNoFriends", friends.isEmpty());
         request.setAttribute("friends", friends);

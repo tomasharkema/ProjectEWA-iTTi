@@ -16,25 +16,13 @@ import java.io.IOException;
  * Created by tomas on 27-12-14.
  */
 public class LoginValidator {
-    
-    private static LoginValidator instance = null;
-    protected LoginValidator() {
-       // Exists only to defeat instantiation.
-    }
 
-    public static LoginValidator getInstance() {
-       if(instance == null) {
-          instance = new LoginValidator();
-       }
-       return instance;
-    }
-
-    public void loginUser(HttpServletRequest req, HttpServletResponse res, User user) {
+    static public void loginUser(HttpServletRequest req, User user) {
         HttpSession session = req.getSession();
         session.setAttribute("userId", user.getIduser());
     }
 
-    public User validateUser(HttpServletRequest req, HttpServletResponse res, UserFacade userFacade) {
+    static public User validateUser(HttpServletRequest req, UserFacade userFacade) {
         HttpSession session = req.getSession();
         Integer uid = (Integer)session.getAttribute("userId");
         User user = null;
@@ -47,15 +35,15 @@ public class LoginValidator {
         return user;
     }
 
-    public User validateUser(HttpServletRequest req, HttpServletResponse res, UserFacade userFacade, boolean redirectIfNotLoggedin) throws IOException {
-        User u = validateUser(req, res, userFacade);
+    static public User validateUser(HttpServletRequest req, HttpServletResponse res, UserFacade userFacade, boolean redirectIfNotLoggedin) throws IOException {
+        User u = validateUser(req, userFacade);
         if (u == null && redirectIfNotLoggedin) {
             res.sendRedirect("/");
         }
         return u;
     }
 
-    public void logoutUser(HttpServletRequest req, HttpServletResponse res) {
+    static public void logoutUser(HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.setAttribute("userId", null);
     }

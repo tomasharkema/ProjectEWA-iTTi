@@ -146,7 +146,7 @@ public class LoginServlet extends HttpServlet {
 
         result.put("loggedin", true);
 
-        LoginValidator.getInstance().loginUser(request, response, loggedinUser);
+        LoginValidator.loginUser(request, loggedinUser);
 
         System.out.println(request.getRemoteHost());
         System.out.println(request.getHeaderNames());
@@ -179,7 +179,7 @@ public class LoginServlet extends HttpServlet {
     }
     
     private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LoginValidator.getInstance().logoutUser(request, response);
+        LoginValidator.logoutUser(request);
         response.sendRedirect("/");
     }
 }
