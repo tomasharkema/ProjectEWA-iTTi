@@ -72,11 +72,9 @@ public class Search {
     public List<TimeLineNode> timeLineSearch(User userId) {
         // Make list for various results. results is to combine friendUpdates and attendingUpdates
         List<TimeLineNode> results = new ArrayList();
-        List<TimeLineNode> friendUpdates;
-        List<TimeLineNode> attendingUpdates;
-        //calling methods to get the updates
-        friendUpdates = friendUpdates(userId);
-        attendingUpdates = attendingUpdates(userId);
+        List<TimeLineNode> friendUpdates = friendUpdates(userId);
+        List<TimeLineNode> attendingUpdates = attendingUpdates(userId);
+
         //adding all results from friends and events into a single List
         results.addAll(friendUpdates);
         results.addAll(attendingUpdates);
@@ -93,15 +91,11 @@ public class Search {
     private List<TimeLineNode> friendUpdates(User user) {
         List<TimeLineNode> returnList = new ArrayList<>();
 
-        List<TimeLineNode> yourFriends = findYourFriends(user);
-        for (TimeLineNode node : yourFriends) {
-            User friendId = userFacade.find(node.getTwo().getId());
-            List<TimeLineNode> temp = friendUpdates(friendId);
-
-            for (TimeLineNode temp1 : temp) {
-                returnList.add(temp1);
-            }
+        for (Friend friend : user.getFriends()) {
+            returnList.addAll(findYourFriends(friend.getUser()));
+            returnList.addAll(attendingUpdates(friend.getUser()));
         }
+
         return returnList;
     }
 
@@ -109,15 +103,12 @@ public class Search {
         //make list to save your own friends too
         List<TimeLineNode> yourFriends = new ArrayList();
         //temp list to safe your friends for query
-        List<Friend> localFriendUpdates;
+        List<Friend> localFriendUpdates = user.getFriends();
         //find yourself
         TimeLine currentUser = (TimeLine) user;
 
-        //make a list of your own friends
-        localFriendUpdates = user.getFriends();
-
         for (Friend localFriendUpdate : localFriendUpdates) {
-            TimeLine friend = (TimeLine) userFacade.find(localFriendUpdate.getIduser());
+            TimeLine friend = (TimeLine)localFriendUpdate.getUser();
             TimeLineNode node = new TimeLineNode();
             node.setOne(currentUser);
             node.setTwo(friend);
@@ -133,26 +124,16 @@ public class Search {
     @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
     */
     private List<TimeLineNode> attendingUpdates(User user) {
-        List<TimeLine> findFriends;
-        TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
-        friendQuery.setParameter("iduser", user);
-        findFriends = friendQuery.getResultList();
-
-        //find yourself
-        TypedQuery findYourself = em.createNamedQuery("User.findByIduser", TimeLine.class);
-        findYourself.setParameter("iduser", user);
-        TimeLine currentUser = (TimeLine) findYourself.getSingleResult();
 
         List<TimeLineNode> returnList = new ArrayList<>();
 
         for (Friend yourFriend : user.getFriends()) {
-            int friendId = yourFriend.getId();
             //make list of all UserHasEvents
             List<UserHasEvent> userHasEvent;
-            userHasEvent = yourFriend.getUserHasEventList();
+            userHasEvent = yourFriend.getUser().getUserHasEventList();
             for (UserHasEvent userHasEvent1 : userHasEvent) {
                 TimeLineNode node = new TimeLineNode();
-                node.setOne(currentUser);
+                node.setOne(user);
                 node.setTwo(userHasEvent1.getEvent());
                 node.setDate(userHasEvent1.getDate());
                 node.findMergeLine();

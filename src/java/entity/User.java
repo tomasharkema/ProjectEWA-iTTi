@@ -110,9 +110,6 @@ public class User implements Serializable, TimeLine {
     public User() {
     }
 
-    public User(User u) {
-    }
-
     public User(Integer iduser) {
         this.iduser = iduser;
     }
@@ -305,27 +302,20 @@ public class User implements Serializable, TimeLine {
         ArrayList<Friend> list = new ArrayList<>();
         for (Friends friends : friendsList) {
             if (!friends.getUser().equals(this)) {
-                Friend f = new Friend(friends.getUser());
-                f.setSince(friends.getDate());
-                list.add(f);
+                list.add(new Friend(friends.getUser(), friends.getDate()));
             } else if (!friends.getUser1().equals(this)) {
-                Friend f = new Friend(friends.getUser1());
-                f.setSince(friends.getDate());
-                list.add(f);
+                list.add(new Friend(friends.getUser1(), friends.getDate()));
             }
         }
         for (Friends friends : friendsList1) {
             if (!friends.getUser().equals(this)) {
-                Friend f = (Friend)friends.getUser();
-                f.setSince(friends.getDate());
-                list.add(f);
+                list.add(new Friend(friends.getUser(), friends.getDate()));
             } else if (!friends.getUser1().equals(this)) {
-                Friend f = (Friend)friends.getUser1();
-                f.setSince(friends.getDate());
-                list.add(f);
+                list.add(new Friend(friends.getUser1(), friends.getDate()));
             }
         }
 
         return list;
     }
+
 }

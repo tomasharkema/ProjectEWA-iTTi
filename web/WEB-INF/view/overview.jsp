@@ -8,10 +8,10 @@
 <div class="time-line">
     <c:forEach items="${timeline}" var="item">
         <div class="well well-sm avatar">
-            <img src="${item.image}" class="img-circle avatar-timeline pull-left">
-            <h4>${item.title}</h4>
+            <img src="${item.getPictureOne()}" class="img-circle avatar-timeline pull-left">
+            <h4>${item.getMergeLine()}</h4>
             <p>
-                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> ${item.time}</small>
+                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> ${item.getDate()}</small>
             </p>
         </div>
     </c:forEach>
