@@ -10,6 +10,7 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.*;
+import java.io.IOException;
 
 /**
  * Created by tomas on 27-12-14.
@@ -44,6 +45,14 @@ public class LoginValidator {
         req.setAttribute("currentUser", user);
         req.setAttribute("isLoggedin", user != null);
         return user;
+    }
+
+    public User validateUser(HttpServletRequest req, HttpServletResponse res, UserFacade userFacade, boolean redirectIfNotLoggedin) throws IOException {
+        User u = validateUser(req, res, userFacade);
+        if (u == null && redirectIfNotLoggedin) {
+            res.sendRedirect("/");
+        }
+        return u;
     }
 
     public void logoutUser(HttpServletRequest req, HttpServletResponse res) {

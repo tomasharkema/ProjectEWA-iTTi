@@ -71,9 +71,8 @@ public class OverviewServlet extends HttpServlet {
         }
     }
     
-    private void handleIndex(HttpServletRequest request, HttpServletResponse response) {
-        User currentUser = LoginValidator.getInstance().validateUser(request, response, userFacade);
-        HttpSession session = request.getSession();
+    private void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User currentUser = LoginValidator.getInstance().validateUser(request, response, userFacade, true);
         List<TimeLineNode> timeline = search.timeLineSearch(currentUser);
         
         request.setAttribute("timeline", timeline);

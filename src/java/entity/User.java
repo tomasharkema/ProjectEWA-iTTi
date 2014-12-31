@@ -110,6 +110,9 @@ public class User implements Serializable, TimeLine {
     public User() {
     }
 
+    public User(User u) {
+    }
+
     public User(Integer iduser) {
         this.iduser = iduser;
     }
@@ -298,20 +301,28 @@ public class User implements Serializable, TimeLine {
         return isAttending;
     }
 
-    public ArrayList<User> getFriends() {
-        ArrayList<User> list = new ArrayList<>();
+    public ArrayList<Friend> getFriends() {
+        ArrayList<Friend> list = new ArrayList<>();
         for (Friends friends : friendsList) {
             if (!friends.getUser().equals(this)) {
-                list.add(friends.getUser());
+                Friend f = new Friend(friends.getUser());
+                f.setSince(friends.getDate());
+                list.add(f);
             } else if (!friends.getUser1().equals(this)) {
-                list.add(friends.getUser1());
+                Friend f = new Friend(friends.getUser1());
+                f.setSince(friends.getDate());
+                list.add(f);
             }
         }
         for (Friends friends : friendsList1) {
             if (!friends.getUser().equals(this)) {
-                list.add(friends.getUser());
+                Friend f = (Friend)friends.getUser();
+                f.setSince(friends.getDate());
+                list.add(f);
             } else if (!friends.getUser1().equals(this)) {
-                list.add(friends.getUser1());
+                Friend f = (Friend)friends.getUser1();
+                f.setSince(friends.getDate());
+                list.add(f);
             }
         }
 
