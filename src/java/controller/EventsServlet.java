@@ -81,13 +81,12 @@ public class EventsServlet extends HttpServlet {
         if (eventIdInt == -1) {
             // Has no event
             url = "/WEB-INF/view/events.jsp";
-            request.setAttribute("events", eventFacade.findAll());
+            request.setAttribute("events", eventFacade.findAllDescAfterDate());
         } else {
             // Has event
             url = "/WEB-INF/view/event.jsp";
             Event event = eventFacade.find(eventIdInt);
             request.setAttribute("event", event);
-            request.setAttribute("location", event.getLocationid());
             request.setAttribute("attendees", event.getAttendees());
             request.setAttribute("userHasEventList", event.getUserHasEventList());
             request.setAttribute("drivers", event.getAttendedCars());
