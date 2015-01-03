@@ -94,8 +94,11 @@ public class Search {
         for (Friend friend : user.getFriends()) {
             returnList.addAll(findYourFriends(friend.getUser()));
             returnList.addAll(attendingUpdates(friend.getUser()));
+            returnList.addAll(attendingUpdates(user));
         }
 
+        Collections.sort(returnList, new dateComparetor());
+        
         return returnList;
     }
 
@@ -127,10 +130,9 @@ public class Search {
 
         List<TimeLineNode> returnList = new ArrayList<>();
 
-        for (Friend yourFriend : user.getFriends()) {
             //make list of all UserHasEvents
             List<UserHasEvent> userHasEvent;
-            userHasEvent = yourFriend.getUser().getUserHasEventList();
+            userHasEvent = user.getUserHasEventList();
             for (UserHasEvent userHasEvent1 : userHasEvent) {
                 TimeLineNode node = new TimeLineNode();
                 node.setOne(user);
@@ -139,8 +141,7 @@ public class Search {
                 node.findMergeLine();
                 returnList.add(node);
             }
-        }
-
+        
         return returnList;
     }
 }
