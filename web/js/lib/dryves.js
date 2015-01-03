@@ -10,7 +10,7 @@ function Dryves(){
     var self = this;
     this.$ = $("#dryves");
     this.fb = new FBLogin();
-    $(document).ready(function(){
+    $(function(){
         self.readyScope();
     });
 }
@@ -19,6 +19,7 @@ Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
         this.injectLinks();
+        this.injectColorDropdown();
         $.timeago.settings.allowFuture = true;
         $("time.timeago").timeago();
     },
@@ -36,6 +37,15 @@ Dryves.prototype = {
         this.$.find(".ret").each(function(){
             var self = $(this);
             self.removeClass("ret").attr({href:self.attr("href") + "?ret=" + encodeURIComponent(window.location.href)});
+        });
+    },
+    injectColorDropdown:function(){
+        $('.colorselector').colorselector({
+            callback: function (value, color, title) {
+                $("#colorValue").val(value);
+                $("#colorColor").val(color);
+                $("#colorTitle").val(title);
+            }
         });
     },
     redirect:function(url){

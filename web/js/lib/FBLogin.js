@@ -10,7 +10,7 @@ FBLogin.prototype = {
         $.ajaxSetup({ cache: true });
         $.getScript('//connect.facebook.net/en_UK/all.js', function(){
             FB.init({
-                appId: '1654973028062626'
+                appId: '1654973028062626',
             });
             self.FBInit.bind(self)();
         });

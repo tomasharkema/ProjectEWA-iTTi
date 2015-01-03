@@ -68,7 +68,7 @@ public class EventsServlet extends HttpServlet {
     }
 
     private void serveEvents(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
+        User user = (User)request.getAttribute("currentUser");
         String eventId = request.getParameter("eventId");
         int eventIdInt;
         if (eventId == null) {
@@ -111,7 +111,7 @@ public class EventsServlet extends HttpServlet {
         String eventId = request.getParameter("eventId");
         String type = request.getParameter("type");
         Event event = eventFacade.find(Integer.parseInt(eventId));
-        User user = LoginValidator.getInstance().validateUser(request, response, userFacade);
+        User user = (User)request.getAttribute("currentUser");
         
         Car car = null;
         switch (type) {
