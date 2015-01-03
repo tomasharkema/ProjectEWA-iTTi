@@ -19,6 +19,8 @@ Dryves.prototype = {
     readyScope:function(){
         this.fb.ready();
         this.injectLinks();
+        $.timeago.settings.allowFuture = true;
+        $("time.timeago").timeago();
     },
     injectLinks:function(){
         this.$.find('#navbar li').each(function(e){
@@ -29,6 +31,11 @@ Dryves.prototype = {
             } else {
                 self.removeClass("active");
             }
+        });
+
+        this.$.find(".ret").each(function(){
+            var self = $(this);
+            self.removeClass("ret").attr({href:self.attr("href") + "?ret=" + encodeURIComponent(window.location.href)});
         });
     },
     redirect:function(url){
