@@ -18,14 +18,7 @@ public class dateComparetor implements Comparator<TimeLineNode> {
 
     @Override
     public int compare(TimeLineNode n1, TimeLineNode n2) {
-       if(n1.getDate().before(n2.getDate())){
-           return -1;
-       }
-       else {
-           return 1;
-       }
+       return n1.getDate().before(n2.getDate()) ? 1 : -1;
     }
 
-
-    
 }

@@ -10,7 +10,7 @@ function Dryves(){
     var self = this;
     this.$ = $("#dryves");
     this.fb = new FBLogin();
-    $(document).ready(function(){
+    $(function(){
         self.readyScope();
     });
 }
