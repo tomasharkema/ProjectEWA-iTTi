@@ -63,33 +63,13 @@ public class Search {
 
         return results;
     }
-    /*
-    Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
-    Lists will be sorted by date, 
-    @Return: List<TimeLineNode> 
-     */
-
-//    public List<TimeLineNode> timeLineSearch(User userId) {
-//        // Make list for various results. results is to combine friendUpdates and attendingUpdates
-//        List<TimeLineNode> results = new ArrayList();
-//        List<TimeLineNode> friendUpdates = friendUpdates(userId);
-//        List<TimeLineNode> attendingUpdates = attendingUpdates(userId);
-//
-//        //adding all results from friends and events into a single List
-//        results.addAll(friendUpdates);
-//        results.addAll(attendingUpdates);
-//        //Sort all results by date
-//        Collections.sort(results, new dateComparetor());
-//
-//        return results;
-//    }
     
     /*
     Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
     Lists will be sorted by date, 
     @Return: List<TimeLineNode> 
      */
-    public List<TimeLineNode> friendUpdates(User user) {
+    public List<TimeLineNode> getTimelineForUser(User user) {
         List<TimeLineNode> returnList = new ArrayList<>();
 
         returnList.addAll(attendingUpdates(user));

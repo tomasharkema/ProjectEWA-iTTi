@@ -74,7 +74,7 @@ public class OverviewServlet extends HttpServlet {
     
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User currentUser = (User)request.getAttribute("currentUser");
-        List<TimeLineNode> timeline = search.friendUpdates(currentUser);
+        List<TimeLineNode> timeline = search.getTimelineForUser(currentUser);
         
         request.setAttribute("timeline", timeline);
     }
