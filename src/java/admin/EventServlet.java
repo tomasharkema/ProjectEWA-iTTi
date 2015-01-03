@@ -165,10 +165,10 @@ public class EventServlet extends HttpServlet {
      * @return
      */
     private Event updateEvent (HttpServletRequest request, Event event) {
-        String name = request.getParameter("eventName");
-        String description = request.getParameter("description");
-        String eventLogo = request.getParameter("eventLogo");
-//        String location = request.getParameter("eventLocation");
+        String name = request.getParameter("eventName"),
+                description = request.getParameter("description"),
+                eventLogo = request.getParameter("eventLogo"),
+                locationId = request.getParameter("location");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
@@ -183,6 +183,10 @@ public class EventServlet extends HttpServlet {
         event.setDescription(description);
         // TODO: Improve the Logo edit functionality.
         event.setEventLogo(eventLogo);
+        
+        Location location = locationFacade.find(Integer.parseInt(locationId));
+        event.setLocationid(location);
+        
         eventFacade.edit(event);
 
         return event;
@@ -216,10 +220,11 @@ public class EventServlet extends HttpServlet {
         // TODO: Improve the Logo edit functionality.
         event.setDescription(description);
         event.setEventLogo(eventLogo);
-
-        eventFacade.create(event);
         
         Location location = locationFacade.find(Integer.parseInt(locationId));
+        event.setLocationid(location);
+        
+        eventFacade.create(event);
 
         return event;
     }

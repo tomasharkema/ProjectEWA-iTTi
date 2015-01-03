@@ -42,7 +42,14 @@
                                             <div class="col-sm-10">
                                                 <select class="form-control" id="location" name="location">
                                                     <c:forEach items="${locations}" var="location">
-                                                    <option value="${location.idlocation}">${location.locationname}</option>
+                                                        <c:choose>
+                                                            <c:when test="${location.idlocation == event.getLocationid().getIdlocation()}">
+                                                                <option value="${location.idlocation}" selected>${location.locationname}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${location.idlocation}">${location.locationname}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:forEach>
                                                 </select>
                                                 <p class="help-block">

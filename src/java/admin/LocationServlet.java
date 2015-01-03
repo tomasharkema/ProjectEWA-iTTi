@@ -63,7 +63,7 @@ public class LocationServlet extends HttpServlet {
             } else {
                 Location location = locationFacade.find(Integer.parseInt(id));
                 if (location == null) {
-                    response.sendRedirect("/admin/loctions");
+                    response.sendRedirect("/admin/locations");
                 } else {
                     userPath = "/locations/edit";
 
