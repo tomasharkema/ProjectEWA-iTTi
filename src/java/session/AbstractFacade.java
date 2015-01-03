@@ -34,7 +34,9 @@ public abstract class AbstractFacade<T> {
     }
 
     public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+        T obj = getEntityManager().find(entityClass, id);
+        getEntityManager().refresh(obj);
+        return obj;
     }
 
     public List<T> findAll() {

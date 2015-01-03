@@ -16,22 +16,22 @@ import javax.validation.constraints.NotNull;
  * @author tomas
  */
 @Embeddable
-public class FriendsPK implements Serializable {
+public class UserHasEventPK implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "user_iduser")
     private int userIduser;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "user_iduser1")
-    private int userIduser1;
+    @Column(name = "event_idevent")
+    private int eventIdevent;
 
-    public FriendsPK() {
+    public UserHasEventPK() {
     }
 
-    public FriendsPK(int userIduser, int userIduser1) {
+    public UserHasEventPK(int userIduser, int eventIdevent) {
         this.userIduser = userIduser;
-        this.userIduser1 = userIduser1;
+        this.eventIdevent = eventIdevent;
     }
 
     public int getUserIduser() {
@@ -42,33 +42,33 @@ public class FriendsPK implements Serializable {
         this.userIduser = userIduser;
     }
 
-    public int getUserIduser1() {
-        return userIduser1;
+    public int getEventIdevent() {
+        return eventIdevent;
     }
 
-    public void setUserIduser1(int userIduser1) {
-        this.userIduser1 = userIduser1;
+    public void setEventIdevent(int eventIdevent) {
+        this.eventIdevent = eventIdevent;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) userIduser;
-        hash += (int) userIduser1;
+        hash += (int) eventIdevent;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FriendsPK)) {
+        if (!(object instanceof UserHasEventPK)) {
             return false;
         }
-        FriendsPK other = (FriendsPK) object;
+        UserHasEventPK other = (UserHasEventPK) object;
         if (this.userIduser != other.userIduser) {
             return false;
         }
-        if (this.userIduser1 != other.userIduser1) {
+        if (this.eventIdevent != other.eventIdevent) {
             return false;
         }
         return true;
@@ -76,7 +76,7 @@ public class FriendsPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.FriendsPK[ userIduser=" + userIduser + ", userIduser1=" + userIduser1 + " ]";
+        return "entity.UserHasEventPK[ userIduser=" + userIduser + ", eventIdevent=" + eventIdevent + " ]";
     }
     
 }

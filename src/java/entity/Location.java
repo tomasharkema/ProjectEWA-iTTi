@@ -6,9 +6,8 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Repr
+ * @author tomas
  */
 @Entity
 @Table(name = "location")
@@ -36,9 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Location.findByIdlocation", query = "SELECT l FROM Location l WHERE l.idlocation = :idlocation"),
     @NamedQuery(name = "Location.findByCity", query = "SELECT l FROM Location l WHERE l.city = :city"),
     @NamedQuery(name = "Location.findByAddress", query = "SELECT l FROM Location l WHERE l.address = :address"),
-    @NamedQuery(name = "Location.findByLocationname", query = "SELECT l FROM Location l WHERE l.locationname = :locationname"),
-    @NamedQuery(name = "Location.findEvents", query = "SELECT e FROM Event e JOIN LocationHasEvent lhe ON e.idevent = lhe.event_idevennt JOIN Location l ON lhe.location_idlocation = l.idlocation WHERE l.idlocation = :idlocation")})
-
+    @NamedQuery(name = "Location.findByLocationname", query = "SELECT l FROM Location l WHERE l.locationname = :locationname")})
 public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -63,8 +60,8 @@ public class Location implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "locationname")
     private String locationname;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
-    private Collection<LocationHasEvent> locationHasEventCollection;
+    @OneToMany(mappedBy = "locationid")
+    private List<Event> eventList;
 
     public Location() {
     }
@@ -120,12 +117,12 @@ public class Location implements Serializable {
     }
 
     @XmlTransient
-    public Collection<LocationHasEvent> getLocationHasEventCollection() {
-        return locationHasEventCollection;
+    public List<Event> getEventList() {
+        return eventList;
     }
 
-    public void setLocationHasEventCollection(Collection<LocationHasEvent> locationHasEventCollection) {
-        this.locationHasEventCollection = locationHasEventCollection;
+    public void setEventList(List<Event> eventList) {
+        this.eventList = eventList;
     }
 
     @Override
@@ -150,7 +147,7 @@ public class Location implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Location[ idlocation=" + idlocation + " ]";
+        return getLocationname() + " ("+getAddress()+" "+getCity()+")";
     }
     
 }

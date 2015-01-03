@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="MySQL - Dryves@localhost" uuid="c8b71358-78f5-406d-a891-a5c4c9114568">
-      <secret-storage>master_key</secret-storage>
-      <user-name>root</user-name>
-      <schema-pattern>Dryves.*</schema-pattern>
-      <default-schemas>Dryves.*</default-schemas>
-    </data-source>
+    <data-source name="MySQL - dryves@localhost" uuid="f04a084c-4150-4074-8708-0cd9e414268c" />
   </component>
 </project>

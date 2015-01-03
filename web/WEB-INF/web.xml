@@ -4,6 +4,9 @@
         <session-timeout>
             30
         </session-timeout>
+        <cookie-config>
+            <path>/</path>
+        </cookie-config>
     </session-config>
 
     <resource-ref>
@@ -13,7 +16,7 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
-    
+
     <jsp-config>
         <jsp-property-group>
             <description>header and footer settings</description>
