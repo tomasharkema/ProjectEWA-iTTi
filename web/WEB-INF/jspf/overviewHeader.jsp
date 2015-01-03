@@ -13,10 +13,10 @@
                     <img class="img-circle avatar-small" src="${loggedinuser.userAvatar}"> ${loggedinuser.name}
                 </div>
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation"><a href="/overview"><span class="glyphicon glyphicon-th-list"></span> Nieuwsoverzicht</a></li>
-                    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-calendar"></span> Evenementen</a></li>
-                    <li role="presentation"><a href="/overview/friends"><span class="glyphicon glyphicon-user"></span> Vrienden</a></li>
-                    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Profiel bewerken</a></li>
+                    <li role="presentation"><a href="/overview"><span class="glyphicon glyphicon-th-list"></span> Newsfeed</a></li>
+                    <li role="presentation"><a href="/overview/events"><span class="glyphicon glyphicon-calendar"></span> Events</a></li>
+                    <li role="presentation"><a href="/overview/friends"><span class="glyphicon glyphicon-user"></span> Friends</a></li>
+                    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a></li>
                 </ul>
             </div>
         </div>
