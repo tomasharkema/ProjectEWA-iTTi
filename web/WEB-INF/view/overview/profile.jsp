@@ -36,12 +36,15 @@
         </div>
     </form>
     <hr>
-
+    <h3>My Cars</h3>
+    <c:if test="${currentUser.getCarList().size() == 0}">
+        <em>You don't have added cars jet. Please add one below.</em>
+    </c:if>
     <c:forEach items="${currentUser.getCarList()}" var="car">
 
     <form class="form-horizontal" method="post" action="/overview/updateCar">
         <!--img class="img-circle" src="#" alt="Vehicle photo #1" style="width: 140px; height: 140px;"-->
-        <h3>${car.brand} ${car.type}</h3>
+        <h4>${car.brand} ${car.type}</h4>
         <input type="hidden" name="cid" value="${car.registration}">
         <div class="form-group">
             <label for="inputBrand" class="col-sm-2 control-label">Brand</label>
@@ -94,7 +97,7 @@
     <hr>
     <form class="form-horizontal" method="post" action="/overview/addCar">
 
-        <h3>Add new car</h3>
+        <h4>Add new car</h4>
         <input type="hidden" name="cid" value="${car.registration}">
         <div class="form-group">
             <label for="inputBrand" class="col-sm-2 control-label">Brand</label>
