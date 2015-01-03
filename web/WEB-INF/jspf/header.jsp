@@ -58,17 +58,30 @@
                                 <li class="active"><a href="/">Home</a></li>
                                 <c:choose>
                                     <c:when test="${userId == null}">
-                                        <li><a href="/login.jsp">Login</a></li>
                                     </c:when>
                                     <c:otherwise>
                                         <li><a href="/overview">Overview</a></li>
                                         <li><a href="/events">Events</a></li>
-                                        <li><a href="/logout">Logout</a></li>
                                     </c:otherwise>
                                 </c:choose>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="/overview/profile"><img src="${currentUser.userAvatar}"> ${currentUser.name}</a></li>
+                                <c:choose>
+                                <c:when test="${userId == null}">
+                                <li><a href="/login.jsp">Login</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                <li class="dropdown open">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><img src="${currentUser.userAvatar}" class="avatar-nav"> ${currentUser.name} <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="/overview/profile">Profile</a></li>
+                                        <li class="divider"></li>
+                                        <!--li class="dropdown-header">Nav header</li-->
+                                        <li><a href="/logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                                </c:otherwise>
+                                </c:choose>
                             </ul>
                         </div>
                     </div>
