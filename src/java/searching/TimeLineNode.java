@@ -63,9 +63,9 @@ public class TimeLineNode {
      */
     public void findMergeLine() {
         if (two instanceof User) {
-            this.setMergeLine(one.getName() + " became friends with " + two.getName());
+            this.setMergeLine("[user id='" + one.getId() + "']" + one.getName() + "[/user] became friends with [user id='" + two.getId() + "']" + two.getName() + "[/user]");
         } else {
-            this.setMergeLine(one.getName() + " attends " + two.getName());
+            this.setMergeLine("[user id='" + one.getId() + "']" + one.getName() + "[/user] attends [event id='" + two.getId() + "']" + two.getName() + "[/event]");
         }
     }
     

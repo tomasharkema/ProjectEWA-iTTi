@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author tomas
+ * @author Repr
  */
 @Entity
 @Table(name = "friends")
@@ -33,8 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findAll", query = "SELECT f FROM Friends f"),
     @NamedQuery(name = "Friends.findByUserIduser", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser = :userIduser"),
     @NamedQuery(name = "Friends.findByUserIduser1", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1"),
+    @NamedQuery(name = "Friends.findDateWithUsers", query = "SELECT f FROM Friends f WHERE f.friendsPK.userIduser1 = :userIduser1 AND f.friendsPK.userIduser = :userIdUser"),
     @NamedQuery(name = "Friends.findByDate", query = "SELECT f FROM Friends f WHERE f.date = :date"),
     @NamedQuery(name = "Friends.findByApproved", query = "SELECT f FROM Friends f WHERE f.approved = :approved")})
+
 public class Friends implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
