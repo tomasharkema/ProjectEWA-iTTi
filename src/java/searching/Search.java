@@ -92,10 +92,10 @@ public class Search {
     public List<TimeLineNode> friendUpdates(User user) {
         List<TimeLineNode> returnList = new ArrayList<>();
 
+        returnList.addAll(attendingUpdates(user));
         for (Friend friend : user.getFriends()) {
             returnList.addAll(findYourFriends(friend.getUser()));
             returnList.addAll(attendingUpdates(friend.getUser()));
-            returnList.addAll(attendingUpdates(user));
         }
 
         Collections.sort(returnList, new dateComparetor());
