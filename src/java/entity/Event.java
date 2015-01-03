@@ -34,6 +34,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import searching.TimeLine;
 
 /**
  *
@@ -44,12 +45,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
-    @NamedQuery(name = "Event.findByDateASC", query = "SELECT e FROM Event e ORDER BY e.eventDate ASC"),
     @NamedQuery(name = "Event.findByIdevent", query = "SELECT e FROM Event e WHERE e.idevent = :idevent"),
-    @NamedQuery(name = "Event.findByEventDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
-    @NamedQuery(name = "Event.findByEventName", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
+    @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
+    @NamedQuery(name = "Event.findByDateASC", query = "SELECT e FROM Event e ORDER BY e.eventDate ASC"),
+    @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
+    @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEvent us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevent = e.idevent WHERE e.idevent = :idevent"),
     @NamedQuery(name = "Event.findNameLike", query = "SELECT e FROM Event e WHERE e.eventName LIKE :name ORDER BY e.eventName DESC")})
-public class Event implements Serializable {
+public class Event implements Serializable, TimeLine {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -255,5 +257,19 @@ public class Event implements Serializable {
         obj.put("descriptionHTML", new Markdown4jProcessor().process(description));
         return obj;
     }
+    
+    @Override
+    public String getName() {
+        return this.getEventName();
+    }
 
+    @Override
+    public String getPicture() {
+        return this.getEventLogo();
+    }
+
+    @Override
+    public int getId() {
+     return this.getIdevent();
+    }
 }

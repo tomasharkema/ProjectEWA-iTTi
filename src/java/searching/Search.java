@@ -5,24 +5,34 @@
  */
 package searching;
 
-import entity.Event;
-import entity.Friends;
-import entity.Location;
-import entity.User;
+import entity.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionManagement;
+import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import session.UserFacade;
 
 /**
  *
  * @author Repr
  */
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
 public class Search {
-
+    @PersistenceContext(unitName = "DryvesPU")
     private EntityManager em;
-
+    
+    @EJB
+    private UserFacade userFacade;
+    
+    
     /*
      Method used to search in the following database tables: Users, Events, Locations
      Will search with wildcards in front and behind the given string
@@ -53,93 +63,67 @@ public class Search {
 
         return results;
     }
+    
     /*
     Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
     Lists will be sorted by date, 
     @Return: List<TimeLineNode> 
      */
+    public List<TimeLineNode> getTimelineForUser(User user) {
+        List<TimeLineNode> returnList = new ArrayList<>();
 
-    public List<TimeLineNode> timeLineSearch(int userId) {
-        // Make list for various results. results is to combine friendUpdates and attendingUpdates
-        List<TimeLineNode> results = new ArrayList();
-        List<TimeLineNode> friendUpdates;
-        List<TimeLineNode> attendingUpdates;
-        //calling methods to get the updates
-        friendUpdates = friendUpdates(userId);
-        attendingUpdates = attendingUpdates(userId);
-        //adding all results from friends and events into a single List
-        results.addAll(friendUpdates);
-        results.addAll(attendingUpdates);
-        //Sort all results by date
-        Collections.sort(results, new dateComparetor());
-
-        return results;
-    }
-    
-    /*
-    Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
-    @return List<TimeLineNode>. all nodes consist of 2 users.
-    */
-    private List<TimeLineNode> friendUpdates(int userId) {
-        //make list to save results too
-        List<TimeLine> localFriendUpdates;
-        //make a list of your own "new friends" sorted by date
-        TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
-        friendQuery.setParameter("iduser", userId);
-        localFriendUpdates = friendQuery.getResultList();
-        
-        //new list for storing all new friends of your friends
-        List<TimeLineNode> friendUpdates = new ArrayList();
-        
-        //iterate through previously made list to find all friends of friends
-        for (TimeLine friendUpdate : localFriendUpdates) {
-            TypedQuery findUpdates = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
-            findUpdates.setParameter("iduser", friendUpdate.getId());
-            List<TimeLine> temp = findUpdates.getResultList();
-            //iterate through list to get the date friendship was set and combine the friend/user with the new friend with
-           // the date into a node object 
-            for (TimeLine temp1 : temp) {
-                TimeLineNode node = new TimeLineNode();
-                node.setOne(friendUpdate);
-                node.setTwo(temp1);
-                TypedQuery findDate = em.createNamedQuery("Friends.findDateWithUsers", Friends.class);
-                findDate.setParameter("userIduser", node.getOne().getId()).setParameter("userIduser1", node.getTwo().getId());
-                Friends friendShip = (Friends) findDate.getSingleResult();
-                node.setDate(friendShip.getDate());
-                node.findMergeLine();
-                friendUpdates.add(node);
-            }
+        returnList.addAll(attendingUpdates(user));
+        for (Friend friend : user.getFriends()) {
+            returnList.addAll(findYourFriends(friend.getUser()));
+            returnList.addAll(attendingUpdates(friend.getUser()));
         }
-        Collections.reverse(friendUpdates);
-        return friendUpdates;
+
+        Collections.sort(returnList, new dateComparetor());
+        
+        return returnList;
+    }
+
+    private List<TimeLineNode> findYourFriends(User user) {
+        //make list to save your own friends too
+        List<TimeLineNode> yourFriends = new ArrayList();
+        //temp list to safe your friends for query
+        List<Friend> localFriendUpdates = user.getFriends();
+        //find yourself
+        TimeLine currentUser = (TimeLine) user;
+
+        for (Friend localFriendUpdate : localFriendUpdates) {
+            TimeLine friend = (TimeLine)localFriendUpdate.getUser();
+            TimeLineNode node = new TimeLineNode();
+            node.setOne(currentUser);
+            node.setTwo(friend);
+            node.setDate(localFriendUpdate.getSince());
+            node.findMergeLine();
+            yourFriends.add(node);
+        }
+        return yourFriends;
     }
     
     /*
-    Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
+    Method called from timeLinesearch method to find all updates .made by friends. returns a list with TimeLineNodes that should be considered unsorted
     @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
+    @param User. 
     */
-    private List<TimeLineNode> attendingUpdates(int userId) {
-        List<TimeLine> findFriends;
-        TypedQuery friendQuery = em.createNamedQuery("User.findFriendsbyDateASC", TimeLine.class);
-        friendQuery.setParameter("iduser", userId);
-        findFriends = friendQuery.getResultList();
+    private List<TimeLineNode> attendingUpdates(User user) {
 
-        List<TimeLineNode> eventUpdates = new ArrayList<>();
+        List<TimeLineNode> returnList = new ArrayList<>();
 
-        for (TimeLine temp1 : findFriends) {
-            //TypedQuery eventUpdate = em.createNamedQuery("UserHasEventAtLocation.findByUserIduser", UserHasEventAtLocation.class);
-            //eventUpdate.setParameter("iduser", temp1.getId());
-            /*List<UserHasEventAtLocation> temp = eventUpdate.getResultList();
-            for (UserHasEventAtLocation linkObject : temp) {
+            //make list of all UserHasEvents
+            List<UserHasEvent> userHasEvent;
+            userHasEvent = user.getUserHasEventList();
+            for (UserHasEvent userHasEvent1 : userHasEvent) {
                 TimeLineNode node = new TimeLineNode();
-                node.setOne(temp1);
-                node.setTwo(linkObject.getLocationHasEvent().getEvent());
-                node.setDate(linkObject.getSubscriptiondate());
+                node.setOne(user);
+                node.setTwo(userHasEvent1.getEvent());
+                node.setDate(userHasEvent1.getDate());
                 node.findMergeLine();
-                eventUpdates.add(node);
-            }*/
-        }
-        Collections.reverse(eventUpdates);
-        return eventUpdates;
+                returnList.add(node);
+            }
+        
+        return returnList;
     }
 }
