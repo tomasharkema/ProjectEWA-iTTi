@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- http://stackoverflow.com/questions/6162401/formatting-a-date-in-jsp#answer-6162507 -->
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
         <div id="page-wrapper">
@@ -90,7 +91,29 @@
                                         <img src="http://placehold.it/350x150" class="img-responsive" alt="Responsive image">
                                     </div>
                                 </div>
-                                <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-12">
+                                    <h2>People attending</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Date of RSVP</th>
+                                                    <th>Car</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${event.getUserHasEventList()}" var="eventUser" varStatus="iter">
+                                                <tr class="${((iter.index % 2) == 0) ? 'even' : 'odd'} clickable" onclick="window.location = '/admin/users/view?id=${eventUser.getUser().iduser}'" title="View user">
+                                                    <td><a href="/admin/users/view?id=${eventUser.getUser().iduser}" title="View user">${eventUser.getUser().name}</a></td>
+                                                    <td><fmt:formatDate value="${eventUser.getDate()}" pattern="d MMMMM yyyy" /></td>
+                                                    <td>${eventUser.getCarId().getBrand()}</td>
+                                                </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 <!--div class="col-lg-6">
                                     <h1>Disabled Form States</h1>
                                     <form role="form">
