@@ -7,7 +7,6 @@ package admin;
 
 import entity.Event;
 import entity.Location;
-import entity.LocationHasEvent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import session.EventFacade;
 import session.LocationFacade;
-import session.LocationHasEventFacade;
 
 /**
  *
@@ -41,9 +39,6 @@ public class EventServlet extends HttpServlet {
     
     @EJB
     private LocationFacade locationFacade;
-    
-    @EJB
-    private LocationHasEventFacade locationHasEventFacade;
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -225,13 +220,6 @@ public class EventServlet extends HttpServlet {
         eventFacade.create(event);
         
         Location location = locationFacade.find(Integer.parseInt(locationId));
-        
-        LocationHasEvent locationHasEvent = new LocationHasEvent();
-        locationHasEvent.setLocation(location);
-        locationHasEvent.setEvent(event);
-        locationHasEvent.setEventDate(date);
-        
-        locationHasEventFacade.create(locationHasEvent);
 
         return event;
     }
