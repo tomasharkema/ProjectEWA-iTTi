@@ -54,7 +54,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="javax.validation:validation-api:1.1.0.CR3" level="project" />
-    <orderEntry type="library" name="markdown4j-2.2" level="project" />
+    <orderEntry type="library" exported="" name="markdown4j-2.2" level="project" />
     <orderEntry type="library" name="com.cedarsoftware:json-io:2.3.0" level="project" />
     <orderEntry type="library" name="org.apache.commons:commons-collections4:4.0" level="project" />
   </component>
