@@ -63,38 +63,19 @@ public class Search {
 
         return results;
     }
+    
     /*
     Method to find events and friendships sorted by date. Both events and friendships will be wrapped in the TimeLine interface and returned as a TimeLineNode.
     Lists will be sorted by date, 
     @Return: List<TimeLineNode> 
      */
-
-    public List<TimeLineNode> timeLineSearch(User userId) {
-        // Make list for various results. results is to combine friendUpdates and attendingUpdates
-        List<TimeLineNode> results = new ArrayList();
-        List<TimeLineNode> friendUpdates = friendUpdates(userId);
-        List<TimeLineNode> attendingUpdates = attendingUpdates(userId);
-
-        //adding all results from friends and events into a single List
-        results.addAll(friendUpdates);
-        results.addAll(attendingUpdates);
-        //Sort all results by date
-        Collections.sort(results, new dateComparetor());
-
-        return results;
-    }
-    
-    /*
-     Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
-     @return List<TimeLineNode>. all nodes consist of 2 users.
-     */
-    private List<TimeLineNode> friendUpdates(User user) {
+    public List<TimeLineNode> getTimelineForUser(User user) {
         List<TimeLineNode> returnList = new ArrayList<>();
 
+        returnList.addAll(attendingUpdates(user));
         for (Friend friend : user.getFriends()) {
             returnList.addAll(findYourFriends(friend.getUser()));
             returnList.addAll(attendingUpdates(friend.getUser()));
-            returnList.addAll(attendingUpdates(user));
         }
 
         Collections.sort(returnList, new dateComparetor());
@@ -123,8 +104,9 @@ public class Search {
     }
     
     /*
-    Method called from timeLinesearch method to find all updates made by friends. returns a list with TimeLineNodes that should be considered unsorted
+    Method called from timeLinesearch method to find all updates .made by friends. returns a list with TimeLineNodes that should be considered unsorted
     @return List<TimeLineNode>. all nodes consist of 1 user and 1 event.
+    @param User. 
     */
     private List<TimeLineNode> attendingUpdates(User user) {
 
