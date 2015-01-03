@@ -18,14 +18,18 @@ gulp.task("watch", function(){
 
 gulp.task('build', ['build_frontend', 'build_admin'])
 
-var condition = function (file) {
+var conditionJS = function (file) {
     return !(file.path.indexOf("min") != -1 || file.path.indexOf("jquery") != -1);
+};
+
+var conditionCSS = function (file) {
+    return file.path.indexOf("less") != -1;
 };
 
 gulp.task('build_frontend', ['build_frontend_js', 'build_frontend_css']);
 gulp.task('build_frontend_js', function() {
     gulp.src(['./js/lib/dependencies/*.js', './js/lib/*.js'])
-        .pipe(gulpIf(condition, jshint()))
+        .pipe(gulpIf(conditionJS, jshint()))
         .pipe(jshint.reporter('jshint-stylish'))
         .pipe(concat('dryves.js'))
         .pipe(gulp.dest('./js/dist/'))
@@ -36,7 +40,7 @@ gulp.task('build_frontend_js', function() {
 
 gulp.task('build_frontend_css', function(){
     gulp.src(["./css/lib/*.css", "./css/less/**/*.less"])
-        .pipe(less())
+        .pipe(gulpIf(conditionCSS, less()))
         .pipe(concat('dryves.css'))
         .pipe(gulp.dest('./css/dist/'))
         .pipe(rename('dryves.min.css'))
