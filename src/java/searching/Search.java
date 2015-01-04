@@ -92,11 +92,14 @@ public class Search {
         TimeLine currentUser = (TimeLine) user;
 
         for (Friend localFriendUpdate : localFriendUpdates) {
+            if (localFriendUpdate.getRelation() != Friends.FriendRelation.Friends) {
+                break;
+            }
             TimeLine friend = (TimeLine)localFriendUpdate.getUser();
             TimeLineNode node = new TimeLineNode();
             node.setOne(currentUser);
             node.setTwo(friend);
-            node.setDate(localFriendUpdate.getSince());
+            node.setDate(localFriendUpdate.getChain().getDate());
             node.findMergeLine();
             yourFriends.add(node);
         }

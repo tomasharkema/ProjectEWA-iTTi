@@ -8,7 +8,9 @@ package entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +28,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import searching.TimeLine;
+import session.UserFacade;
 
 /**
  *
@@ -98,11 +101,11 @@ public class User implements Serializable, TimeLine {
     private BigInteger fbid;
     @Column(name = "admin")
     private Boolean admin;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser", orphanRemoval=true)
     private List<Car> carList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<Friends> friendsList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1", orphanRemoval=true)
     private List<Friends> friendsList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<UserHasEvent> userHasEventList;
@@ -302,20 +305,58 @@ public class User implements Serializable, TimeLine {
         ArrayList<Friend> list = new ArrayList<>();
         for (Friends friends : friendsList) {
             if (!friends.getUser().equals(this)) {
-                list.add(new Friend(friends.getUser(), friends.getDate()));
+                list.add(new Friend(friends.getUser(), friends.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.NotConfirmed, friends));
             } else if (!friends.getUser1().equals(this)) {
-                list.add(new Friend(friends.getUser1(), friends.getDate()));
+                list.add(new Friend(friends.getUser1(), friends.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.Pending, friends));
             }
         }
         for (Friends friends : friendsList1) {
             if (!friends.getUser().equals(this)) {
-                list.add(new Friend(friends.getUser(), friends.getDate()));
+                list.add(new Friend(friends.getUser(), (friends.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.NotConfirmed), friends));
             } else if (!friends.getUser1().equals(this)) {
-                list.add(new Friend(friends.getUser1(), friends.getDate()));
+                list.add(new Friend(friends.getUser1(), friends.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.Pending, friends));
             }
         }
 
         return list;
     }
 
+    public Friend getFriendRelation(User friend) {
+        Friends ret = null;
+        Friends.FriendRelation relation = Friends.FriendRelation.NoFriends;
+        for (Friends fr : getFriendsList()) {
+            if (fr.getUser().equals(friend)) {
+                ret = fr;
+                relation = fr.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.NotConfirmed;
+            }
+            if (fr.getUser1().equals(friend)) {
+                ret = fr;
+                relation = fr.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.Pending;
+            }
+        }
+        for (Friends fr : getFriendsList1()) {
+            if (fr.getUser().equals(friend)) {
+                ret = fr;
+                relation = fr.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.NotConfirmed;
+            }
+            if (fr.getUser1().equals(friend)) {
+                ret = fr;
+                relation = fr.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.Pending;
+            }
+        }
+
+        // oh, I wish for tuples.
+        if (ret != null) {
+            return new Friend(friend, relation, ret);
+        }
+        return null;
+    }
+
+    public Friends.FriendRelation getRelation(User friend) {
+        Friend f = friend.getFriendRelation(friend);
+        if (f == null) {
+            return Friends.FriendRelation.NoFriends;
+        }
+        return f.getRelation();
+    }
 }

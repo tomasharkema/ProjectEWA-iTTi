@@ -5,11 +5,11 @@
  */
 package session;
 
-import entity.Car;
-import entity.Event;
-import entity.User;
+import entity.*;
+
 import java.math.BigInteger;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -118,5 +118,60 @@ public class UserFacade extends AbstractFacade<User> {
         query.setParameter("iduser", userId);
         List<Event> result = query.getResultList();
         return result;
+    }
+
+    public boolean requestFriend(User currentUser, User inventee) {
+        Friends.FriendRelation relation = currentUser.getRelation(inventee);
+        if (relation != Friends.FriendRelation.NoFriends) {
+            return false;
+        }
+
+        Friends f = new Friends(currentUser.getIduser(), inventee.getIduser());
+        f.setDate(new Date());
+        f.setApproved(false);
+
+        List<Friends> list = currentUser.getFriendsList();
+        list.add(f);
+
+        currentUser.setFriendsList(list);
+        edit(currentUser);
+        return true;
+    }
+
+    public boolean cancelFriendship(User currentUser, User inventee) {
+        Friends.FriendRelation relation = currentUser.getRelation(inventee);
+        if (relation == Friends.FriendRelation.NoFriends) {
+            return false;
+        }
+
+        Friend f = currentUser.getFriendRelation(inventee);
+
+        List<Friends> list = currentUser.getFriendsList();
+        list.remove(f.getChain());
+        currentUser.setFriendsList(list);
+
+        List<Friends> list1 = currentUser.getFriendsList1();
+        list1.remove(f.getChain());
+        currentUser.setFriendsList1(list1);
+        return true;
+    }
+
+    public boolean approveFriendship(User currentUser, User inventee) {
+        Friend relation = currentUser.getFriendRelation(inventee);
+
+        if (relation.getRelation() == Friends.FriendRelation.NotConfirmed) {
+            Friends f = relation.getChain();
+            f.setDate(new Date());
+            f.setApproved(true);
+
+            List<Friends> list = currentUser.getFriendsList1();
+            list.remove(f);
+            list.add(f);
+            currentUser.setFriendsList1(list);
+            edit(currentUser);
+            return true;
+        }
+
+        return false;
     }
 }
