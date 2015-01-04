@@ -12,8 +12,6 @@
 <div class="container event">
   <header>
 
-    ${friendRelation}
-
     <div class="btn-group pull-right rsvp" role="group">
       <c:if test="${friendRelation eq 'Pending'}">
       <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

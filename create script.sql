@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.22)
 # Database: dryves
-# Generation Time: 2015-01-04 14:56:32 +0000
+# Generation Time: 2015-01-04 16:07:01 +0000
 # ************************************************************
 
 
@@ -107,9 +107,9 @@ LOCK TABLES `friends` WRITE;
 
 INSERT INTO `friends` (`user_iduser`, `user_iduser1`, `date`, `approved`)
 VALUES
-	(1,2,'2014-12-29 16:57:06',0),
-	(1,4,'2015-01-04 15:42:05',0),
-	(3,1,'2014-12-31 14:01:00',0);
+	(1,2,'2015-01-04 16:38:09',0),
+	(3,1,'2015-01-04 16:44:06',0),
+	(4,1,'2015-01-04 17:06:41',1);
 
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 UNLOCK TABLES;

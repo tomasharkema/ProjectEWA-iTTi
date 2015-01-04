@@ -153,6 +153,7 @@ public class UserFacade extends AbstractFacade<User> {
         List<Friends> list1 = currentUser.getFriendsList1();
         list1.remove(f.getChain());
         currentUser.setFriendsList1(list1);
+        edit(currentUser);
         return true;
     }
 
