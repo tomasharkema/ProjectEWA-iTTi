@@ -11,40 +11,46 @@
 <div class="backdrop header" style="background-image:url('${event.eventWall}');"></div>
 <div class="container event">
   <header>
-
     <div class="btn-group pull-right rsvp" role="group">
-      <c:if test="${friendRelation eq 'Pending'}">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <span class="glyphicon glyphicon-ok"></span> Friendrequest send
-          <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="/user/friend?action=cancel&uid=${user.iduser}"><span class="glyphicon glyphicon-remove"></span> Cancel</a></li>
-      </ul>
-      </c:if>
-      <c:if test="${friendRelation eq 'NotConfirmed'}">
+      <c:if test="${user ne currentUser}">
+        <c:if test="${friendRelation eq 'Pending'}">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          Respond to friendrequest
-          <span class="caret"></span>
+            <span class="glyphicon glyphicon-ok"></span> Friendrequest send
+            <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="/user/friend?action=approve&uid=${user.iduser}"><span class="glyphicon glyphicon-ok"></span> Approve</a></li>
-          <li><a href="/user/friend?action=cancel&uid=${user.iduser}"><span class="glyphicon glyphicon-remove"></span> Decline</a></li>
+          <li><a href="/user/friend?action=cancel&uid=${user.iduser}"><span class="glyphicon glyphicon-remove"></span> Cancel</a></li>
         </ul>
+        </c:if>
+        <c:if test="${friendRelation eq 'NotConfirmed'}">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Respond to friendrequest
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/user/friend?action=approve&uid=${user.iduser}"><span class="glyphicon glyphicon-ok"></span> Approve</a></li>
+            <li><a href="/user/friend?action=cancel&uid=${user.iduser}"><span class="glyphicon glyphicon-remove"></span> Decline</a></li>
+          </ul>
+        </c:if>
+        <c:if test="${friendRelation eq 'NoFriends'}">
+          <a href="/user/friend?action=add&uid=${user.iduser}" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span> Add as friend
+          </a>
+        </c:if>
+        <c:if test="${friendRelation eq 'Friends'}">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <span class="glyphicon glyphicon-ok"></span> Friends
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/user/friend?action=cancel&uid=${user.iduser}"><span class="glyphicon glyphicon-remove"></span> Remove as friend</a></li>
+          </ul>
+        </c:if>
       </c:if>
-      <c:if test="${friendRelation eq 'NoFriends'}">
-        <a href="/user/friend?action=add&uid=${user.iduser}" type="button" class="btn btn-default">
-          <span class="glyphicon glyphicon-plus"></span> Add as friend
+      <c:if test="${user eq currentUser}">
+        <a href="/overview/profile" type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-edit"></span> Edit your profile
         </a>
-      </c:if>
-      <c:if test="${friendRelation eq 'Friends'}">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <span class="glyphicon glyphicon-ok"></span> Friends
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a href="/user/friend?action=cancel&uid=${user.iduser}"><span class="glyphicon glyphicon-remove"></span> Remove as friend</a></li>
-        </ul>
       </c:if>
     </div>
     <img class="img-thumbnail event-ava pull-left" src="${user.userAvatar}">
