@@ -1,6 +1,7 @@
 package controller;
 
 import entity.User;
+import searching.Search;
 import session.UserFacade;
 
 import javax.ejb.EJB;
@@ -19,6 +20,8 @@ public class UserServlet extends HttpServlet {
 
     @EJB
     private UserFacade userFacade;
+    @EJB
+    private Search search;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -51,6 +54,8 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("user", user);
 
         request.setAttribute("friendRelation", currentUser.getRelation(user));
+        request.setAttribute("userTimeline", search.getTimelineForFriend(user));
+        request.setAttribute("events", user.getUserHasEventList());
     }
 
     private void handleFriend(HttpServletRequest request, HttpServletResponse response) {

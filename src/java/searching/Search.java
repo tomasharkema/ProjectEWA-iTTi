@@ -83,6 +83,17 @@ public class Search {
         return returnList;
     }
 
+    public List<TimeLineNode> getTimelineForFriend(User friend) {
+        List<TimeLineNode> returnList = new ArrayList<>();
+
+        returnList.addAll(attendingUpdates(friend));
+        returnList.addAll(findYourFriends(friend));
+
+        Collections.sort(returnList, new dateComparetor());
+
+        return returnList;
+    }
+
     private List<TimeLineNode> findYourFriends(User user) {
         //make list to save your own friends too
         List<TimeLineNode> yourFriends = new ArrayList();

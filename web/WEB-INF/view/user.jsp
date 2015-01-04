@@ -51,115 +51,46 @@
     <h1>${user.name}</h1>
   </header>
 
-  <!--div class="row info">
-    <div class="col-sm-8">
-
-      <ul class="list-group">
-        <li class="list-group-item">
-
-          <span class="glyphicon glyphicon-time"></span>
-
-          <strong><fmt:formatDate value="${event.eventDate}" type="both" dateStyle="long" timeStyle="short" /></strong>
-
-        </li>
-        <li class="list-group-item">
-
-          <span class="glyphicon glyphicon-pushpin"></span>
-
-          ${event.getLocationid()}
-
-        </li>
-        <li class="list-group-item">
-
-          <span class="glyphicon glyphicon-bullhorn"></span>
-
-          <a href="${event.fbEvent}" target="_blank">${event.eventName} on Facebook</a>
-
-        </li>
-      </ul>
-
-      <ul class="list-group">
-        <li class="list-group-item">
-          ${markdownDescription}
-        </li>
-      </ul>
-
-      <div class="messages">
-        <h4><small>MESSAGES</small></h4>
-        <c:forEach items="${userHasEventList}" var="user">
-          <div class="well well-sm avatar">
-            <img src="${user.getUser().userAvatar}" class="img-circle avatar-timeline pull-left">
-            <h4>${user.getUser().name} goes</h4>
-            <time class="timeago" datetime="<fmt:formatDate value="${user.date}" pattern="yyyy-MM-dd'T'HH:mm:ss" />"><fmt:formatDate value="${user.date}" pattern="dd-MM-yyyy" /></time>
-          </div>
-        </c:forEach>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <small class="subTitle">MESSAGES</small>
+        <div class="time-line">
+          <c:forEach items="${userTimeline}" var="item">
+            <div class="well well-sm time-line-node">
+              <img src="${item.getPictureOne()}" class="img-circle avatar-timeline pull-left">
+              <h4>${item.getMergeLine()}</h4>
+              <p>
+                <small class="text-muted"><i class="glyphicon glyphicon-time"></i> <time class="timeago" datetime="<fmt:formatDate value="${item.getDate()}" pattern="yyyy-MM-dd'T'HH:mm:ss" />"><fmt:formatDate value="${item.getDate()}" pattern="dd-MM-yyyy" /></time></small>
+              </p>
+            </div>
+          </c:forEach>
+        </div>
       </div>
-
-    </div>
-    <div class="col-sm-4">
-
-      <ul class="list-group">
-        <c:if test="${attendingFriends != null}">
-          <c:if test="${attendingFriends.size() > 0}">
-            <li class="list-group-item">
-              <small>FRIENDS</small>
-              <div class="friend-avatars">
-                <c:forEach items="${attendingFriends}" var="friend">
-                  <img class="img-circle" src="${friend.userAvatar}">
-                </c:forEach>
+      <div class="col-sm-4">
+        <small class="subTitle">EVENTS</small>
+        <ul class="media-list">
+          <c:set var="isInPast" value="false" scope="page"/>
+          <c:forEach items="${events}" var="event">
+            <c:if test="${event.getEvent().eventDate lt now && isInPast == false}">
+              <c:set var="isInPast" value="true" scope="page"/>
+              <li class="media">
+                <small class="subtitle">PAST</small>
+              </li>
+            </c:if>
+            <li class="media">
+              <a class="media-left avatar" href="/events?eventId=${event.getEvent().id}">
+                <img src="${event.getEvent().eventLogo}" alt="" class="avatar-small">
+              </a>
+              <div class="media-body">
+                <a class="" href="/events?eventId=${event.getEvent().id}">
+                  <h4 class="media-heading">${event.getEvent().eventName}</h4>
+                  <p><fmt:formatDate value="${event.getEvent().eventDate}" pattern="E dd MMM yyyy" dateStyle="long"/></p>
+                </a>
               </div>
-              <c:choose>
-                <c:when test="${attendingFriends.size() > 1}">
-                  ${attendingFriends.get(0).name} and ${attendingFriends.size()-1} other friends are attending.
-                </c:when>
-                <c:otherwise>
-                  ${attendingFriends.get(0).name} is attending.
-                </c:otherwise>
-              </c:choose>
             </li>
-          </c:if>
-        </c:if>
-        <li class="list-group-item">
-          <small>GUESTS</small>
-          <div class="attending">
-            <c:choose>
-              <c:when test="${attendees.size() > 0}">
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="number">${attendees.size()}</div> going
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="number">${drivers.size()}</div> driving
-                  </div>
-                </div>
-              </c:when>
-              <c:otherwise>
-                No one is attending.
-              </c:otherwise>
-            </c:choose>
-          </div>
-        </li>
-      </ul>
-
+          </c:forEach>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="modal fade" id="meerijden_modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Request Place</h4>
-      </div>
-      <div class="modal-body">
-        <h5>Places:</h5>
-        <div class="places"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
