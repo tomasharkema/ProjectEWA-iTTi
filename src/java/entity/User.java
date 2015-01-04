@@ -27,6 +27,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import searching.TimeLine;
 import session.UserFacade;
 
@@ -301,8 +304,8 @@ public class User implements Serializable, TimeLine {
         return isAttending;
     }
 
-    public ArrayList<Friend> getFriends() {
-        ArrayList<Friend> list = new ArrayList<>();
+    public List<Friend> getFriends() {
+        List<Friend> list = new ArrayList<>();
         for (Friends friends : friendsList) {
             if (!friends.getUser().equals(this)) {
                 list.add(new Friend(friends.getUser(), friends.getApproved() ? Friends.FriendRelation.Friends : Friends.FriendRelation.NotConfirmed, friends));
@@ -318,6 +321,18 @@ public class User implements Serializable, TimeLine {
             }
         }
 
+        return list;
+    }
+
+    public List<Friend> getFriendsApproved() {
+        Predicate<Friend> friendPredicate = new Predicate<Friend>() {
+            @Override
+            public boolean evaluate(Friend friend) {
+                return friend.getRelation() == Friends.FriendRelation.Friends;
+            }
+        };
+        List<Friend> list = getFriends();
+        CollectionUtils.filter(list, friendPredicate);
         return list;
     }
 

@@ -87,14 +87,11 @@ public class Search {
         //make list to save your own friends too
         List<TimeLineNode> yourFriends = new ArrayList();
         //temp list to safe your friends for query
-        List<Friend> localFriendUpdates = user.getFriends();
+        List<Friend> localFriendUpdates = user.getFriendsApproved();
         //find yourself
         TimeLine currentUser = (TimeLine) user;
 
         for (Friend localFriendUpdate : localFriendUpdates) {
-            if (localFriendUpdate.getRelation() != Friends.FriendRelation.Friends) {
-                break;
-            }
             TimeLine friend = (TimeLine)localFriendUpdate.getUser();
             TimeLineNode node = new TimeLineNode();
             node.setOne(currentUser);

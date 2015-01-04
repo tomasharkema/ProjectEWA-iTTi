@@ -81,7 +81,7 @@ public class OverviewServlet extends HttpServlet {
     
     private void handleFriends(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User currentUser = (User)request.getAttribute("currentUser");
-        List<Friend> friends = currentUser.getFriends();
+        List<Friend> friends = currentUser.getFriendsApproved();
         
         request.setAttribute("hasNoFriends", friends.isEmpty());
         request.setAttribute("friends", friends);
