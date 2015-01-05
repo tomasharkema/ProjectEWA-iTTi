@@ -5,30 +5,28 @@
  */
 package controller;
 
-import entity.*;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.System.in;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
-import java.util.*;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import entity.Car;
+import entity.Friend;
 import entity.User;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
+import entity.UserHasEvent;
 import searching.Search;
 import searching.TimeLineNode;
-import searching.dateComparetor;
 import session.CarFacade;
 import session.UserFacade;
-import validate.LoginValidator;
 
 /**
  *
