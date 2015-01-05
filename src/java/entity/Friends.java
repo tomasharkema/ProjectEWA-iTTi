@@ -38,6 +38,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Friends.findByApproved", query = "SELECT f FROM Friends f WHERE f.approved = :approved")})
 
 public class Friends implements Serializable {
+
+    public enum FriendRelation {
+        NoFriends,
+        Friends,
+        NotConfirmed,
+        Pending
+    }
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FriendsPK friendsPK;

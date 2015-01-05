@@ -7,20 +7,14 @@ import java.util.Date;
  */
 public class Friend {
 
-    public Date since;
     public User user;
+    public Friends.FriendRelation relation;
+    public Friends chain;
 
-    public Friend(User user, Date since) {
+    public Friend(User user, Friends.FriendRelation relation, Friends chain) {
         this.user = user;
-        this.since = since;
-    }
-
-    public Date getSince() {
-        return since;
-    }
-
-    public void setSince(Date since) {
-        this.since = since;
+        this.relation = relation;
+        this.chain = chain;
     }
 
     public User getUser() {
@@ -29,5 +23,21 @@ public class Friend {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Friends.FriendRelation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(Friends.FriendRelation relation) {
+        this.relation = relation;
+    }
+
+    public Friends getChain() {
+        return chain;
+    }
+
+    public void setChain(Friends chain) {
+        this.chain = chain;
     }
 }
