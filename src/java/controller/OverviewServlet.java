@@ -5,10 +5,15 @@
  */
 package controller;
 
+
 import entity.Friend;
 import entity.User;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,21 +21,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entity.Car;
+import entity.Friend;
+import entity.User;
+import entity.UserHasEvent;
 import searching.Search;
 import searching.TimeLineNode;
+import session.CarFacade;
 import session.UserFacade;
 
 /**
  *
  * @author tomasharkema
  */
-@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/friends"})
+@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/friends", "/overview/profile", "/overview/changeUser", "/overview/updateCar", "/overview/addCar", "/overview/events"})
 public class OverviewServlet extends HttpServlet {
 
     @EJB
     private UserFacade userFacade;
     @EJB
     private Search search;
+    @EJB
+    private CarFacade carFacade;
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -49,6 +61,14 @@ public class OverviewServlet extends HttpServlet {
             }
             case "/overview/friends":{
                 handleFriends(request, response);
+                break;
+            }
+            case "/overview/profile":{
+                handleProfile(request, response);
+                break;
+            }
+            case "/overview/events":{
+                handleEvents(request, response);
                 break;
             }
         }
@@ -74,7 +94,24 @@ public class OverviewServlet extends HttpServlet {
         request.setAttribute("hasNoFriends", friends.isEmpty());
         request.setAttribute("friends", friends);
     }
-    
+
+    private void handleProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User currentUser = (User)request.getAttribute("currentUser");
+    }
+
+    private void handleEvents(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User currentUser = (User)request.getAttribute("currentUser");
+        List<UserHasEvent> eventList = currentUser.getUserHasEventList();
+        Collections.sort(eventList, new Comparator<UserHasEvent>() {
+            @Override
+            public int compare(UserHasEvent o1, UserHasEvent o2) {
+                return o1.getDate().before(new Date()) ? ((o1.getDate().before(o2.getDate()) ? 1 : -1)) : -1;
+            }
+        });
+
+        request.setAttribute("events", currentUser.getUserHasEventList());
+    }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -86,7 +123,63 @@ public class OverviewServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
+        String userPath = request.getServletPath();
+        switch(userPath) {
+            case "/overview/changeUser": {
+                handleChangeUser(request, response);
+                break;
+            }
+            case "/overview/updateCar": {
+                handleChangeCar(request, response);
+                break;
+            }
+            case "/overview/addCar": {
+                handleAddCar(request, response);
+                break;
+            }
+        }
+        response.sendRedirect("/overview/profile");
+    }
+
+    private void handleChangeUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        User currentUser = (User)request.getAttribute("currentUser");
+        System.out.println(currentUser);
+        currentUser.setName(name);
+        currentUser.setEmail(email);
+
+        userFacade.edit(currentUser);
+    }
+
+    private void handleChangeCar(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer cid = Integer.parseInt(request.getParameter("cid"));
+        String brand = request.getParameter("brand");
+        String type = request.getParameter("type");
+        Integer seats = Integer.parseInt(request.getParameter("seats"));
+        String color = request.getParameter("color");
+
+        Car car = carFacade.find(cid);
+
+        car.setBrand(brand);
+        car.setType(type);
+        car.setNumberSeats(seats);
+        car.setColor(color);
+
+        carFacade.edit(car);
+    }
+
+    private void handleAddCar(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User currentUser = (User)request.getAttribute("currentUser");
+        String brand = request.getParameter("brand");
+        String type = request.getParameter("type");
+        Integer seats = Integer.parseInt(request.getParameter("seats"));
+        String color = request.getParameter("color");
+
+        Car car = new Car(null, brand, color, type, seats);
+        car.setUserIduser(currentUser);
+
+        carFacade.save(car);
     }
 
     /**
