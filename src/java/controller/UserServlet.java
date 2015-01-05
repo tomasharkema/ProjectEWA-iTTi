@@ -37,6 +37,7 @@ public class UserServlet extends HttpServlet {
             case "/user/friend":{
                 handleFriend(request, response);
                 response.sendRedirect("/user?userId=" + request.getParameter("uid"));
+                break;
             }
         }
 
