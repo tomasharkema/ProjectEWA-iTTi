@@ -5,38 +5,34 @@
  */
 package controller;
 
-import entity.*;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.System.in;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import entity.Car;
+import entity.Friend;
 import entity.User;
+import entity.UserHasEvent;
 import searching.Search;
 import searching.TimeLineNode;
 import session.CarFacade;
 import session.UserFacade;
-import validate.LoginValidator;
 
 /**
  *
  * @author tomasharkema
  */
-@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/friends", "/overview/profile", "/overview/changeUser", "/overview/updateCar", "/overview/addCar"})
+@WebServlet(name = "OverviewServlet", loadOnStartup = 1, urlPatterns = {"/overview", "/overview/friends", "/overview/profile", "/overview/changeUser", "/overview/updateCar", "/overview/addCar", "/overview/events"})
 public class OverviewServlet extends HttpServlet {
 
     @EJB
@@ -67,6 +63,10 @@ public class OverviewServlet extends HttpServlet {
                 handleProfile(request, response);
                 break;
             }
+            case "/overview/events":{
+                handleEvents(request, response);
+                break;
+            }
         }
         
         try {
@@ -77,7 +77,7 @@ public class OverviewServlet extends HttpServlet {
     }
     
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User currentUser = (User)request.getAttribute("currentUser");
+        User currentUser = (User) request.getAttribute("currentUser");
         List<TimeLineNode> timeline = search.getTimelineForUser(currentUser);
         
         request.setAttribute("timeline", timeline);
@@ -94,7 +94,20 @@ public class OverviewServlet extends HttpServlet {
     private void handleProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User currentUser = (User)request.getAttribute("currentUser");
     }
-    
+
+    private void handleEvents(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        User currentUser = (User)request.getAttribute("currentUser");
+        List<UserHasEvent> eventList = currentUser.getUserHasEventList();
+        Collections.sort(eventList, new Comparator<UserHasEvent>() {
+            @Override
+            public int compare(UserHasEvent o1, UserHasEvent o2) {
+                return o1.getDate().before(new Date()) ? ((o1.getDate().before(o2.getDate()) ? 1 : -1)) : -1;
+            }
+        });
+
+        request.setAttribute("events", currentUser.getUserHasEventList());
+    }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
