@@ -6,6 +6,8 @@
 package controller;
 
 
+import entity.Friend;
+import entity.User;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,7 +48,9 @@ public class OverviewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String userPath = request.getServletPath();
+        System.out.println(userPath);
         String url = "/WEB-INF/view" + userPath + ".jsp";
+        
         //make users available in the overview.jsp
         request.setAttribute("users", userFacade.findAll());
         
@@ -77,7 +81,7 @@ public class OverviewServlet extends HttpServlet {
     }
     
     private void handleIndex(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        User currentUser = (User) request.getAttribute("currentUser");
+        User currentUser = (User)request.getAttribute("currentUser");
         List<TimeLineNode> timeline = search.getTimelineForUser(currentUser);
         
         request.setAttribute("timeline", timeline);
@@ -85,7 +89,7 @@ public class OverviewServlet extends HttpServlet {
     
     private void handleFriends(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User currentUser = (User)request.getAttribute("currentUser");
-        List<Friend> friends = currentUser.getFriends();
+        List<Friend> friends = currentUser.getFriendsApproved();
         
         request.setAttribute("hasNoFriends", friends.isEmpty());
         request.setAttribute("friends", friends);

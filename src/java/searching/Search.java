@@ -69,9 +69,9 @@ public class Search {
     Lists will be sorted by date, 
     @Return: List<TimeLineNode> 
      */
-    public List<TimeLineNode> getTimelineForUser(User user) {
+    public List<TimeLineNode> getTimelineForUser(User _user) {
         List<TimeLineNode> returnList = new ArrayList<>();
-
+        User user = userFacade.find(_user.getId());
         returnList.addAll(attendingUpdates(user));
         for (Friend friend : user.getFriends()) {
             returnList.addAll(findYourFriends(friend.getUser()));
@@ -83,11 +83,22 @@ public class Search {
         return returnList;
     }
 
+    public List<TimeLineNode> getTimelineForFriend(User friend) {
+        List<TimeLineNode> returnList = new ArrayList<>();
+
+        returnList.addAll(attendingUpdates(friend));
+        returnList.addAll(findYourFriends(friend));
+
+        Collections.sort(returnList, new dateComparetor());
+
+        return returnList;
+    }
+
     private List<TimeLineNode> findYourFriends(User user) {
         //make list to save your own friends too
         List<TimeLineNode> yourFriends = new ArrayList();
         //temp list to safe your friends for query
-        List<Friend> localFriendUpdates = user.getFriends();
+        List<Friend> localFriendUpdates = user.getFriendsApproved();
         //find yourself
         TimeLine currentUser = (TimeLine) user;
 
@@ -96,7 +107,7 @@ public class Search {
             TimeLineNode node = new TimeLineNode();
             node.setOne(currentUser);
             node.setTwo(friend);
-            node.setDate(localFriendUpdate.getSince());
+            node.setDate(localFriendUpdate.getChain().getDate());
             node.findMergeLine();
             yourFriends.add(node);
         }
