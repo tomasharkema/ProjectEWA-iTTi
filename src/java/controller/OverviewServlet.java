@@ -6,31 +6,19 @@
 package controller;
 
 import entity.Friend;
-import entity.Friends;
 import entity.User;
 import java.io.IOException;
-import java.io.PrintWriter;
-import static java.lang.System.in;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import entity.User;
 import searching.Search;
 import searching.TimeLineNode;
 import session.UserFacade;
-import validate.LoginValidator;
 
 /**
  *
