@@ -58,28 +58,30 @@
                                 <li class="active"><a href="/">Home</a></li>
                                 <c:choose>
                                     <c:when test="${userId == null}">
-                                        <li><a href="/login.jsp">Login</a></li>
                                     </c:when>
                                     <c:otherwise>
                                         <li><a href="/overview">Overview</a></li>
                                         <li><a href="/events">Events</a></li>
-                                        <li><a href="/logout">Logout</a></li>
                                     </c:otherwise>
                                 </c:choose>
-
-                                <!--<li><a href="#contact">Contact</a></li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <c:choose>
+                                <c:when test="${userId == null}">
+                                <li><a href="/login.jsp">Login</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                <li class="dropdown open">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true"><img src="${currentUser.userAvatar}" class="avatar-nav"> ${currentUser.name} <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
+                                        <li><a href="/overview/profile">Profile</a></li>
                                         <li class="divider"></li>
-                                        <li class="dropdown-header">Nav header</li>
-                                        <li><a href="#">Separated link</a></li>
-                                        <li><a href="#">One more separated link</a></li>
+                                        <!--li class="dropdown-header">Nav header</li-->
+                                        <li><a href="/logout">Logout</a></li>
                                     </ul>
-                                </li>-->
+                                </li>
+                                </c:otherwise>
+                                </c:choose>
                             </ul>
                         </div>
                     </div>
