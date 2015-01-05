@@ -100,6 +100,7 @@
                                                     <th>Name</th>
                                                     <th>Date of RSVP</th>
                                                     <th>Car</th>
+                                                    <th>Is the driver?</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -108,35 +109,13 @@
                                                     <td><a href="/admin/users/view?id=${eventUser.getUser().iduser}" title="View user">${eventUser.getUser().name}</a></td>
                                                     <td><fmt:formatDate value="${eventUser.getDate()}" pattern="d MMMMM yyyy" /></td>
                                                     <td>${eventUser.getCarId().getBrand()}</td>
+                                                    <td>${eventUser.getCarId().getUserIduser() == eventUser.getUser() ? 'yes' : 'no'}</td>
                                                 </tr>
                                                 </c:forEach>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <!--div class="col-lg-6">
-                                    <h1>Disabled Form States</h1>
-                                    <form role="form">
-                                        <fieldset disabled>
-                                            <div class="form-group">
-                                                <label for="disabledSelect">Disabled input</label>
-                                                <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="disabledSelect">Disabled select menu</label>
-                                                <select id="disabledSelect" class="form-control">
-                                                    <option>Disabled select</option>
-                                                </select>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox">Disabled Checkbox
-                                                </label>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Disabled Button</button>
-                                        </fieldset>
-                                    </form>
-                                </div-->
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->
