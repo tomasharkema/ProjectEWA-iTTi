@@ -69,9 +69,9 @@ public class Search {
     Lists will be sorted by date, 
     @Return: List<TimeLineNode> 
      */
-    public List<TimeLineNode> getTimelineForUser(User user) {
+    public List<TimeLineNode> getTimelineForUser(User _user) {
         List<TimeLineNode> returnList = new ArrayList<>();
-
+        User user = userFacade.find(_user.getId());
         returnList.addAll(attendingUpdates(user));
         for (Friend friend : user.getFriends()) {
             returnList.addAll(findYourFriends(friend.getUser()));
