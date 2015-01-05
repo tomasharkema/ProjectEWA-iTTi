@@ -50,9 +50,9 @@
                                             <td><c:out value="${user.zipcode}"/></td>
                                             <td><c:out value="${user.phone}"/></td>
                                             <td><c:out value="${user.email}"/></td>
-                                            <td><c:out value="${user.gender}"/></td>
-                                            <td><c:out value="${(user.admin == 0) ? 'no' : 'yes'}"/></td>
-                                            <td><c:out value="${user.userAvatar}"/></td>
+                                            <td class="text-center"><c:out value="${user.gender}"/></td>
+                                            <td class="text-center"><c:out value="${(user.admin == 0) ? 'no' : 'yes'}"/></td>
+                                            <td class="center"><img src="<c:out value="${user.getUserAvatar()}"/>" class="img-responsive img-circle center-block" width="60" height="60" alt="Responsive image"></td>
                                             <!-- voor de demo even uitgecomment! -->
                                             <td class="center"><!--Edit | Delete--></td>
                                         </tr>

@@ -61,7 +61,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Dryves</a>
+                <a class="navbar-brand" href="/admin">Dryves</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -80,7 +80,8 @@
                             <!-- /input-group -->
                         </li-->
                         <li>
-                            <a href="/admin/index.jsp"<c:if test="${fn:containsIgnoreCase(pageContext.request.requestURI, 'admin/index')}"> class="active"</c:if>><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="/admin/index.jsp"<c:if test="${fn:containsIgnoreCase(pageContext.request.requestURI, 'admin/index') || 
+                                                                    fn:endsWith(pageContext.request.requestURI, '/admin/')}"> class="active"</c:if>><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="/admin/events"<c:if test="${fn:containsIgnoreCase(pageContext.request.requestURI, 'events')}"> class="active"</c:if>><i class="fa fa-calendar fa-fw"></i> Events</a>

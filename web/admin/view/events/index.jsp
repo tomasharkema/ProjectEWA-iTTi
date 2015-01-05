@@ -44,7 +44,7 @@
                                             <td><a href="events/edit?id=${event.idevent}" title="Edit event">${event.eventName}</a></td>
                                             <!--td></td-->
                                             <td><fmt:formatDate value="${event.eventDate}" pattern="d MMMMM yyyy" /></td>
-                                            <td class="center">${event.getUserHasEventList().size()}</td>
+                                            <td class="text-center">${event.getUserHasEventList().size()}</td>
                                             <!-- voor de demo even uitgecomment! -->
                                             <td class="center"><!--Edit | Delete--></td>
                                         </tr>

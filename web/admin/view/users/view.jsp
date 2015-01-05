@@ -80,7 +80,7 @@
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <img src="<c:out value="${user.getUserAvatar()}"/>" class="img-responsive img-rounded" width="140" height="140" alt="Responsive image">
+                                        <img src="<c:out value="${user.getUserAvatar()}"/>" class="img-responsive img-circle" width="140" height="140" alt="Responsive image">
                                     </div>
                                 </div>
                             </div>
