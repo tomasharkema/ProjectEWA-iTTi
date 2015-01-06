@@ -72,9 +72,21 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="eventWall" class="col-sm-2 control-label">Cover</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="eventWall" name="eventWall" value="${event.eventWall}" required="required">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="description" class="col-sm-2 control-label">Description</label>
                                             <div class="col-sm-10">
                                                 <textarea class="form-control" rows="3" id="description" name="description">${event.description}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fbevent" class="col-sm-2 control-label">Facebook event</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="fbevent" name="fbevent" value="${event.fbEvent}">
                                             </div>
                                         </div>
                                         <div class="form-group">

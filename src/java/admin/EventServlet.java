@@ -204,7 +204,9 @@ public class EventServlet extends HttpServlet {
         String name = request.getParameter("eventName"),
                 description = request.getParameter("description"),
                 eventLogo = request.getParameter("eventLogo"),
-                locationId = request.getParameter("location");
+                locationId = request.getParameter("location"),
+                eventWall = request.getParameter("eventWall"),
+                fbevent = request.getParameter("fbevent");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
 
@@ -217,9 +219,11 @@ public class EventServlet extends HttpServlet {
         Event event = new Event();
         event.setEventName(name);
         event.setEventDate(date);
-        // TODO: Improve the Logo edit functionality.
         event.setDescription(description);
+        // TODO: Improve the Logo edit functionality.
         event.setEventLogo(eventLogo);
+        event.setEventWall(eventWall);
+        event.setFbEvent(fbevent);
         
         Location location = locationFacade.find(Integer.parseInt(locationId));
         event.setLocationid(location);

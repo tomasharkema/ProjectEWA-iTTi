@@ -34,7 +34,7 @@
                                         <div class="form-group">
                                             <label for="location" class="col-sm-2 control-label">Location</label>
                                             <div class="col-sm-10">
-                                                <select class="form-control" id="location" name="location">
+                                                <select class="form-control" id="location" name="location" required="required">
                                                     <c:forEach items="${locations}" var="location">
                                                     <option value="${location.idlocation}">${location.locationname}</option>
                                                     </c:forEach>
@@ -54,13 +54,25 @@
                                         <div class="form-group">
                                             <label for="eventLogo" class="col-sm-2 control-label">Logo</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" id="eventLogo" name="eventLogo">
+                                                <input class="form-control" type="text" id="eventLogo" name="eventLogo" placeholder="Link to logo image" required="required">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="eventWall" class="col-sm-2 control-label">Cover</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="eventWall" name="eventWall" placeholder="Link to cover image" required="required">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="description" class="col-sm-2 control-label">Description</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+                                                <textarea class="form-control" rows="3" id="description" name="description" required="required"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fbevent" class="col-sm-2 control-label">Facebook event</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="fbevent" name="fbevent" placeholder="Link to Facebook event">
                                             </div>
                                         </div>
                                         <div class="form-group">
