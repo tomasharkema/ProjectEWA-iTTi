@@ -24,7 +24,7 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="add" method="post" class="form-horizontal" role="form">
+                                    <form action="add" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label for="locationname" class="col-sm-2 control-label">Name</label>
                                             <div class="col-sm-10">
@@ -46,7 +46,7 @@
                                         <div class="form-group">
                                             <label for="locationpicture" class="col-sm-2 control-label">Picture</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="locationpicture" name="locationpicture">
+                                                <input type="file" class="form-control" id="locationpicture" name="locationpicture">
                                             </div>
                                         </div>
                                         <div class="form-group">

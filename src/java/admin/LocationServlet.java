@@ -6,13 +6,16 @@
 package admin;
 
 import entity.Location;
+import java.io.File;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import session.LocationFacade;
 
 /**
@@ -25,6 +28,7 @@ import session.LocationFacade;
             "/admin/locations/add",
             "/admin/locations/edit",
             "/admin/locations/delete"})
+@MultipartConfig
 public class LocationServlet extends HttpServlet {
     
     @EJB
@@ -130,17 +134,34 @@ public class LocationServlet extends HttpServlet {
         }
     }
     
-    private Location createLocation (HttpServletRequest request) {
+    private String getFileName(final Part part) {
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(
+                        content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
+    
+    private Location createLocation (HttpServletRequest request) throws IOException, ServletException {
         String name = request.getParameter("locationname"),
                 address = request.getParameter("address"),
-                city = request.getParameter("city"),
-                picture = request.getParameter("locationpicture");
+                city = request.getParameter("city");
+        
+        final Part filePart = request.getPart("locationpicture");
+        final String fileName = getFileName(filePart);
+        
+        String path = "/tmp";
+        
+        File pictureFile = new File(path + File.separator
+                    + fileName);
         
         Location location = new Location();
         location.setLocationname(name);
         location.setAddress(address);
         location.setCity(city);
-        location.setLocationpicture(picture);
+        location.setLocationpicture(pictureFile.getAbsolutePath());
         
         locationFacade.create(location);
         
