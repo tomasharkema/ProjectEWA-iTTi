@@ -77,6 +77,14 @@ public class LocationServlet extends HttpServlet {
                 }
             }
 
+        } else if (userPath.equals("/admin/locations/delete")) {
+            String id = request.getParameter("id");
+            if (id == null || id.isEmpty()) {
+            } else {
+                Location location = locationFacade.find(Integer.parseInt(id));
+                locationFacade.remove(location);
+                response.sendRedirect("/admin/locations");
+            }
         }
 
         // use RequestDispatcher to forward request internally
@@ -161,8 +169,6 @@ public class LocationServlet extends HttpServlet {
             fileSaveDir.mkdir();
         }
         
-        String saveFileName = locationSavePath + File.separator + fileName;
-        
         File image = new File(fileSaveDir, fileName);
         
         try (InputStream filecontent = filePart.getInputStream()) {
@@ -173,23 +179,46 @@ public class LocationServlet extends HttpServlet {
         location.setLocationname(name);
         location.setAddress(address);
         location.setCity(city);
-        location.setLocationpicture(saveFileName);
+        location.setLocationpicture(File.separator + SAVE_DIR + File.separator + "locations" + File.separator + fileName);
         
         locationFacade.create(location);
         
         return location;
     }
     
-    private Location updateLocation (HttpServletRequest request, Location location) {
+    private Location updateLocation (HttpServletRequest request, Location location) throws IOException, ServletException {
         String name = request.getParameter("locationname"),
                 address = request.getParameter("address"),
-                city = request.getParameter("city"),
-                picture = request.getParameter("locationpicture");
+                city = request.getParameter("city");
+        
+        Part filePart = request.getPart("locationpicture");
+        String fileName = filePart.getSubmittedFileName();
+        
+        String appPath = request.getServletContext().getRealPath("");
+        String uploadsPath = appPath + File.separator + SAVE_DIR;
+        
+        File filesSaveDir = new File(uploadsPath);
+        if (!filesSaveDir.exists()) {
+            filesSaveDir.mkdir();
+        }
+        
+        String locationSavePath = uploadsPath + File.separator + "locations";
+        
+        File fileSaveDir = new File(locationSavePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+        
+        File image = new File(fileSaveDir, fileName);
+        
+        try (InputStream filecontent = filePart.getInputStream()) {
+            Files.copy(filecontent, image.toPath());
+        }
         
         location.setLocationname(name);
         location.setAddress(address);
         location.setCity(city);
-        location.setLocationpicture(picture);
+        location.setLocationpicture(File.separator + SAVE_DIR + File.separator + "locations" + File.separator + fileName);
         
         locationFacade.edit(location);
         
