@@ -8,6 +8,8 @@ package admin;
 import entity.Location;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -134,34 +136,44 @@ public class LocationServlet extends HttpServlet {
         }
     }
     
-    private String getFileName(final Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(
-                        content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
-    }
+    private static final String SAVE_DIR = "uploads";
     
     private Location createLocation (HttpServletRequest request) throws IOException, ServletException {
         String name = request.getParameter("locationname"),
                 address = request.getParameter("address"),
                 city = request.getParameter("city");
         
-        final Part filePart = request.getPart("locationpicture");
-        final String fileName = getFileName(filePart);
+        Part filePart = request.getPart("locationpicture");
+        String fileName = filePart.getSubmittedFileName();
         
-        String path = "/tmp";
+        String appPath = request.getServletContext().getRealPath("");
+        String uploadsPath = appPath + File.separator + SAVE_DIR;
         
-        File pictureFile = new File(path + File.separator
-                    + fileName);
+        File filesSaveDir = new File(uploadsPath);
+        if (!filesSaveDir.exists()) {
+            filesSaveDir.mkdir();
+        }
+        
+        String locationSavePath = uploadsPath + File.separator + "locations";
+        
+        File fileSaveDir = new File(locationSavePath);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+        
+        String saveFileName = locationSavePath + File.separator + fileName;
+        
+        File image = new File(fileSaveDir, fileName);
+        
+        try (InputStream filecontent = filePart.getInputStream()) {
+            Files.copy(filecontent, image.toPath());
+        }
         
         Location location = new Location();
         location.setLocationname(name);
         location.setAddress(address);
         location.setCity(city);
-        location.setLocationpicture(pictureFile.getAbsolutePath());
+        location.setLocationpicture(saveFileName);
         
         locationFacade.create(location);
         
