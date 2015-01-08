@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
         <div id="page-wrapper">
             <div class="row">
@@ -65,7 +66,8 @@
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <img src="<c:out value="${location.getLocationpicture()}"/>" class="img-responsive" width="140" height="140" alt="Responsive image">
+                                        <c:set var="locationPicture" value="${location.getLocationpicture()}"/>
+                                        <img src="<c:out value="${fn:substring(locationPicture, fn:indexOf(locationPicture, '/uploads'), -1)}"/>" class="img-responsive" width="140" height="140" alt="Responsive image">
                                     </div>
                                 </div>
                             </div>

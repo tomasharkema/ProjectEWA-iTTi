@@ -218,7 +218,7 @@ public class LocationServlet extends HttpServlet {
         location.setLocationname(name);
         location.setAddress(address);
         location.setCity(city);
-        location.setLocationpicture(File.separator + SAVE_DIR + File.separator + "locations" + File.separator + fileName);
+        location.setLocationpicture(locationSavePath + File.separator + fileName);
         
         locationFacade.edit(location);
         
