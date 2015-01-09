@@ -32,7 +32,14 @@
                               <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
+                                <c:choose>
+                                <c:when test="${hasCar}">
                                 <li><a href="/events/attend?eventId=${event.idevent}&type=ikrijzelf"><span class="glyphicon glyphicon-hand-up"></span> I'll drive</a></li>
+                                </c:when>
+                                <c:otherwise>
+                                <li><a href="/overview/profile"><span class="glyphicon glyphicon-hand-up"></span> You don't have a car registered. Add one!</a></li>
+                                </c:otherwise>
+                                </c:choose>
                                 <li class="meerijden"><a href="/events/attend?eventId=${event.idevent}&type=meerijden"><span class="glyphicon glyphicon-question-sign"></span> Request place</a></li>
                             </ul>
                         </div>
