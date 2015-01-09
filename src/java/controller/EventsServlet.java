@@ -12,6 +12,7 @@ import entity.UserHasEvent;
 import entity.UserHasEventPK;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -137,8 +138,20 @@ public class EventsServlet extends HttpServlet {
             List<UserHasEvent> evList = user.getUserHasEventList();
             evList.remove(ev);
             user.setUserHasEventList(evList);
-            
-            userFacade.edit(user);
+
+            if (ev.getUser().getCarList().contains(ev.getCarId())) {
+                List<UserHasEvent> list = ev.getEvent().getUserHasEventList();
+                List<UserHasEvent> newList = new ArrayList<>();
+                for (UserHasEvent e : list) {
+                    if (!e.getCarId().equals(ev.getCarId())) {
+                        newList.add(e);
+                    }
+                }
+                ev.getEvent().setUserHasEventList(newList);
+                eventFacade.edit(ev.getEvent());
+            } else {
+                userFacade.edit(user);
+            }
         } else {
             List<UserHasEvent> evList = user.getUserHasEventList();
             UserHasEvent chain = new UserHasEvent(user.getIduser(), event.getIdevent());
