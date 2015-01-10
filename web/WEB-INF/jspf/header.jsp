@@ -72,6 +72,15 @@
                                 </c:when>
                                 <c:otherwise>
                                 <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-bell"></span> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="/overview/profile">Profile</a></li>
+                                        <li class="divider"></li>
+                                        <!--li class="dropdown-header">Nav header</li-->
+                                        <li><a href="/logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="${currentUser.userAvatar}" class="avatar-nav"> ${currentUser.name} <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="/overview/profile">Profile</a></li>
