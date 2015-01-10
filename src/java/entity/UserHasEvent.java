@@ -145,4 +145,9 @@ public class UserHasEvent implements Serializable, Notification {
     public String getDesc() {
         return null;
     }
+
+    @Override
+    public boolean shouldShow() {
+        return false;
+    }
 }
