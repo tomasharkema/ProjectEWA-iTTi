@@ -11,6 +11,6 @@ public interface Notification {
     public Date getTime();
     public String getAvatar();
     public String getDesc();
-    public boolean shouldShow
+    public boolean shouldShow();
 
 }
