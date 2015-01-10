@@ -128,26 +128,31 @@ public class UserHasEvent implements Serializable, Notification {
 
     @Override
     public String getTitle() {
-        return null;
+        return getUser().getName() + " drives with you to " + getEvent().getName();
     }
 
     @Override
-    public Date getTime() {
-        return null;
+    public Date getFiredDate() {
+        return date;
     }
 
     @Override
     public String getAvatar() {
-        return null;
+        return getUser().getUserAvatar();
     }
 
     @Override
     public String getDesc() {
-        return null;
+        return getUser().getName();
     }
 
     @Override
     public boolean shouldShow() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public Object getPrimaryObject() {
+        return getEvent();
     }
 }

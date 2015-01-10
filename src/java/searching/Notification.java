@@ -8,9 +8,11 @@ import java.util.Date;
 public interface Notification {
 
     public String getTitle();
-    public Date getTime();
+    public Date getFiredDate();
     public String getAvatar();
     public String getDesc();
     public boolean shouldShow();
+
+    public Object getPrimaryObject();
 
 }

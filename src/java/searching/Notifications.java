@@ -1,36 +1,57 @@
 package searching;
 
+import entity.Car;
+import entity.Friend;
 import entity.User;
 import entity.UserHasEvent;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.collections4.Transformer;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import session.UserFacade;
 import utils.ListUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.ejb.EJB;
+import java.util.*;
 
 /**
  * Created by tomas on 10-01-15.
  */
 public class Notifications {
-
-    static public List<Notification> getNotifications(User user) {
+    static public NotificationList getNotifications(User user) {
         List<Notification> notificationList = new ArrayList<>();
-        List<UserHasEvent> userHasEventList = user.getUserHasEventList();
 
-        notificationList.addAll(CollectionUtils.collect(userHasEventList, new Transformer<UserHasEvent, Notification>() {
-            @Override
-            public Notification transform(UserHasEvent userHasEvent) {
-                return userHasEvent;
-            }
-        }));
+        notificationList.addAll(getPassagiersNotifications(user));
+        notificationList.addAll(getFriendsNotifications(user));
 
-        List<Notification> userHasEventNot = ListUtils.castList(userHasEventList);
-        notificationList.addAll(userHasEventNot);
+        CollectionUtils.filter(notificationList, Notification::shouldShow);
 
+        Collections.sort(notificationList, (o1, o2) -> o2.getFiredDate().after(o1.getFiredDate()) ? 1 : -1);
 
-
-        return  notificationList;
+        return new NotificationList(notificationList);
     }
 
+    static private List<Notification> getPassagiersNotifications(User user) {
+        List<UserHasEvent> userDrivingEvents = user.getDrivingEvents();
+        List<List<UserHasEvent>> userPassagiersCollection = new ArrayList<>();
+        // TODO: make it a flatMap
+        CollectionUtils.collect(userDrivingEvents, (userHasEvent) -> {
+            Car car = userHasEvent.getCarId();
+            List<UserHasEvent> carEvents = new ArrayList<>(car.getUserHasEventList());
+
+            CollectionUtils.filter(carEvents, (eventHasCar) -> !eventHasCar.getUser().equals(userHasEvent.getUser()));
+
+            return carEvents;
+        }, userPassagiersCollection);
+
+        return ListUtils.castList(ListUtils.flatten(userPassagiersCollection));
+    }
+
+    static private List<Notification> getFriendsNotifications(User user) {
+        List<Friend> friends = user.getFriends();
+        return ListUtils.castList(friends);
+    }
 }
+
+;

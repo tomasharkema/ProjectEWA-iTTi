@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -59,12 +60,11 @@ import session.UserFacade;
     @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEvent uhe ON e.idevennt = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
     @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEvent uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.date ASC")})
 
-public class User implements Serializable, TimeLine {
+public class User implements Serializable, TimeLine, PermaLinkable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "iduser")
     private Integer iduser;
     @Basic(optional = false)
@@ -104,7 +104,7 @@ public class User implements Serializable, TimeLine {
     private BigInteger fbid;
     @Column(name = "admin")
     private Boolean admin;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser", orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Car> carList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<Friends> friendsList;
@@ -304,6 +304,18 @@ public class User implements Serializable, TimeLine {
         return isAttending;
     }
 
+    public boolean isDriving(Event ev) {
+        boolean ret = false;
+        for (UserHasEvent e : userHasEventList) {
+            for (Car c : carList) {
+                if (c.equals(e.getCarId())) {
+                    ret = true;
+                }
+            }
+        }
+        return ret;
+    }
+
     public List<Friend> getFriends() {
         List<Friend> list = new ArrayList<>();
         for (Friends friends : friendsList) {
@@ -325,12 +337,7 @@ public class User implements Serializable, TimeLine {
     }
 
     public List<Friend> getFriendsApproved() {
-        Predicate<Friend> friendPredicate = new Predicate<Friend>() {
-            @Override
-            public boolean evaluate(Friend friend) {
-                return friend.getRelation() == Friends.FriendRelation.Friends;
-            }
-        };
+        Predicate<Friend> friendPredicate = friend -> friend.getRelation() == Friends.FriendRelation.Friends;
         List<Friend> list = getFriends();
         CollectionUtils.filter(list, friendPredicate);
         return list;
@@ -373,5 +380,18 @@ public class User implements Serializable, TimeLine {
             return Friends.FriendRelation.NoFriends;
         }
         return f.getRelation();
+    }
+
+    public List<UserHasEvent> getDrivingEvents() {
+        List<UserHasEvent> list = new ArrayList<>(getUserHasEventList());
+
+        CollectionUtils.filter(list, (userHasEvent) -> isDriving(userHasEvent.getEvent()));
+
+        return list;
+    }
+
+    @Override
+    public String getLink(){
+        return "/user?userId="+getIduser();
     }
 }

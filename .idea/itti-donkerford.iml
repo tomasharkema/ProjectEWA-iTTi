@@ -6,7 +6,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="OpenJPA" />
         <datasource-mapping>
-          <factory-entry name="DryvesPU" />
+          <factory-entry name="DryvesPU" value="f04a084c-4150-4074-8708-0cd9e414268c" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/conf/persistence.xml" />
       </configuration>
@@ -18,7 +18,9 @@
           <deploymentDescriptor name="openejb-jar.xml" url="file://$MODULE_DIR$/.idea/META-INF/openejb-jar.xml" />
           <deploymentDescriptor name="weblogic-ejb-jar.xml" url="file://$MODULE_DIR$/.idea/META-INF/weblogic-ejb-jar.xml" />
         </descriptors>
-        <ejbRoots />
+        <ejbRoots>
+          <root url="file://$MODULE_DIR$/src/java" />
+        </ejbRoots>
       </configuration>
     </facet>
     <facet type="web" name="Web2">
@@ -32,7 +34,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
@@ -40,7 +42,7 @@
       <excludeFolder url="file://$MODULE_DIR$/dist" />
       <excludeFolder url="file://$MODULE_DIR$/web/node_modules" />
     </content>
-    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="JPA 2.0-JPA 2.0" level="project" />
     <orderEntry type="library" exported="" name="Java EE 5-Java EE 5" level="project" />
