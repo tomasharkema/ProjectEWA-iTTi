@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.markdown4j.Markdown4jProcessor;
@@ -134,20 +136,22 @@ public class EventsServlet extends HttpServlet {
         }
         
         if (type.equals("cancel")) {
-            UserHasEvent ev = user.isAttendingEvent(Integer.parseInt(eventId));
+            final UserHasEvent ev = user.isAttendingEvent(Integer.parseInt(eventId));
             List<UserHasEvent> evList = user.getUserHasEventList();
             evList.remove(ev);
             user.setUserHasEventList(evList);
 
             if (ev.getUser().getCarList().contains(ev.getCarId())) {
                 List<UserHasEvent> list = ev.getEvent().getUserHasEventList();
-                List<UserHasEvent> newList = new ArrayList<>();
-                for (UserHasEvent e : list) {
-                    if (!e.getCarId().equals(ev.getCarId())) {
-                        newList.add(e);
+
+                CollectionUtils.filter(list, new Predicate<UserHasEvent>() {
+                    @Override
+                    public boolean evaluate(UserHasEvent userHasEvent) {
+                        return !userHasEvent.getCarId().equals(ev.getCarId());
                     }
-                }
-                ev.getEvent().setUserHasEventList(newList);
+                });
+
+                ev.getEvent().setUserHasEventList(list);
                 eventFacade.edit(ev.getEvent());
             } else {
                 userFacade.edit(user);
