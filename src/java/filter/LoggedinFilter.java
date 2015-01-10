@@ -23,11 +23,10 @@ public class LoggedinFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         User user = (User)req.getAttribute("currentUser");
-        System.out.println("LoggedinFilter: " + user);
         if (user == null) {
             try {
                 // TODO: try preserve the session by re-logging-in.
-                res.sendRedirect("/login.jsp?ret=" + ((HttpServletRequest) request).getRequestURL());
+                res.sendRedirect("/login.jsp?ret=" + req.getRequestURL());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
