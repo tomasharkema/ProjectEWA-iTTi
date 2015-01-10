@@ -30,10 +30,10 @@ public class NotificationList {
                 obj.put("title", notification.getTitle());
                 obj.put("desc", notification.getDesc());
                 obj.put("time", notification.getFiredDate().getTime());
-                obj.put("avatar", notification.getAvatar());
+                obj.put("avatar", notification.getImage());
 
                 if (notification.getPrimaryObject() instanceof PermaLinkable) {
-                    obj.put("link", ((PermaLinkable)notification.getPrimaryObject()).getLink());
+                    obj.put("link", ((PermaLinkable)notification.getPrimaryObject()).getPermaLink());
                 }
                 return obj;
             }

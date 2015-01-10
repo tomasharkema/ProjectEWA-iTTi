@@ -8,10 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,7 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import searching.TimeLine;
-import session.UserFacade;
 
 /**
  *
@@ -104,7 +100,7 @@ public class User implements Serializable, TimeLine, PermaLinkable {
     private BigInteger fbid;
     @Column(name = "admin")
     private Boolean admin;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userIduser", orphanRemoval=true)
     private List<Car> carList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", orphanRemoval=true)
     private List<Friends> friendsList;
@@ -391,7 +387,7 @@ public class User implements Serializable, TimeLine, PermaLinkable {
     }
 
     @Override
-    public String getLink(){
+    public String getPermaLink(){
         return "/user?userId="+getIduser();
     }
 }

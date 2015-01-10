@@ -54,7 +54,7 @@ public class Friend implements Notification {
     }
 
     @Override
-    public String getAvatar() {
+    public String getImage() {
         return user.getUserAvatar();
     }
 

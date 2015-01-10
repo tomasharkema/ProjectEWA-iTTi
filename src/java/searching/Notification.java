@@ -9,7 +9,7 @@ public interface Notification {
 
     public String getTitle();
     public Date getFiredDate();
-    public String getAvatar();
+    public String getImage();
     public String getDesc();
     public boolean shouldShow();
 

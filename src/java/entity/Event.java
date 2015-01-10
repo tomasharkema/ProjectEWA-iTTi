@@ -274,7 +274,7 @@ public class Event implements Serializable, TimeLine, PermaLinkable {
     }
 
     @Override
-    public String getLink(){
+    public String getPermaLink(){
         return "/events?eventId="+getIdevent();
     }
 }

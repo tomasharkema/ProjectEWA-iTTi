@@ -137,7 +137,7 @@ public class UserHasEvent implements Serializable, Notification {
     }
 
     @Override
-    public String getAvatar() {
+    public String getImage() {
         return getUser().getUserAvatar();
     }
 
