@@ -12,6 +12,7 @@ import entity.UserHasEvent;
 import entity.UserHasEventPK;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.*;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -24,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.markdown4j.Markdown4jProcessor;
@@ -92,6 +95,7 @@ public class EventsServlet extends HttpServlet {
             request.setAttribute("drivers", event.getAttendedCars());
             String html = new Markdown4jProcessor().process(event.getDescription());
             request.setAttribute("markdownDescription", html);
+            request.setAttribute("hasCar", user.getCarList().size() > 0);
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
@@ -133,12 +137,26 @@ public class EventsServlet extends HttpServlet {
         }
         
         if (type.equals("cancel")) {
-            UserHasEvent ev = user.isAttendingEvent(Integer.parseInt(eventId));
+            final UserHasEvent ev = user.isAttendingEvent(Integer.parseInt(eventId));
             List<UserHasEvent> evList = user.getUserHasEventList();
             evList.remove(ev);
             user.setUserHasEventList(evList);
-            
-            userFacade.edit(user);
+
+            if (ev.getUser().getCarList().contains(ev.getCarId())) {
+                List<UserHasEvent> list = ev.getEvent().getUserHasEventList();
+
+                CollectionUtils.filter(list, new Predicate<UserHasEvent>() {
+                    @Override
+                    public boolean evaluate(UserHasEvent userHasEvent) {
+                        return !userHasEvent.getCarId().equals(ev.getCarId());
+                    }
+                });
+
+                ev.getEvent().setUserHasEventList(list);
+                eventFacade.edit(ev.getEvent());
+            } else {
+                userFacade.edit(user);
+            }
         } else {
             List<UserHasEvent> evList = user.getUserHasEventList();
             UserHasEvent chain = new UserHasEvent(user.getIduser(), event.getIdevent());
@@ -156,7 +174,7 @@ public class EventsServlet extends HttpServlet {
     private void availableCars(HttpServletRequest request, HttpServletResponse response) throws IOException{
         JSONObject result = new JSONObject();
         PrintWriter out = response.getWriter();
-        HttpSession session = request.getSession();
+        User user = (User)request.getAttribute("currentUser");
 
         String eventId = request.getParameter("eventId");
         Event event = eventFacade.find(Integer.parseInt(eventId));
@@ -165,12 +183,14 @@ public class EventsServlet extends HttpServlet {
 
         for (Car car : carList) {
             Car refreshedCar = carFacade.find(car.getRegistration());
-            JSONObject obj = new JSONObject();
-            obj.put("id", refreshedCar.getRegistration());
-            obj.put("uid", refreshedCar.getUserIduser().getIduser());
-            obj.put("desc", refreshedCar.getBrand() + " " + refreshedCar.getType() + " " + refreshedCar.getColor());
-            obj.put("places", refreshedCar.getPlaces());
-            carArray.add(obj);
+            if (refreshedCar.getPlaces() > 0 && !refreshedCar.getUserIduser().equals(user)) {
+                JSONObject obj = new JSONObject();
+                obj.put("id", refreshedCar.getRegistration());
+                obj.put("uid", refreshedCar.getUserIduser().getIduser());
+                obj.put("desc", refreshedCar.getBrand() + " " + refreshedCar.getType() + " " + refreshedCar.getColor());
+                obj.put("places", refreshedCar.getPlaces());
+                carArray.add(obj);
+            }
         }
 
         result.put("cars", carArray);

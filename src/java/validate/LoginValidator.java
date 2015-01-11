@@ -35,14 +35,6 @@ public class LoginValidator {
         return user;
     }
 
-    static public User validateUser(HttpServletRequest req, HttpServletResponse res, UserFacade userFacade, boolean redirectIfNotLoggedin) throws IOException {
-        User u = validateUser(req, userFacade);
-        if (u == null && redirectIfNotLoggedin) {
-            res.sendRedirect("/");
-        }
-        return u;
-    }
-
     static public void logoutUser(HttpServletRequest req) {
         HttpSession session = req.getSession();
         session.setAttribute("userId", null);

@@ -85,7 +85,7 @@ public class Event implements Serializable, TimeLine, PermaLinkable {
     @JoinColumn(name = "locationid", referencedColumnName = "idlocation")
     @ManyToOne
     private Location locationid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval=true)
     private List<UserHasEvent> userHasEventList;
 
     public Event() {
