@@ -128,7 +128,7 @@ public class UserHasEvent implements Serializable, Notification {
 
     @Override
     public String getTitle() {
-        return getUser().getName() + " drives with you to " + getEvent().getName();
+        return getUser().getName();
     }
 
     @Override
@@ -143,7 +143,7 @@ public class UserHasEvent implements Serializable, Notification {
 
     @Override
     public String getDesc() {
-        return getUser().getName();
+        return  "drives with you to " + getEvent().getName();
     }
 
     @Override

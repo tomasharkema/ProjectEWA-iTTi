@@ -52,5 +52,3 @@ public class Notifications {
         return ListUtils.castList(friends);
     }
 }
-
-;
