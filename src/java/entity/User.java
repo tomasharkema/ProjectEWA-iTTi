@@ -333,7 +333,13 @@ public class User implements Serializable, TimeLine, PermaLinkable {
     }
 
     public List<Friend> getFriendsApproved() {
-        Predicate<Friend> friendPredicate = friend -> friend.getRelation() == Friends.FriendRelation.Friends;
+        Predicate<Friend> friendPredicate = new Predicate<Friend>() {
+            @Override
+            public boolean evaluate(Friend friend) {
+                return friend.getRelation() == Friends.FriendRelation.Friends;
+            }
+        };
+
         List<Friend> list = getFriends();
         CollectionUtils.filter(list, friendPredicate);
         return list;
@@ -381,7 +387,12 @@ public class User implements Serializable, TimeLine, PermaLinkable {
     public List<UserHasEvent> getDrivingEvents() {
         List<UserHasEvent> list = new ArrayList<>(getUserHasEventList());
 
-        CollectionUtils.filter(list, (userHasEvent) -> isDriving(userHasEvent.getEvent()));
+        CollectionUtils.filter(list, new Predicate<UserHasEvent>() {
+            @Override
+            public boolean evaluate(UserHasEvent userHasEvent) {
+                return isDriving(userHasEvent.getEvent());
+            }
+        });
 
         return list;
     }
