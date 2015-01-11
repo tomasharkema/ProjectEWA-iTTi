@@ -23,12 +23,12 @@ Event.prototype = {
         var eventId = 1;
         var self = this;
         this.getAvailableCars(eventId, function(data){
-
+            var html = "";
             if (data === undefined || data.cars === undefined || data.cars.length === 0) {
-                var html = $("<h5>").html("No cars found.");
+                html = $("<h5>").html("No cars found.");
             } else {
-                var html = data.cars.reduce(function(prev, car, index, array){
-                    return prev.append($('<li>').addClass("list-group-item").html($("<a>").attr({href:"#", "data-cid":car.cid}).html(car.desc + '<span class="label label-default">' + car.places + '</span>')));
+                html = data.cars.reduce(function(prev, car, index, array){
+                    return prev.append($('<li>').addClass("list-group-item").html($("<a>").attr({href:"#", "data-cid":car.id}).html(car.desc + '<span class="label label-default">' + car.places + '</span>')));
                 }, $("<ul>").addClass("list-group"));
             }
 

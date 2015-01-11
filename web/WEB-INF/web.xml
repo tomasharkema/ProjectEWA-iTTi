@@ -54,4 +54,10 @@
         <url-pattern>/overview</url-pattern>
         <url-pattern>/overview/*</url-pattern>
     </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>HeaderFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>

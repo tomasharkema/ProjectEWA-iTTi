@@ -8,9 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +29,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import searching.TimeLine;
-import session.UserFacade;
 
 /**
  *
@@ -59,12 +56,11 @@ import session.UserFacade;
     @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEvent uhe ON e.idevennt = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
     @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEvent uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.date ASC")})
 
-public class User implements Serializable, TimeLine {
+public class User implements Serializable, TimeLine, PermaLinkable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "iduser")
     private Integer iduser;
     @Basic(optional = false)
@@ -304,6 +300,18 @@ public class User implements Serializable, TimeLine {
         return isAttending;
     }
 
+    public boolean isDriving(Event ev) {
+        boolean ret = false;
+        for (UserHasEvent e : userHasEventList) {
+            for (Car c : carList) {
+                if (c.equals(e.getCarId())) {
+                    ret = true;
+                }
+            }
+        }
+        return ret;
+    }
+
     public List<Friend> getFriends() {
         List<Friend> list = new ArrayList<>();
         for (Friends friends : friendsList) {
@@ -331,6 +339,7 @@ public class User implements Serializable, TimeLine {
                 return friend.getRelation() == Friends.FriendRelation.Friends;
             }
         };
+
         List<Friend> list = getFriends();
         CollectionUtils.filter(list, friendPredicate);
         return list;
@@ -373,5 +382,23 @@ public class User implements Serializable, TimeLine {
             return Friends.FriendRelation.NoFriends;
         }
         return f.getRelation();
+    }
+
+    public List<UserHasEvent> getDrivingEvents() {
+        List<UserHasEvent> list = new ArrayList<>(getUserHasEventList());
+
+        CollectionUtils.filter(list, new Predicate<UserHasEvent>() {
+            @Override
+            public boolean evaluate(UserHasEvent userHasEvent) {
+                return isDriving(userHasEvent.getEvent());
+            }
+        });
+
+        return list;
+    }
+
+    @Override
+    public String getPermaLink(){
+        return "/user?userId="+getIduser();
     }
 }

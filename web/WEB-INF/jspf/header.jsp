@@ -72,6 +72,14 @@
                                 </c:when>
                                 <c:otherwise>
                                 <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-bell"></span> <sup><span class="badge">${notifications.size()}</span></sup> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <c:forEach items="${notifications}" var="notification">
+                                            <li><a href="${notification.getPrimaryObject().getPermaLink()}"><b>${notification.getTitle()}</b> <small>${notification.getDesc()}</small></a></li>
+                                        </c:forEach>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="${currentUser.userAvatar}" class="avatar-nav"> ${currentUser.name} <span class="caret"></span></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="/overview/profile">Profile</a></li>

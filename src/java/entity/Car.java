@@ -42,7 +42,6 @@ public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "registration")
     private Integer registration;
     @Basic(optional = false)
@@ -156,10 +155,7 @@ public class Car implements Serializable {
             return false;
         }
         Car other = (Car) object;
-        if ((this.registration == null && other.registration != null) || (this.registration != null && !this.registration.equals(other.registration))) {
-            return false;
-        }
-        return true;
+        return !((this.registration == null && other.registration != null) || (this.registration != null && !this.registration.equals(other.registration)));
     }
 
     @Override
