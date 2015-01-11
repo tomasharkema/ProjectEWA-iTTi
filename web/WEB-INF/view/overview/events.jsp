@@ -32,6 +32,17 @@
           <img src="${event.getEvent().eventLogo}" alt="" class="avatar-small">
         </a>
         <div class="media-body">
+          <a href="/events?eventId=${event.getEvent().id}" type="button" class="btn btn-success pull-right">
+            <c:choose>
+              <c:when test="${event.isDriving()}">
+                <span class="glyphicon glyphicon-ok"></span> Driving
+              </c:when>
+              <c:otherwise>
+                <span class="glyphicon glyphicon-ok"></span> Passenger
+              </c:otherwise>
+            </c:choose>
+          </a>
+
           <a class="" href="/events?eventId=${event.getEvent().id}">
             <h4 class="media-heading">${event.getEvent().eventName}</h4>
             <p><fmt:formatDate value="${event.getEvent().eventDate}" pattern="E dd MMM yyyy" dateStyle="long"/></p>

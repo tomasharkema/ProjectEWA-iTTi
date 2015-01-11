@@ -5,10 +5,13 @@
  */
 package entity;
 
+import org.apache.commons.collections4.CollectionUtils;
 import searching.Notification;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -99,6 +102,32 @@ public class UserHasEvent implements Serializable, Notification {
 
     public void setCarId(Car carId) {
         this.carId = carId;
+    }
+
+
+    public boolean isDriving() {
+        return getDriver() == null;
+    }
+
+    public User getDriver() {
+        User user = null;
+        for (Car c : getUser().getCarList()) {
+            if (!c.equals(getCarId())) {
+                user =  c.getUserIduser();
+            }
+        }
+        return user;
+    }
+
+    public List<User> getPassengers() {
+        List<User> passengers = new ArrayList<>();
+
+        for (UserHasEvent uhe : getCarId().getUserHasEventList()) {
+            if (!uhe.getUser().equals(getUser()) && uhe.getCarId().equals(getCarId())) {
+                passengers.add(uhe.getUser());
+            }
+        }
+        return passengers;
     }
 
     @Override
