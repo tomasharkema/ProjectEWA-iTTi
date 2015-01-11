@@ -1,9 +1,6 @@
 package searching;
 
-import entity.Car;
-import entity.Friend;
-import entity.User;
-import entity.UserHasEvent;
+import entity.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.collections4.Transformer;
@@ -36,15 +33,17 @@ public class Notifications {
         List<UserHasEvent> userDrivingEvents = user.getDrivingEvents();
         List<List<UserHasEvent>> userPassagiersCollection = new ArrayList<>();
         // TODO: make it a flatMap
-        CollectionUtils.collect(userDrivingEvents, (userHasEvent) -> {
-            Car car = userHasEvent.getCarId();
+        CollectionUtils.collect(userDrivingEvents, (uhe) -> {
+            Car car = uhe.getCarId();
+            Event event = uhe.getEvent();
+
             List<UserHasEvent> carEvents = new ArrayList<>(car.getUserHasEventList());
 
-            CollectionUtils.filter(carEvents, (eventHasCar) -> !eventHasCar.getUser().equals(userHasEvent.getUser()));
+            CollectionUtils.filter(carEvents, (ehc) -> !ehc.getUser().equals(uhe.getUser()));
+            CollectionUtils.filter(carEvents, (ehc) -> ehc.getEvent().equals(event));
 
             return carEvents;
         }, userPassagiersCollection);
-
         return ListUtils.castList(ListUtils.flatten(userPassagiersCollection));
     }
 
