@@ -98,16 +98,29 @@
   
   <!-- Project Libraries -->
   
+  <path id="library.com.cedarsoftware:json-io:2.3.0.classpath">
+    <pathelement location="${basedir}/lib/json-io-2.3.0.jar"/>
+  </path>
+  
   <path id="library.java_ee_5-java_ee_5.classpath">
     <pathelement location="${basedir}/lib/javaee.jar"/>
+  </path>
+  
+  <path id="library.javax.validation:validation-api:1.1.0.cr3.classpath">
+    <pathelement location="${basedir}/lib/validation-api-1.1.0.CR3.jar"/>
   </path>
   
   <path id="library.jpa_2.0-jpa_2.0.classpath">
     <pathelement location="${basedir}/lib/javax.persistence.jar"/>
   </path>
   
+  <path id="library.markdown4j-2.2.classpath">
+    <pathelement location="${basedir}/lib/markdown4j-2.2.jar"/>
+  </path>
   
-  <!-- Global Libraries -->
+  <path id="library.org.apache.commons:commons-collections4:4.0.classpath">
+    <pathelement location="${basedir}/lib/commons-collections4-4.0.jar"/>
+  </path>
   
   
   <!-- Application Server Libraries -->
@@ -122,7 +135,7 @@
   <path id="javac2.classpath">
     <pathelement location="${javac2.home}/javac2.jar"/>
     <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm4-all.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
     <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
   </path>
   <target name="register.custom.compilers">
@@ -138,39 +151,95 @@
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.itti-donkerford" description="cleanup all"/>
+  <target name="clean" depends="clean.module.itti-donkerford, clean.artifact.dryves, clean.artifact.itti-donkerford:ejb_exploded" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.itti-donkerford" description="build all modules"/>
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.dryves" value="${basedir}/build/artifacts/Dryves"/>
+    <property name="artifact.output.dryves_archive" value="${basedir}/build/artifacts/Dryves"/>
     <property name="artifact.output.itti-donkerford:ejb_exploded" value="${basedir}/dist"/>
     <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.itti-donkerford_EJB exploded.jar" value="${artifacts.temp.dir}/itti-donkerford_EJB exploded.jar"/>
+    <property name="temp.jar.path.Dryves.war" value="${artifacts.temp.dir}/Dryves.war"/>
+  </target>
+  
+  <target name="clean.artifact.dryves" description="clean Dryves artifact output">
+    <delete dir="${artifact.output.dryves}"/>
+  </target>
+  
+  <target name="clean.artifact.itti-donkerford:ejb_exploded" description="clean itti-donkerford:EJB exploded artifact output">
+    <delete dir="${artifact.output.itti-donkerford:ejb_exploded}"/>
+  </target>
+  
+  <target name="artifact.dryves" depends="init.artifacts, compile.module.itti-donkerford" description="Build &#39;Dryves&#39; artifact">
+    <mkdir dir="${artifact.output.dryves}"/>
+    <mkdir dir="${artifact.output.dryves}/WEB-INF"/>
+    <mkdir dir="${artifact.output.dryves}/WEB-INF/classes"/>
+    <copy todir="${artifact.output.dryves}/WEB-INF/classes">
+      <fileset dir="${itti-donkerford.output.dir}"/>
+    </copy>
+    <mkdir dir="${artifact.output.dryves}/WEB-INF/classes/META-INF"/>
+    <copy file="${basedir}/src/conf/persistence.xml" tofile="${artifact.output.dryves}/WEB-INF/classes/META-INF/persistence.xml"/>
+    <mkdir dir="${artifact.output.dryves}/WEB-INF/lib"/>
+    <copy file="${basedir}/lib/javax.persistence.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/javax.persistence.jar"/>
+    <copy file="${basedir}/lib/javaee.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/javaee.jar"/>
+    <copy file="${basedir}/web/WEB-INF/lib/json-simple-1.1.1.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/json-simple-1.1.1.jar"/>
+    <copy file="${basedir}/lib/validation-api-1.1.0.CR3.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/validation-api-1.1.0.CR3.jar"/>
+    <copy file="${basedir}/lib/markdown4j-2.2.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/markdown4j-2.2.jar"/>
+    <copy file="${basedir}/lib/json-io-2.3.0.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/json-io-2.3.0.jar"/>
+    <copy file="${basedir}/lib/commons-collections4-4.0.jar" tofile="${artifact.output.dryves}/WEB-INF/lib/commons-collections4-4.0.jar"/>
+    <mkdir dir="${artifact.output.dryves}/META-INF"/>
+    <copy file="${basedir}/.idea/META-INF/openejb-jar.xml" tofile="${artifact.output.dryves}/META-INF/openejb-jar.xml"/>
+    <mkdir dir="${artifact.output.dryves}/META-INF"/>
+    <copy file="${basedir}/.idea/META-INF/ejb-jar.xml" tofile="${artifact.output.dryves}/META-INF/ejb-jar.xml"/>
+    <mkdir dir="${artifact.output.dryves}/META-INF"/>
+    <copy file="${basedir}/.idea/META-INF/weblogic-ejb-jar.xml" tofile="${artifact.output.dryves}/META-INF/weblogic-ejb-jar.xml"/>
+    <copy todir="${artifact.output.dryves}">
+      <fileset dir="${basedir}/web"/>
+    </copy>
+    <mkdir dir="${artifact.output.dryves}/WEB-INF"/>
+    <copy file="${basedir}/web/WEB-INF/web.xml" tofile="${artifact.output.dryves}/WEB-INF/web.xml"/>
+  </target>
+  
+  <target name="artifact.dryves_archive" depends="init.artifacts, artifact.dryves" description="Build &#39;Dryves archive&#39; artifact">
+    <property name="artifact.temp.output.dryves_archive" value="${artifacts.temp.dir}/Dryves_archive"/>
+    <mkdir dir="${artifact.temp.output.dryves_archive}"/>
+    <zip destfile="${temp.jar.path.Dryves.war}">
+      <zipfileset dir="${artifact.output.dryves}"/>
+    </zip>
+    <copy file="${temp.jar.path.Dryves.war}" tofile="${artifact.temp.output.dryves_archive}/Dryves.war"/>
   </target>
   
   <target name="artifact.itti-donkerford:ejb_exploded" depends="init.artifacts, compile.module.itti-donkerford" description="Build &#39;itti-donkerford:EJB exploded&#39; artifact">
-    <property name="artifact.temp.output.itti-donkerford:ejb_exploded" value="${artifacts.temp.dir}/itti_donkerford_EJB_exploded"/>
-    <mkdir dir="${artifact.temp.output.itti-donkerford:ejb_exploded}"/>
-    <jar destfile="${temp.jar.path.itti-donkerford_EJB exploded.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <zipfileset file="${basedir}/.idea/META-INF/weblogic-ejb-jar.xml" prefix="META-INF"/>
-      <zipfileset file="${basedir}/.idea/META-INF/ejb-jar.xml" prefix="META-INF"/>
-      <zipfileset file="${basedir}/.idea/META-INF/openejb-jar.xml" prefix="META-INF"/>
-      <zipfileset dir="${itti-donkerford.output.dir}"/>
-      <zipfileset file="${basedir}/src/conf/MANIFEST.MF" prefix="META-INF"/>
-      <zipfileset dir="${basedir}/build/web"/>
-      <zipfileset file="${basedir}/build/web/WEB-INF/web.xml" prefix="WEB-INF"/>
-      <zipfileset dir="${basedir}/web"/>
-      <zipfileset file="${basedir}/web/WEB-INF/web.xml" prefix="WEB-INF"/>
-      <zipfileset file="${basedir}/src/conf/persistence.xml" prefix="META-INF"/>
-    </jar>
-    <copy file="${temp.jar.path.itti-donkerford_EJB exploded.jar}" tofile="${artifact.temp.output.itti-donkerford:ejb_exploded}/itti-donkerford_EJB exploded.jar"/>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}"/>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}/META-INF"/>
+    <copy file="${basedir}/.idea/META-INF/openejb-jar.xml" tofile="${artifact.output.itti-donkerford:ejb_exploded}/META-INF/openejb-jar.xml"/>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}/META-INF"/>
+    <copy file="${basedir}/.idea/META-INF/ejb-jar.xml" tofile="${artifact.output.itti-donkerford:ejb_exploded}/META-INF/ejb-jar.xml"/>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}/META-INF"/>
+    <copy file="${basedir}/.idea/META-INF/weblogic-ejb-jar.xml" tofile="${artifact.output.itti-donkerford:ejb_exploded}/META-INF/weblogic-ejb-jar.xml"/>
+    <copy todir="${artifact.output.itti-donkerford:ejb_exploded}">
+      <fileset dir="${itti-donkerford.output.dir}"/>
+    </copy>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}/META-INF"/>
+    <copy file="${basedir}/src/conf/MANIFEST.MF" tofile="${artifact.output.itti-donkerford:ejb_exploded}/META-INF/MANIFEST.MF"/>
+    <copy file="${basedir}/web/WEB-INF/lib/json-simple-1.1.1.jar" tofile="${artifact.output.itti-donkerford:ejb_exploded}/META-INF/json-simple-1.1.1.jar"/>
+    <copy todir="${artifact.output.itti-donkerford:ejb_exploded}">
+      <fileset dir="${basedir}/web"/>
+    </copy>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}/WEB-INF"/>
+    <copy file="${basedir}/web/WEB-INF/web.xml" tofile="${artifact.output.itti-donkerford:ejb_exploded}/WEB-INF/web.xml"/>
+    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}/META-INF"/>
+    <copy file="${basedir}/src/conf/persistence.xml" tofile="${artifact.output.itti-donkerford:ejb_exploded}/META-INF/persistence.xml"/>
+    <copy file="${basedir}/lib/javaee.jar" tofile="${artifact.output.itti-donkerford:ejb_exploded}/javaee.jar"/>
+    <copy file="${basedir}/lib/javax.persistence.jar" tofile="${artifact.output.itti-donkerford:ejb_exploded}/javax.persistence.jar"/>
   </target>
   
-  <target name="build.all.artifacts" depends="artifact.itti-donkerford:ejb_exploded" description="Build all artifacts">
-    <mkdir dir="${artifact.output.itti-donkerford:ejb_exploded}"/>
-    <copy todir="${artifact.output.itti-donkerford:ejb_exploded}">
-      <fileset dir="${artifact.temp.output.itti-donkerford:ejb_exploded}"/>
+  <target name="build.all.artifacts" depends="artifact.dryves, artifact.dryves_archive, artifact.itti-donkerford:ejb_exploded" description="Build all artifacts">
+    <mkdir dir="${artifact.output.dryves_archive}"/>
+    <copy todir="${artifact.output.dryves_archive}">
+      <fileset dir="${artifact.temp.output.dryves_archive}"/>
     </copy>
     
     <!-- Delete temporary files -->

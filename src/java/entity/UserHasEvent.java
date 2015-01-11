@@ -5,6 +5,8 @@
  */
 package entity;
 
+import searching.Notification;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -31,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserHasEvent.findByUserIduser", query = "SELECT u FROM UserHasEvent u WHERE u.userHasEventPK.userIduser = :userIduser"),
     @NamedQuery(name = "UserHasEvent.findByEventIdevent", query = "SELECT u FROM UserHasEvent u WHERE u.userHasEventPK.eventIdevent = :eventIdevent"),
     @NamedQuery(name = "UserHasEvent.findByDate", query = "SELECT u FROM UserHasEvent u WHERE u.date = :date")})
-public class UserHasEvent implements Serializable {
+public class UserHasEvent implements Serializable, Notification {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected UserHasEventPK userHasEventPK;
@@ -123,5 +125,34 @@ public class UserHasEvent implements Serializable {
     public String toString() {
         return "entity.UserHasEvent[ userHasEventPK=" + userHasEventPK + " ]";
     }
-    
+
+    @Override
+    public String getTitle() {
+        return getUser().getName();
+    }
+
+    @Override
+    public Date getFiredDate() {
+        return date;
+    }
+
+    @Override
+    public String getImage() {
+        return getUser().getUserAvatar();
+    }
+
+    @Override
+    public String getDesc() {
+        return  "drives with you to " + getEvent().getName();
+    }
+
+    @Override
+    public boolean shouldShow() {
+        return true;
+    }
+
+    @Override
+    public Object getPrimaryObject() {
+        return getEvent();
+    }
 }

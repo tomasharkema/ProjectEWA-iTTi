@@ -51,7 +51,7 @@ import searching.TimeLine;
     @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
     @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEvent us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevent = e.idevent WHERE e.idevent = :idevent"),
     @NamedQuery(name = "Event.findNameLike", query = "SELECT e FROM Event e WHERE e.eventName LIKE :name ORDER BY e.eventName DESC")})
-public class Event implements Serializable, TimeLine {
+public class Event implements Serializable, TimeLine, PermaLinkable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,7 +85,7 @@ public class Event implements Serializable, TimeLine {
     @JoinColumn(name = "locationid", referencedColumnName = "idlocation")
     @ManyToOne
     private Location locationid;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "event", orphanRemoval=true)
     private List<UserHasEvent> userHasEventList;
 
     public Event() {
@@ -271,5 +271,10 @@ public class Event implements Serializable, TimeLine {
     @Override
     public int getId() {
      return this.getIdevent();
+    }
+
+    @Override
+    public String getPermaLink(){
+        return "/events?eventId="+getIdevent();
     }
 }

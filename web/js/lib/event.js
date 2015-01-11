@@ -23,13 +23,14 @@ Event.prototype = {
         var eventId = 1;
         var self = this;
         this.getAvailableCars(eventId, function(data){
-            var html = '<ul class="list-group">';
-
-            data.cars.forEach(function(item){
-                html += '<li class="list-group-item"><a href="#" data-cid="'+item.id+'">'+item.desc+' <span class="label label-default">'+item.places+'</span></a></li>';
-            });
-
-            html += '</ul>';
+            var html = "";
+            if (data === undefined || data.cars === undefined || data.cars.length === 0) {
+                html = $("<h5>").html("No cars found.");
+            } else {
+                html = data.cars.reduce(function(prev, car, index, array){
+                    return prev.append($('<li>').addClass("list-group-item").html($("<a>").attr({href:"#", "data-cid":car.id}).html(car.desc + '<span class="label label-default">' + car.places + '</span>')));
+                }, $("<ul>").addClass("list-group"));
+            }
 
             $("#meerijden_modal .places").html(html);
             $("#meerijden_modal .places ul li a").click(function(){

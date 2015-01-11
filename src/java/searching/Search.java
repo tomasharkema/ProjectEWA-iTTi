@@ -73,7 +73,7 @@ public class Search {
         List<TimeLineNode> returnList = new ArrayList<>();
         User user = userFacade.find(_user.getId());
         returnList.addAll(attendingUpdates(user));
-        for (Friend friend : user.getFriends()) {
+        for (Friend friend : user.getFriendsApproved()) {
             returnList.addAll(findYourFriends(friend.getUser()));
             returnList.addAll(attendingUpdates(friend.getUser()));
         }
