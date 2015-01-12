@@ -9,7 +9,7 @@
 <div class="time-line">
     <c:choose>
         <c:when test="${timeline.size() == 0}">
-            <div class="alert alert-info" role="alert">You don't have anything in your timeline (yet).Your timeline will be filled once you've added friends.<br /><a href="#" class="alert-link">Click here to make friends :)</a></div>
+            <div class="alert alert-info" role="alert">You don't have anything in your timeline (yet). Your timeline will be filled once you've added friends.<br /><a href="#" class="alert-link">Click here to make friends :)</a></div>
         </c:when>
         <c:otherwise>
             <c:forEach items="${timeline}" var="item">
