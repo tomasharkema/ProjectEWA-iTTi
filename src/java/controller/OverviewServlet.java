@@ -85,6 +85,7 @@ public class OverviewServlet extends HttpServlet {
         List<TimeLineNode> timeline = search.getTimelineForUser(currentUser);
         
         request.setAttribute("timeline", timeline);
+        request.setAttribute("pageTitle", "Newsfeed");
     }
     
     private void handleFriends(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -93,10 +94,13 @@ public class OverviewServlet extends HttpServlet {
         
         request.setAttribute("hasNoFriends", friends.isEmpty());
         request.setAttribute("friends", friends);
+        request.setAttribute("pageTitle", "Friends");
     }
 
     private void handleProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User currentUser = (User)request.getAttribute("currentUser");
+        
+        request.setAttribute("pageTitle", "Profile");
     }
 
     private void handleEvents(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -110,6 +114,7 @@ public class OverviewServlet extends HttpServlet {
         });
 
         request.setAttribute("events", currentUser.getUserHasEventList());
+        request.setAttribute("pageTitle", "Attending events");
     }
 
     /**

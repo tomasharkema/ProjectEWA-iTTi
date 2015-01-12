@@ -85,6 +85,7 @@ public class EventsServlet extends HttpServlet {
             // Has no event
             url = "/WEB-INF/view/events.jsp";
             request.setAttribute("events", eventFacade.findAllDescAfterDate());
+            request.setAttribute("pageTitle", "Events");
         } else {
             // Has event
             url = "/WEB-INF/view/event.jsp";
@@ -96,6 +97,7 @@ public class EventsServlet extends HttpServlet {
             String html = new Markdown4jProcessor().process(event.getDescription());
             request.setAttribute("markdownDescription", html);
             request.setAttribute("hasCar", user.getCarList().size() > 0);
+            request.setAttribute("pageTitle", event.getName());
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
