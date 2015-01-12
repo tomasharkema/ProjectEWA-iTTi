@@ -13,10 +13,18 @@
         <c:choose>
             <c:when test="${userId != null}">
                 <c:choose>
-                    <c:when test="${isAttending}">
+                    <c:when test="${isAttending != null}">
                         <div class="btn-group pull-right rsvp" role="group">
                             <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                              <span class="glyphicon glyphicon-ok"></span> I go
+
+                                <c:choose>
+                                    <c:when test="${isAttending.isDriving()}">
+                                        <span class="glyphicon glyphicon-ok"></span> Driving
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="glyphicon glyphicon-ok"></span> Passenger
+                                    </c:otherwise>
+                                </c:choose>
                               <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
@@ -143,7 +151,18 @@
                     </div>
                 </li>
             </ul>
-
+            <c:if test="${isAttending.isDriving() && !isAttending.getPassengers().isEmpty()}">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <small>PASSENGERS</small>
+                </li>
+                <c:forEach items="${isAttending.getPassengers()}" var="passenger">
+                    <li class="list-group-item">
+                        <a href="${passenger.getPermaLink()}">${passenger.name}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+            </c:if>
         </div>
     </div>
 </div>

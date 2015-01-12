@@ -99,7 +99,7 @@ public class EventsServlet extends HttpServlet {
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
-                request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt) != null);
+                request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt));
                 request.setAttribute("attendingFriends", event.getAttendingFriends(user));
             }
         }
