@@ -7,7 +7,6 @@ package admin;
 
 import entity.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -94,21 +93,6 @@ public class UsersServlet extends HttpServlet {
     throws ServletException, IOException {
 
         String userPath = request.getServletPath();
-
-        // if addToCart action is called
-        if (userPath.equals("/addToCart")) {
-            // TODO: Implement add product to cart action
-
-        // if updateCart action is called
-        } else if (userPath.equals("/updateCart")) {
-            // TODO: Implement update cart action
-
-        // if purchase action is called
-        } else if (userPath.equals("/purchase")) {
-            // TODO: Implement purchase action
-
-            userPath = "/confirmation";
-        }
 
         // use RequestDispatcher to forward request internally
         String url = "/WEB-INF/view" + userPath + ".jsp";

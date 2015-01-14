@@ -107,6 +107,11 @@ public class Location implements Serializable {
     public void setLocationpicture(String locationpicture) {
         this.locationpicture = locationpicture;
     }
+    
+    public String getLocationpictureUrl() {
+        String locationPicture = this.getLocationpicture();
+        return locationPicture.substring(locationPicture.indexOf("/uploads"), -1);
+    }
 
     public String getLocationname() {
         return locationname;

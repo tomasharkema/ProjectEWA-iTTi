@@ -35,6 +35,8 @@ public class LocationServlet extends HttpServlet {
     
     @EJB
     private LocationFacade locationFacade;
+    
+    private static final String SAVE_DIR = "uploads";
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -49,18 +51,15 @@ public class LocationServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
 
-        // if category page is requested
         if (userPath.equals("/admin/locations")) {
             userPath = "/locations/index";
 
             request.setAttribute("locations", locationFacade.findAll());
 
-        // if cart page is requested
         } else if (userPath.equals("/admin/locations/add")) {
             
             userPath = "/locations/add";
 
-        // if checkout page is requested
         } else if (userPath.equals("/admin/locations/edit")) {
             String id = request.getParameter("id");
             
@@ -143,8 +142,6 @@ public class LocationServlet extends HttpServlet {
             ex.printStackTrace();
         }
     }
-    
-    private static final String SAVE_DIR = "uploads";
     
     private Location createLocation (HttpServletRequest request) throws IOException, ServletException {
         String name = request.getParameter("locationname"),

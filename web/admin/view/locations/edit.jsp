@@ -66,8 +66,7 @@
                                 <!-- /.col-lg-6 (nested) -->
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <c:set var="locationPicture" value="${location.getLocationpicture()}"/>
-                                        <img src="<c:out value="${fn:substring(locationPicture, fn:indexOf(locationPicture, '/uploads'), -1)}"/>" class="img-responsive" alt="Responsive image">
+                                        <img src="<c:out value="${location.getLocationpictureUrl()}}"/>" class="img-responsive" alt="Responsive image">
                                     </div>
                                 </div>
                             </div>

@@ -26,7 +26,7 @@ import session.LocationFacade;
  *
  * @author sanderlooijenga
  */
-@WebServlet(name = "ControllerServlet",
+@WebServlet(name = "EventServlet",
             loadOnStartup = 1,
             urlPatterns = {"/admin/events",
                            "/admin/events/add",
@@ -53,31 +53,31 @@ public class EventServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
 
-        // if admin page is requested
         if (userPath.equals("/admin/events")) {
             userPath = "/events/index";
 
             request.setAttribute("events", eventFacade.findAll());
 
-        // if cart page is requested
         } else if (userPath.equals("/admin/events/add")) {
             userPath = "/events/add";
             
             request.setAttribute("locations", locationFacade.findAll());
-        //
+            
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
             if (id == null || id.isEmpty()) {
-//                userPath = "/events/index";
 
                 response.sendRedirect("/admin/events");
+                
             } else {
                 Event event = eventFacade.find(Integer.parseInt(id));
+                
                 if (event == null) {
-//                    userPath = "/events/index";
 
                     response.sendRedirect("/admin/events");
+                    
                 } else {
+                    
                     userPath = "/events/edit";
 
                     request.setAttribute("event", event);
@@ -87,8 +87,7 @@ public class EventServlet extends HttpServlet {
             }
         } else if (userPath.equals("/admin/events/delete")) {
             String id = request.getParameter("id");
-            if (id == null || id.isEmpty()) {
-            } else {
+            if (!(id == null || id.isEmpty())) {
                 Event event = eventFacade.find(Integer.parseInt(id));
                 eventFacade.remove(event);
                 response.sendRedirect("http://localhost:8080/admin/events");
@@ -118,31 +117,32 @@ public class EventServlet extends HttpServlet {
 
         String userPath = request.getServletPath();
 
-        // if addToCart action is called
         if (userPath.equals("/admin/events/add")) {
-            // TODO: Implement add product to cart action
-            System.out.println("req: " + request.getParameter("eventName"));
+            
             createEvent(request);
 
-//            userPath = "/events/index";
-
             response.sendRedirect("/admin/events");
-        // if updateCart action is called
+        
         } else if (userPath.equals("/admin/events/edit")) {
             String id = request.getParameter("id");
             if (id == null || id.isEmpty()) {
-//                userPath = "/events/index";
 
                 response.sendRedirect("/admin/events");
+                
             } else {
+                
                 Event event = eventFacade.find(Integer.parseInt(id));
+                
                 if (event == null) {
+                    
                     userPath = "/events/edit?id=" + id;
+                    
                 } else {
+                    
                     updateEvent(request, event);
 
-//                    userPath = "/events/index";
                     response.sendRedirect("/admin/events");
+                    
                 }
             }
         }

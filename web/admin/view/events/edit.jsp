@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <img src="http://placehold.it/350x150" class="img-responsive" alt="Responsive image">
+                                        <img src="<c:out value="${event.eventLogo}"/>" class="img-responsive" alt="Responsive image">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
