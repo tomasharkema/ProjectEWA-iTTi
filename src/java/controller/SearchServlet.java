@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -69,19 +70,24 @@ public class SearchServlet extends HttpServlet {
         }
     }
 
-    private void searchWild(HttpServletRequest request, HttpServletResponse response, String q) throws IOException{
+    private void searchWild(HttpServletRequest request, HttpServletResponse response, String q) throws IOException {
         PrintWriter out = response.getWriter();
         Search.WildSearchResult wildSearchResult = search.wildSearch(q);
 
         JSONObject ret = new JSONObject();
 
-        List<User> userList = wildSearchResult.getUsers();
+        JSONObject usersObj = new JSONObject();
+        JSONArray users = wildSearchResult.getUsers().stream()
+                .map(User::getJSONObject)
+                .reduce(new JSONArray(), (arr, obj) -> {
+                    System.out.println("OBJ: " + obj.toJSONString());
+                    arr.add(obj);
+                    return arr;
+                }, (a, b) -> null);
+        usersObj.put("users", users);
+        usersObj.put("count", users.size());
 
-        userList.forEach(user -> {
-            ret.put("fields", user.getJSONObjectParsed().toString());
-        });
-
-        ret.put("count", userList.size());
+        ret.put("users", usersObj);
 
         try {
             out.println(ret.toJSONString());
