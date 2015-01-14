@@ -95,12 +95,13 @@ public class EventsServlet extends HttpServlet {
             request.setAttribute("drivers", event.getAttendedCars());
             String html = new Markdown4jProcessor().process(event.getDescription());
             request.setAttribute("markdownDescription", html);
-            request.setAttribute("hasCar", user.getCarList().size() > 0);
+            
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
                 request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt));
                 request.setAttribute("attendingFriends", event.getAttendingFriends(user));
+                request.setAttribute("hasCar", user.getCarList().size() > 0);
             }
         }
 
