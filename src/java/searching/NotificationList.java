@@ -39,7 +39,7 @@ public class NotificationList {
             }
         }, listJSON);
 
-        return ListUtils.listToArray(listJSON);
+        return ListUtils.listToJSONArray(listJSON);
     }
 
 }
