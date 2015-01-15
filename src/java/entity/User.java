@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
+import org.json.simple.JSONObject;
+import searching.JSONSerializable;
 import searching.TimeLine;
 
 /**
@@ -41,6 +43,7 @@ import searching.TimeLine;
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByIduser", query = "SELECT u FROM User u WHERE u.iduser = :iduser"),
     @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
+        @NamedQuery(name = "User.findByNameLike", query = "SELECT u FROM User u WHERE u.name LIKE :name"),
     @NamedQuery(name = "User.findByTown", query = "SELECT u FROM User u WHERE u.town = :town"),
     @NamedQuery(name = "User.findByGender", query = "SELECT u FROM User u WHERE u.gender = :gender"),
     @NamedQuery(name = "User.findByAddress", query = "SELECT u FROM User u WHERE u.address = :address"),
@@ -56,7 +59,7 @@ import searching.TimeLine;
     @NamedQuery(name = "User.findFriendEvents", query = "Select e FROM Event e JOIN UserHasEvent uhe ON e.idevennt = uhe.location_has_event_event_idevennt JOIN User u ON uhe.user_iduser = u.iduser JOIN Friends f ON u.iduser = f.user_iduser JOIN User yourFriend ON f.user_iduser1 = u.iduser WHERE yourFriend.iduser = :iduser"),
     @NamedQuery(name = "User.findAttendingFriends", query = "SELECT u FROM User u JOIN Friends f ON f.user_iduser = u.iduser JOIN UserHasEvent uhe ON uhe.user_iduser = u.iduser WHERE f.user1 = :iduser  ORDER BY uhe.date ASC")})
 
-public class User implements Serializable, TimeLine, PermaLinkable {
+public class User implements Serializable, TimeLine, PermaLinkable, JSONSerializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -388,5 +391,15 @@ public class User implements Serializable, TimeLine, PermaLinkable {
     @Override
     public String getPermaLink(){
         return "/user?userId="+getIduser();
+    }
+
+
+    @Override
+    public JSONObject getJSONObject() {
+        JSONObject ret = new JSONObject();
+        ret.put("name", getName());
+        ret.put("link", getPermaLink());
+        ret.put("avatar", getUserAvatar());
+        return ret;
     }
 }

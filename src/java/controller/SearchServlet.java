@@ -1,9 +1,12 @@
 package controller;
 
 import entity.Event;
+import entity.User;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import searching.Search;
 import session.EventFacade;
+import utils.ListUtils;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -14,6 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Created by tomas on 30-12-14.
@@ -24,6 +32,9 @@ public class SearchServlet extends HttpServlet {
     @EJB
     public EventFacade eventFacade;
 
+    @EJB
+    public Search search;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String type = (String)request.getParameter("type");
         String query = (String)request.getParameter("q");
@@ -31,6 +42,10 @@ public class SearchServlet extends HttpServlet {
         switch (type) {
             case "events":{
                 searchEvents(request, response, query);
+                break;
+            }
+            case "wild":{
+                searchWild(request, response, query);
             }
         }
     }
@@ -54,4 +69,41 @@ public class SearchServlet extends HttpServlet {
             out.close();
         }
     }
+
+    private void searchWild(HttpServletRequest request, HttpServletResponse response, String q) throws IOException {
+        PrintWriter out = response.getWriter();
+        Search.WildSearchResult wildSearchResult = search.wildSearch(q);
+
+        JSONObject ret = new JSONObject();
+
+        JSONObject usersObj = new JSONObject();
+        JSONArray users = wildSearchResult.getUsers().stream()
+                .map(User::getJSONObject)
+                .reduce(new JSONArray(), (arr, obj) -> {
+                    arr.add(obj);
+                    return arr;
+                }, (a, b) -> null);
+        usersObj.put("users", users);
+        usersObj.put("count", users.size());
+
+        JSONObject eventObject = new JSONObject();
+        JSONArray events = wildSearchResult.getEvents().stream()
+                .map(Event::toJSONObject)
+                .reduce(new JSONArray(), (arr, obj) -> {
+                    arr.add(obj);
+                    return arr;
+                }, (a, b) -> null);
+        eventObject.put("events", events);
+        eventObject.put("count", events.size());
+
+        ret.put("users", usersObj);
+        ret.put("events", eventObject);
+        ret.put("count", events.size()+users.size());
+        try {
+            out.println(ret.toJSONString());
+        } finally {
+            out.close();
+        }
+    }
+
 }

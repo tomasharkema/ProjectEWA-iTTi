@@ -7,9 +7,7 @@ package searching;
 
 import entity.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
@@ -40,28 +38,23 @@ public class Search {
      @Return: returns an ArrayList with 3 indexes. I(0) will contain a ArrayList with User objects, 
      I(1) will contain a ArrayList with Event objects, I(2) will contain a ArrayList with Location objects.
      */
-    public List<List> wildSearch(String searchString) {
-        List<List> results = new ArrayList(2);
-        List<User> userResults;
-        List<Event> eventResults;
-        List<Location> locationResults;
 
-        TypedQuery userQuery = em.createNamedQuery("User.findByName", User.class);
-        userQuery.setParameter("iduser", "%" + searchString + "%");
-        userResults = userQuery.getResultList();
-        results.add(userResults);
+    public WildSearchResult wildSearch(String searchString) {
+        WildSearchResult res = new WildSearchResult();
 
-        TypedQuery eventQuery = em.createNamedQuery("Event.findByEventname", Event.class);
+        TypedQuery eventQuery = em.createNamedQuery("Event.findByEventNameLike", Event.class);
         eventQuery.setParameter("eventName", "%" + searchString + "%");
-        eventResults = eventQuery.getResultList();
-        results.add(eventResults);
+        res.events = eventQuery.getResultList();
 
-        TypedQuery locationQuery = em.createNamedQuery("location.findByLocationname", Location.class);
-        eventQuery.setParameter("locationName", "%" + searchString + "%");
-        locationResults = locationQuery.getResultList();
-        results.add(locationResults);
+        /*TypedQuery locationQuery = em.createNamedQuery("location.findByLocationname", Location.class);
+        locationQuery.setParameter("locationName", "%" + searchString + "%");
+        res.locations = locationQuery.getResultList();*/
 
-        return results;
+        TypedQuery userQuery = em.createNamedQuery("User.findByNameLike", User.class);
+        userQuery.setParameter("name", "%" + searchString + "%");
+        res.users = userQuery.getResultList();
+
+        return res;
     }
     
     /*
@@ -136,5 +129,35 @@ public class Search {
             }
         
         return returnList;
+    }
+
+    public class WildSearchResult {
+        List<Event> events;
+        List<Location> locations;
+        List<User> users;
+
+        public List<Event> getEvents() {
+            return events;
+        }
+
+        public void setEvents(List<Event> events) {
+            this.events = events;
+        }
+
+        public List<Location> getLocations() {
+            return locations;
+        }
+
+        public void setLocations(List<Location> locations) {
+            this.locations = locations;
+        }
+
+        public List<User> getUsers() {
+            return users;
+        }
+
+        public void setUsers(List<User> users) {
+            this.users = users;
+        }
     }
 }

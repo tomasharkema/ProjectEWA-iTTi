@@ -49,6 +49,7 @@ import searching.TimeLine;
     @NamedQuery(name = "Event.findByEvenDate", query = "SELECT e FROM Event e WHERE e.eventDate = :eventDate"),
     @NamedQuery(name = "Event.findByDateASC", query = "SELECT e FROM Event e ORDER BY e.eventDate ASC"),
     @NamedQuery(name = "Event.findByEventname", query = "SELECT e FROM Event e WHERE e.eventName = :eventName"),
+    @NamedQuery(name = "Event.findByEventNameLike", query = "SELECT e FROM Event e WHERE e.eventName LIKE :eventName"),
     @NamedQuery(name = "Event.findAttending", query = "select u FROM User u JOIN UserHasEvent us ON u.iduser = us.user_iduser JOIN Event e ON us.location_has_event_event_idevent = e.idevent WHERE e.idevent = :idevent"),
     @NamedQuery(name = "Event.findNameLike", query = "SELECT e FROM Event e WHERE e.eventName LIKE :name ORDER BY e.eventName DESC")})
 public class Event implements Serializable, TimeLine, PermaLinkable {
@@ -246,7 +247,7 @@ public class Event implements Serializable, TimeLine, PermaLinkable {
         return friendsAttending;
     }
 
-    public JSONObject toJSONObject() throws IOException {
+    public JSONObject toJSONObject() {
         JSONObject obj = new JSONObject();
         obj.put("id", idevent);
         obj.put("name", eventName);
@@ -254,7 +255,12 @@ public class Event implements Serializable, TimeLine, PermaLinkable {
         obj.put("eventLogo", eventLogo);
         obj.put("eventWall", eventWall);
         obj.put("description", description);
-        obj.put("descriptionHTML", new Markdown4jProcessor().process(description));
+        obj.put("link", getPermaLink());
+        try {
+            obj.put("descriptionHTML", new Markdown4jProcessor().process(description));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         return obj;
     }
     
