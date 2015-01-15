@@ -284,10 +284,10 @@ public class User implements Serializable, TimeLine, PermaLinkable {
     public UserHasEvent isAttendingEvent(int eventId) {
         List<UserHasEvent> userHasEventList = getUserHasEventList();
         UserHasEvent isAttending = null;
-        
+
         if (userHasEventList.size() == 0) return null;
-        
-        for(UserHasEvent ev : userHasEventList) {
+
+        for (UserHasEvent ev : userHasEventList) {
             // For some reason, getEvent() returns null, but it actually exists. Fallback on manual check.
             if (ev.getEvent() == null) {
                 if (ev.getUserHasEventPK().getEventIdevent() == eventId) {
@@ -298,18 +298,6 @@ public class User implements Serializable, TimeLine, PermaLinkable {
             }
         }
         return isAttending;
-    }
-
-    public boolean isDriving(Event ev) {
-        boolean ret = false;
-        for (UserHasEvent e : userHasEventList) {
-            for (Car c : carList) {
-                if (c.equals(e.getCarId())) {
-                    ret = true;
-                }
-            }
-        }
-        return ret;
     }
 
     public List<Friend> getFriends() {
@@ -390,7 +378,7 @@ public class User implements Serializable, TimeLine, PermaLinkable {
         CollectionUtils.filter(list, new Predicate<UserHasEvent>() {
             @Override
             public boolean evaluate(UserHasEvent userHasEvent) {
-                return isDriving(userHasEvent.getEvent());
+                return userHasEvent.isDriving();
             }
         });
 
