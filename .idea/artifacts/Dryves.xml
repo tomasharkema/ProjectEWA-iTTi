@@ -16,7 +16,7 @@
           <element id="library" level="project" name="org.apache.commons:commons-collections4:4.0" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web2" />
+      <element id="javaee-facet-resources" facet="itti-donkerford/web/Web" />
       <element id="javaee-facet-resources" facet="itti-donkerford/ejb/EJB" />
     </root>
   </artifact>

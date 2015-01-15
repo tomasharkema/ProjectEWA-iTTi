@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.Function;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -88,14 +89,16 @@ public class EventsServlet extends HttpServlet {
         } else {
             // Has event
             url = "/WEB-INF/view/event.jsp";
+
             Event event = eventFacade.find(eventIdInt);
+            List<UserHasEvent> userHasEventsList = event.getUserHasEventList();
+            userHasEventsList.sort((o1, o2) ->   o1.getDate().after(o2.getDate()) ? -1 : 1);
             request.setAttribute("event", event);
             request.setAttribute("attendees", event.getAttendees());
-            request.setAttribute("userHasEventList", event.getUserHasEventList());
+            request.setAttribute("userHasEventList", userHasEventsList);
             request.setAttribute("drivers", event.getAttendedCars());
             String html = new Markdown4jProcessor().process(event.getDescription());
             request.setAttribute("markdownDescription", html);
-            
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
