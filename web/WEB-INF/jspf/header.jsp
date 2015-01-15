@@ -75,7 +75,7 @@
                                             </span>
                                         </div><!-- /input-group -->
                                     </form>
-                                    <div id="big-search-results">
+                                    <div id="big-search-results" class="hidden">
                                         <div class="search-results"></div>
                                     </div>
                                 </li>

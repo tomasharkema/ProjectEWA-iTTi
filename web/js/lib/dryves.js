@@ -63,17 +63,17 @@ Dryves.prototype = {
                     html.append($("<small>").addClass("subtitle").html("EVENTS"))
                         .append(_.reduce(data.events.events, function (mem, event) {
                             return mem.append(
-                                $("<li>").addClass("search-res media").html('<a href="#" class="media-left"><img src="' + event.eventLogo + '"></a>').append($("<div>").addClass("media-body").html($('<h4>').addClass("media-heading").html(event.name)))
+                                $("<a>").addClass("search-res media").attr({href:event.link}).html('<span class="media-left"><img src="' + event.eventLogo + '"></span>').append($("<div>").addClass("media-body").html($('<h4>').addClass("media-heading").html(event.name)))
                             );
-                        }, $("<ul>").addClass("media-list")));
+                        }, $("<div>")));
                 }
                 if (data.users !== undefined && data.users.count > 0) {
                     html.append($("<small>").addClass("subtitle").html("USERS"))
                         .append(_.reduce(data.users.users, function (mem, user) {
                             return mem.append(
-                                $("<li>").addClass("search-res media").html('<a href="#" class="media-left"><img src="' + user.avatar + '"></a>').append($("<div>").addClass("media-body").html($('<h4>').addClass("media-heading").html(user.name)))
+                                $("<a>").addClass("search-res media").attr({href:user.link}).html('<span class="media-left"><img src="' + user.avatar + '"></span>').append($("<div>").addClass("media-body").html($('<h4>').addClass("media-heading").html(user.name)))
                             );
-                        }, $("<ul>").addClass("media-list")));
+                        }, $("<div>")));
                 }
             } else {
                 html.append($("<h5>").html("Found nothing for: "+headerSearch.query+""));
