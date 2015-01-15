@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 /**
  * Created by tomas on 30-12-14.
  */
-@WebServlet(name = "SearchServlet", loadOnStartup = 1, urlPatterns = {"/search", "/wild"})
+@WebServlet(name = "SearchServlet", loadOnStartup = 1, urlPatterns = {"/search"})
 public class SearchServlet extends HttpServlet {
 
     @EJB
