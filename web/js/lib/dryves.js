@@ -20,6 +20,7 @@ Dryves.prototype = {
         this.fb.ready();
         this.injectLinks();
         this.injectColorDropdown();
+        this.initHeaderSearch();
         $.timeago.settings.allowFuture = true;
         $("time.timeago").timeago();
     },
@@ -46,6 +47,39 @@ Dryves.prototype = {
                 $("#colorColor").val(color);
                 $("#colorTitle").val(title);
             }
+        });
+    },
+    initHeaderSearch:function(){
+        var headerSearch = new Search("#header-search", "#big-search-results");
+        headerSearch.onResult(function(data){
+            var resultBox = headerSearch.$result.find(".search-results");
+            if (data === undefined) return;
+
+            var html = $("<div>").html("");
+
+            if (data.count > 0) {
+
+                if (data.events !== undefined && data.events.count > 0) {
+                    html.append($("<small>").addClass("subtitle").html("EVENTS"))
+                        .append(_.reduce(data.events.events, function (mem, event) {
+                            return mem.append(
+                                $("<li>").addClass("search-res media").html('<a href="#" class="media-left"><img src="' + event.eventLogo + '"></a>').append($("<div>").addClass("media-body").html($('<h4>').addClass("media-heading").html(event.name)))
+                            );
+                        }, $("<ul>").addClass("media-list")));
+                }
+                if (data.users !== undefined && data.users.count > 0) {
+                    html.append($("<small>").addClass("subtitle").html("USERS"))
+                        .append(_.reduce(data.users.users, function (mem, user) {
+                            return mem.append(
+                                $("<li>").addClass("search-res media").html('<a href="#" class="media-left"><img src="' + user.avatar + '"></a>').append($("<div>").addClass("media-body").html($('<h4>').addClass("media-heading").html(user.name)))
+                            );
+                        }, $("<ul>").addClass("media-list")));
+                }
+            } else {
+                html.append($("<h5>").html("Found nothing for: "+headerSearch.query+""));
+            }
+
+            resultBox.html(html);
         });
     },
     redirect:function(url){

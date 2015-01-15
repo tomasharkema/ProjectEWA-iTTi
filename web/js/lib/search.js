@@ -2,27 +2,33 @@
  * Created by tomas on 30-12-14.
  */
 
-function Search(el, resel) {
+function Search(el, result) {
     var self = this;
     this.$textfield = $(el);
-    this.$result = $(resel);
+    this.$result = $(result);
 
     this.query = "";
     this.type = this.$textfield.attr("data-type");
     this.throttle = 500;
 
-    this.onResultHandler = function(){};
-    this.onQueryHandler = function(){};
+    this._resultHandler = function(){};
+    this._queryHandler = function(){};
 
     var keydownThrottled = _.throttle(self.onSearch.bind(self), self.throttle, {leading: false});
     this.$textfield.keydown(keydownThrottled);
 }
 
 Search.prototype = {
+    onQuery:function(q){
+        this._queryHandler = q;
+    },
+    onResult:function(r){
+        this._resultHandler = r;
+    },
     onSearch:function(){
         var self = this;
         var query = this.$textfield.val();
-        self.onQueryHandler(query);
+        self._queryHandler.call(self, query);
         if (query.length === 0) {
             self.$result.addClass("hidden");
         } else {
@@ -36,7 +42,7 @@ Search.prototype = {
                     type: this.type
                 },
                 success: function (data) {
-                    self.onResultHandler(data);
+                    self._resultHandler.call(self, data);
                 }
             });
         }

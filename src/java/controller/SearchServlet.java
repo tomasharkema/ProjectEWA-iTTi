@@ -80,15 +80,25 @@ public class SearchServlet extends HttpServlet {
         JSONArray users = wildSearchResult.getUsers().stream()
                 .map(User::getJSONObject)
                 .reduce(new JSONArray(), (arr, obj) -> {
-                    System.out.println("OBJ: " + obj.toJSONString());
                     arr.add(obj);
                     return arr;
                 }, (a, b) -> null);
         usersObj.put("users", users);
         usersObj.put("count", users.size());
 
-        ret.put("users", usersObj);
+        JSONObject eventObject = new JSONObject();
+        JSONArray events = wildSearchResult.getEvents().stream()
+                .map(Event::toJSONObject)
+                .reduce(new JSONArray(), (arr, obj) -> {
+                    arr.add(obj);
+                    return arr;
+                }, (a, b) -> null);
+        eventObject.put("events", events);
+        eventObject.put("count", events.size());
 
+        ret.put("users", usersObj);
+        ret.put("events", eventObject);
+        ret.put("count", events.size()+users.size());
         try {
             out.println(ret.toJSONString());
         } finally {

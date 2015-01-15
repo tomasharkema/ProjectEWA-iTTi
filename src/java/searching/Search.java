@@ -42,7 +42,7 @@ public class Search {
     public WildSearchResult wildSearch(String searchString) {
         WildSearchResult res = new WildSearchResult();
 
-        TypedQuery eventQuery = em.createNamedQuery("Event.findByEventname", Event.class);
+        TypedQuery eventQuery = em.createNamedQuery("Event.findByEventNameLike", Event.class);
         eventQuery.setParameter("eventName", "%" + searchString + "%");
         res.events = eventQuery.getResultList();
 

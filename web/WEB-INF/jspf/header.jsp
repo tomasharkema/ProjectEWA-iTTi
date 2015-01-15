@@ -66,6 +66,19 @@
                                 </c:choose>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <form class="navbar-form navbar-left" role="search">
+                                        <div class="input-group">
+                                            <input type="search" class="form-control" id="header-search" data-type="wild" placeholder="Search for...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                            </span>
+                                        </div><!-- /input-group -->
+                                    </form>
+                                    <div id="big-search-results">
+                                        <div class="search-results"></div>
+                                    </div>
+                                </li>
                                 <c:choose>
                                 <c:when test="${userId == null}">
                                 <li><a href="/login.jsp">Login</a></li>
@@ -94,6 +107,5 @@
                         </div>
                     </div>
                 </nav>
-
             </div>
         </div>
