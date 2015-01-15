@@ -9,13 +9,10 @@ import entity.Car;
 import entity.Event;
 import entity.User;
 import entity.UserHasEvent;
-import entity.UserHasEventPK;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.*;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
@@ -23,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
@@ -33,7 +29,6 @@ import org.markdown4j.Markdown4jProcessor;
 import session.CarFacade;
 import session.EventFacade;
 import session.UserFacade;
-import validate.LoginValidator;
 
 /**
  *
@@ -96,13 +91,13 @@ public class EventsServlet extends HttpServlet {
             request.setAttribute("drivers", event.getAttendedCars());
             String html = new Markdown4jProcessor().process(event.getDescription());
             request.setAttribute("markdownDescription", html);
-            request.setAttribute("hasCar", user.getCarList().size() > 0);
             request.setAttribute("pageTitle", event.getName());
 
             if (user != null) {
                 // User is not loggedin. Don't let him join.
                 request.setAttribute("isAttending", user.isAttendingEvent(eventIdInt));
                 request.setAttribute("attendingFriends", event.getAttendingFriends(user));
+                request.setAttribute("hasCar", user.getCarList().size() > 0);
             }
         }
 
