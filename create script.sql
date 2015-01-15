@@ -121,7 +121,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `location`;
 
 CREATE TABLE `location` (
-  `idlocation` int(11) NOT NULL,
+  `idlocation` int(11) NOT NULL AUTO_INCREMENT,
   `city` varchar(45) NOT NULL,
   `address` varchar(45) DEFAULT NULL,
   `locationpicture` text,
