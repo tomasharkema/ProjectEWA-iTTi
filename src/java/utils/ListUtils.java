@@ -1,7 +1,5 @@
 package utils;
 
-import com.oracle.javafx.jmx.json.JSONException;
-import entity.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Transformer;
 import org.json.simple.JSONArray;
@@ -9,7 +7,6 @@ import org.json.simple.JSONObject;
 import searching.JSONSerializable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
