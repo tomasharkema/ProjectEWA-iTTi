@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- http://stackoverflow.com/questions/6162401/formatting-a-date-in-jsp#answer-6162507 -->
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
         <div id="page-wrapper">
@@ -11,10 +12,9 @@
                                 <a href="javascript:history.back()" class="btn btn-primary" role="button">
                                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back to overview
                                 </a>
-                                <!-- todo: bak er een confirm in! -->
-                                <a href="delete?id=${event.idevent}" class="btn btn-danger" role="button">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </h1>
@@ -38,12 +38,26 @@
                                                 <input type="text" class="form-control" id="eventName" name="eventName" value="${event.eventName}" required="required">
                                             </div>
                                         </div>
-                                        <!--div class="form-group">
-                                            <label for="eventLocation" class="col-sm-2 control-label">Location</label>
+                                        <div class="form-group">
+                                            <label for="location" class="col-sm-2 control-label">Location</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="eventLocation" name="eventLocation" value="" required="required">
+                                                <select class="form-control" id="location" name="location">
+                                                    <c:forEach items="${locations}" var="location">
+                                                        <c:choose>
+                                                            <c:when test="${location.idlocation == event.getLocationid().getIdlocation()}">
+                                                                <option value="${location.idlocation}" selected>${location.locationname}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${location.idlocation}">${location.locationname}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                                <p class="help-block">
+                                                    <a href="/admin/locations/add" title="Add a new location">Add a new location</a>
+                                                </p>
                                             </div>
-                                        </div-->
+                                        </div>
                                         <div class="form-group">
                                             <label for="eventDate" class="col-sm-2 control-label">Date</label>
                                             <div class="col-sm-10">
@@ -54,13 +68,25 @@
                                         <div class="form-group">
                                             <label for="eventLogo" class="col-sm-2 control-label">Logo</label>
                                             <div class="col-sm-10">
-                                                <input type="text" id="eventLogo" name="eventLogo" value="${event.eventLogo}">
+                                                <input class="form-control" type="text" id="eventLogo" name="eventLogo" value="${event.eventLogo}">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventLogo" class="col-sm-2 control-label">Description</label>
+                                            <label for="eventWall" class="col-sm-2 control-label">Cover</label>
                                             <div class="col-sm-10">
-                                                <textarea id="description" name="description" width="100%">${event.description}</textarea>
+                                                <input class="form-control" type="text" id="eventWall" name="eventWall" value="${event.eventWall}" required="required">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description" class="col-sm-2 control-label">Description</label>
+                                            <div class="col-sm-10">
+                                                <textarea class="form-control" rows="3" id="description" name="description">${event.description}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fbevent" class="col-sm-2 control-label">Facebook event</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="fbevent" name="fbevent" value="${event.fbEvent}">
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -74,33 +100,34 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <img src="http://placehold.it/350x150" class="img-responsive" alt="Responsive image">
+                                        <img src="<c:out value="${event.eventLogo}"/>" class="img-responsive" alt="Responsive image">
                                     </div>
                                 </div>
-                                <!-- /.col-lg-6 (nested) -->
-                                <!--div class="col-lg-6">
-                                    <h1>Disabled Form States</h1>
-                                    <form role="form">
-                                        <fieldset disabled>
-                                            <div class="form-group">
-                                                <label for="disabledSelect">Disabled input</label>
-                                                <input class="form-control" id="disabledInput" type="text" placeholder="Disabled input" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="disabledSelect">Disabled select menu</label>
-                                                <select id="disabledSelect" class="form-control">
-                                                    <option>Disabled select</option>
-                                                </select>
-                                            </div>
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox">Disabled Checkbox
-                                                </label>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Disabled Button</button>
-                                        </fieldset>
-                                    </form>
-                                </div-->
+                                <div class="col-lg-12">
+                                    <h2>People attending</h2>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Date of RSVP</th>
+                                                    <th>Car</th>
+                                                    <th>Is the driver?</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${event.getUserHasEventList()}" var="eventUser" varStatus="iter">
+                                                <tr class="${((iter.index % 2) == 0) ? 'even' : 'odd'} clickable" onclick="window.location = '/admin/users/view?id=${eventUser.getUser().iduser}'" title="View user">
+                                                    <td><a href="/admin/users/view?id=${eventUser.getUser().iduser}" title="View user">${eventUser.getUser().name}</a></td>
+                                                    <td><fmt:formatDate value="${eventUser.getDate()}" pattern="d MMMMM yyyy" /></td>
+                                                    <td>${eventUser.getCarId().getBrand()}</td>
+                                                    <td>${eventUser.getCarId().getUserIduser() == eventUser.getUser() ? 'yes' : 'no'}</td>
+                                                </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 <!-- /.col-lg-6 (nested) -->
                             </div>
                             <!-- /.row (nested) -->
@@ -114,3 +141,25 @@
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
+        
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Event</h4>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="delete?id=${event.idevent}" class="btn btn-danger" role="button">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+        

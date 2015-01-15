@@ -1,8 +1,10 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>        
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Add an event
+                        View a user
                         <div class="pull-right">
                             <div class="btn-group">
                                 <a href="javascript:history.back()" class="btn btn-primary" role="button">
@@ -24,66 +26,63 @@
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <form action="add" method="post" class="form-horizontal" role="form">
+                                    <div class="form-horizontal">
                                         <div class="form-group">
-                                            <label for="eventName" class="col-sm-2 control-label">Name</label>
+                                            <label for="name" class="col-sm-2 control-label">Name</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Name" required="required">
+                                                <input type="text" class="form-control" id="name" name="name" value="<c:out value="${user.getName()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="location" class="col-sm-2 control-label">Location</label>
+                                            <label for="address" class="col-sm-2 control-label">Address</label>
                                             <div class="col-sm-10">
-                                                <select class="form-control" id="location" name="location" required="required">
-                                                    <c:forEach items="${locations}" var="location">
-                                                    <option value="${location.idlocation}">${location.locationname}</option>
-                                                    </c:forEach>
-                                                </select>
-                                                <p class="help-block">
-                                                    <a href="/admin/locations/add" title="Add a new location">Add a new location</a>
-                                                </p>
+                                                <input type="text" class="form-control" id="address" name="address" value="<c:out value="${user.getAddress()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventDate" class="col-sm-2 control-label">Date</label>
+                                            <label for="town" class="col-sm-2 control-label">Town</label>
                                             <div class="col-sm-10">
-                                                <input type="date" class="form-control" id="eventDate" name="eventDate" placeholder="Date" required="required">
-                                                <p class="help-block">dd/mm/yyyy</p>
+                                                <input type="text" class="form-control" id="town" name="town" value="<c:out value="${user.getTown()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventLogo" class="col-sm-2 control-label">Logo</label>
+                                            <label for="zipcode" class="col-sm-2 control-label">Zipcode</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" id="eventLogo" name="eventLogo" placeholder="Link to logo image" required="required">
+                                                <input type="text" class="form-control" id="zipcode" name="zipcode" value="<c:out value="${user.getZipcode()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="eventWall" class="col-sm-2 control-label">Cover</label>
+                                            <label for="gender" class="col-sm-2 control-label">Gender</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" id="eventWall" name="eventWall" placeholder="Link to cover image" required="required">
+                                                <input type="text" class="form-control" id="gender" name="gender" value="<c:out value="${user.getGender()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="description" class="col-sm-2 control-label">Description</label>
+                                            <label for="phone" class="col-sm-2 control-label">Phone</label>
                                             <div class="col-sm-10">
-                                                <textarea class="form-control" rows="3" id="description" name="description" required="required"></textarea>
+                                                <input type="text" class="form-control" id="phone" name="phone" value="<c:out value="${user.getPhone()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="fbevent" class="col-sm-2 control-label">Facebook event</label>
+                                            <label for="email" class="col-sm-2 control-label">Email</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" type="text" id="fbevent" name="fbevent" placeholder="Link to Facebook event">
+                                                <input type="text" class="form-control" id="email" name="email" value="<c:out value="${user.getEmail()}"/>" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" class="btn btn-default">Submit</button>
-                                                <!--button type="reset" class="btn btn-default">Reset Button</button-->
+                                            <label for="userAvatar" class="col-sm-2 control-label">Avatar</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="userAvatar" name="userAvatar" value="<c:out value="${user.getUserAvatar()}"/>" disabled="disabled">
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                                 <!-- /.col-lg-6 (nested) -->
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <img src="<c:out value="${user.getUserAvatar()}"/>" class="img-responsive img-circle" width="140" height="140" alt="Responsive image">
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.row (nested) -->
                         </div>
