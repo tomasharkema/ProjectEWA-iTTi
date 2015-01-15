@@ -57,6 +57,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("friendRelation", currentUser.getRelation(user));
         request.setAttribute("userTimeline", search.getTimelineForFriend(user));
         request.setAttribute("events", user.getUserHasEventList());
+        request.setAttribute("pageTitle", user.getName());
     }
 
     private void handleFriend(HttpServletRequest request, HttpServletResponse response) {
